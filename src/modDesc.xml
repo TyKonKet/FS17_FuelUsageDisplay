@@ -17,5 +17,8 @@
     <extraSourceFiles>
         <sourceFile filename="register.lua"/>
     </extraSourceFiles>
-    <l10n></l10n>
+    <git>
+        <host>GitHub</host>
+        <url>https://github.com/TyKonKet/FS17_FuelUsageDisplay.git</url>
+    </git>
 </modDesc>
