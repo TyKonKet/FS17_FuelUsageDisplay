@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="32">
+    <author>TyKonKet</author>
+    <version>2.0.0.0</version>
+    <title>
+        <en>Fuel Usage Display</en>
+    </title>
+    <description>
+        <en>Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption. Special thanks to "Jantje van Speijk" for testings.</en>
+        <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore. Ringrazio "Jantje van Speijk" per aver testato la mod.</it>
+		<de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
+		<fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
+        <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer. Speciale dank aan "Jantje van Speijk" voor het testen van de mod.</nl>
+    </description>
+    <iconFilename>icon.dds</iconFilename>
+    <multiplayer supported="true"/>
+    <extraSourceFiles>
+        <sourceFile filename="register.lua"/>
+    </extraSourceFiles>
+    <l10n></l10n>
+</modDesc>
