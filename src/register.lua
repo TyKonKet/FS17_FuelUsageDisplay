@@ -8,6 +8,7 @@ BetterFuelUsageRH.name = "FuelUsageDisplayRH";
 BetterFuelUsageRH.specialization = {};
 BetterFuelUsageRH.specialization.title = "BetterFuelUsage";
 BetterFuelUsageRH.specialization.name = "betterFuelUsage";
+BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
 BetterFuelUsageRH.debug = true;
 
 function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
@@ -21,10 +22,10 @@ function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8,
     end
 end
 
-function BetterFuelUsageRH:registerSpecializations()
+function BetterFuelUsageRH:registerSpecialization()
     for _, vehicleType in pairs(VehicleTypeUtil.vehicleTypes) do
         if vehicleType ~= nil then
-            if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), vehicleType.specializations) then
+            if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), vehicleType.specializations) and not self.specialization.blackList[vehicleType.name] then
                 table.insert(vehicleType.specializations, SpecializationUtil.getSpecialization(self.specialization.name));
                 self:print(self.specialization.title .. " added to " .. vehicleType.name);
             end
@@ -37,7 +38,7 @@ function BetterFuelUsageRH:loadMap(name)
         addConsoleCommand("AAAFUDPrintVheicle", "", "FUDPrintVheicle", self);
         addConsoleCommand("AAAFUDSetGraph", "", "FUDSetGraph", self);
     end
-    BetterFuelUsageRH:registerSpecializations();
+    BetterFuelUsageRH:registerSpecialization();
 end
 
 function BetterFuelUsageRH:deleteMap()
