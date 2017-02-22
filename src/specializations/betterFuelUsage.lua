@@ -3,10 +3,9 @@
 --
 -- @author  TyKonKet
 -- @date 27/10/2016
-
 BetterFuelUsage = {};
 BetterFuelUsage.name = "BetterFuelUsage";
-BetterFuelUsage.debug = false;
+BetterFuelUsage.debug = BetterFuelUsageRH.debug;
 BetterFuelUsage.fuelUsageText = {};
 BetterFuelUsage.fuelUsageText.text1 = {};
 BetterFuelUsage.fuelUsageText.text2 = {};
@@ -23,13 +22,21 @@ BetterFuelUsage.fuelUsageText.text1.fontsize = BetterFuelUsage.fuelUsageText.tex
 BetterFuelUsage.fuelUsageText.text2.fontsize = BetterFuelUsage.fuelUsageText.text2.fontsize * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
-    return true;
+    if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
+        return true;
+    else
+        return false;
+    end
 end
 
-function BetterFuelUsage.print(txt)
-    --DebugUtil.printTableRecursively(txt, "BetterFuelUsage -> (txt)", 0, 1);
+function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
     if BetterFuelUsage.debug then
-        print("[" .. BetterFuelUsage.name .. "] -> " .. txt);
+        local args = {txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
+        for i, v in ipairs(args) do
+            if v then
+                print("[" .. BetterFuelUsage.name .. "] -> " .. tostring(v));
+            end
+        end
     end
 end
 
@@ -43,7 +50,7 @@ function BetterFuelUsage:preLoad(savegame)
         self.BetterFuelUsage.server.fuelUsageFactor = 1;
         -- server only data
         self.BetterFuelUsage.server.fuelFillLevel = 0;
-        self.BetterFuelUsage.server.lastFillLevel = 0;       
+        self.BetterFuelUsage.server.lastFillLevel = 0;
         self.BetterFuelUsage.server.lastLoadFactor = 0;
         self.BetterFuelUsage.server.helperFuelUsed = 0;
     end
@@ -142,18 +149,18 @@ function BetterFuelUsage:update(dt)
 end
 
 function BetterFuelUsage:writeStream(streamId, connection)
-    --BetterFuelUsage.print("writeStream -> " .. tostring(streamId));
+--BetterFuelUsage.print("writeStream -> " .. tostring(streamId));
 end
 
 function BetterFuelUsage:readStream(streamId, connection)
-    --BetterFuelUsage.print("readStream -> " .. tostring(streamId));
+--BetterFuelUsage.print("readStream -> " .. tostring(streamId));
 end
 
 function BetterFuelUsage:writeUpdateStream(streamId, connection, dirtyMask)
     if self.isServer then
         streamWriteFloat32(streamId, self.BetterFuelUsage.server.fuelUsed);
         streamWriteFloat32(streamId, self.BetterFuelUsage.server.fuelUsageFactor);
-        --BetterFuelUsage.print("writeUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.server.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.server.fuelUsageFactor));
+    --BetterFuelUsage.print("writeUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.server.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.server.fuelUsageFactor));
     end
 end
 
@@ -161,7 +168,7 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
     if not self.isServer then
         self.BetterFuelUsage.client.fuelUsed = streamReadFloat32(streamId);
         self.BetterFuelUsage.client.fuelUsageFactor = streamReadFloat32(streamId);
-        --BetterFuelUsage.print("readUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.client.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.client.fuelUsageFactor));
+    --BetterFuelUsage.print("readUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.client.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.client.fuelUsageFactor));
     end
 end
 
@@ -183,7 +190,7 @@ function BetterFuelUsage:draw()
         
         -- converting fuelUsage in l/h
         fuelUsage = fuelUsage * 1000 * 60 * 60;
-
+        
         if fuelUsage < 10 then
             fuelUsage = string.format("%.2f", fuelUsage);
         elseif fuelUsage < 100 then
