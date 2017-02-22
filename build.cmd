@@ -1,5 +1,5 @@
 @ECHO off
-SETLOCAL ENABLEEXTENSIONS
+SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 SET my_path=%~dp0
 SET mod_path=%1
 SET mod_path=%mod_path:"=%
@@ -11,6 +11,15 @@ SET fs17_mods_path=%USERPROFILE%\Documents\My Games\FarmingSimulator2017\mods\
 SET fs17_mod_path=%fs17_mods_path%%mod_name%
 RMDIR /S /Q "%fs17_mod_path%\"
 DEL "%fs17_mods_path%%mod_name%.zip"
-XCOPY /B "%mod_path_src%" "%fs17_mod_path%\"
+MKDIR "%fs17_mod_path%"
+PUSHD "%mod_path_src%"
+SET /a count = 0
+for /r %%a in (*) do (
+    COPY "%%a" "%fs17_mod_path%\%%~nxa" > nul
+    SET /a count += 1
+)
+echo Copied !count! file(s)
+POPD
 ECHO #################################### %mod_name% built ####################################
+ENDLOCAL
 EXIT

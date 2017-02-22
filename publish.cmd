@@ -12,5 +12,7 @@ SET fs17_mod_path=%fs17_mods_path%%mod_name%
 START /WAIT /B build.cmd %1
 DEL "%mod_path_out%\%mod_name%.zip"
 powershell -ExecutionPolicy ByPass -Command "& '%my_path%zip.ps1' -directory '%fs17_mod_path%\' -name '%mod_path_out%\%mod_name%.zip'"
+RMDIR /S /Q "%fs17_mod_path%\"
+COPY "%mod_path_out%\%mod_name%.zip" "%fs17_mods_path%%mod_name%.zip"
 ECHO ################################### %mod_name% published ###################################
 EXIT
