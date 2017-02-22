@@ -23,10 +23,11 @@ function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8,
 end
 
 function BetterFuelUsageRH:registerSpecialization()
+    local specialization = SpecializationUtil.getSpecialization(self.specialization.name);
     for _, vehicleType in pairs(VehicleTypeUtil.vehicleTypes) do
         if vehicleType ~= nil then
-            if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), vehicleType.specializations) and not self.specialization.blackList[vehicleType.name] then
-                table.insert(vehicleType.specializations, SpecializationUtil.getSpecialization(self.specialization.name));
+            if specialization.prerequisitesPresent(vehicleType.specializations) and not self.specialization.blackList[vehicleType.name] then
+                table.insert(vehicleType.specializations, specialization);
                 self:print(self.specialization.title .. " added to " .. vehicleType.name);
             end
         end
