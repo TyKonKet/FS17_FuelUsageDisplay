@@ -17,6 +17,9 @@
     <extraSourceFiles>
         <sourceFile filename="register.lua"/>
     </extraSourceFiles>
+    <specializations>
+        <specialization name="betterFuelUsage" className="BetterFuelUsage" filename="betterFuelUsage.lua"/>
+    </specializations>
     <git>
         <host>GitHub</host>
         <url>https://github.com/TyKonKet/FS17_FuelUsageDisplay.git</url>
