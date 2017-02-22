@@ -6,11 +6,11 @@
         <en>Better Fuel Usage</en>
     </title>
     <description>
-        <en>Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption. Special thanks to "Jantje van Speijk" for testings.</en>
-        <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore. Ringrazio "Jantje van Speijk" per aver testato la mod.</it>
+        <en>Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.</en>
+        <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore.</it>
 		<de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
 		<fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
-        <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer. Speciale dank aan "Jantje van Speijk" voor het testen van de mod.</nl>
+        <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.</nl>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
