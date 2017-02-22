@@ -10,10 +10,6 @@ BetterFuelUsageRH.specialization.title = "BetterFuelUsage";
 BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.debug = true;
 
-addModEventListener(BetterFuelUsageRH);
-
-BetterFuelUsageRH:registerSpecializations();
-
 function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
     if self.debug then
         local args = {txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
@@ -41,6 +37,7 @@ function BetterFuelUsageRH:loadMap(name)
         addConsoleCommand("AAAFUDPrintVheicle", "", "FUDPrintVheicle", self);
         addConsoleCommand("AAAFUDSetGraph", "", "FUDSetGraph", self);
     end
+    BetterFuelUsageRH:registerSpecializations();
 end
 
 function BetterFuelUsageRH:deleteMap()
@@ -82,3 +79,5 @@ function BetterFuelUsageRH.FUDSetGraph(self, t1x, t1y, t1fs, t2fs)
     FuelUsageDisplay.fuelUsageText.text2.fontsize = tonumber(t2fs);
     return string.format("x1 = %f, y1 = %f, fs1 = %f, y2 = %f, fs2 = %f", t1x, t1y, t1fs, t1y, t2fs);
 end
+
+addModEventListener(BetterFuelUsageRH);
