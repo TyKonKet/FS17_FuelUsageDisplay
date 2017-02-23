@@ -22,11 +22,16 @@ BetterFuelUsage.fuelUsageText.text1.fontsize = BetterFuelUsage.fuelUsageText.tex
 BetterFuelUsage.fuelUsageText.text2.fontsize = BetterFuelUsage.fuelUsageText.text2.fontsize * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
+    BetterFuelUsage.print("BetterFuelUsage.prerequisitesPresent()");
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
         return true;
     else
         return false;
     end
+end
+
+function BetterFuelUsage.initSpecialization()
+    BetterFuelUsage.print("BetterFuelUsage.initSpecialization()");
 end
 
 function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
@@ -41,8 +46,11 @@ function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, t
 end
 
 function BetterFuelUsage:preLoad(savegame)
+    BetterFuelUsage.print("BetterFuelUsage:preLoad()");
     self.BetterFuelUsage = {};
+    self.BetterFuelUsage.backup = {};
     self.BetterFuelUsage.isActive = true;
+    self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
     if self.isServer then
         self.BetterFuelUsage.server = {};
         -- synchronized data
@@ -63,23 +71,45 @@ function BetterFuelUsage:preLoad(savegame)
 end
 
 function BetterFuelUsage:load(savegame)
-    --DebugUtil.printTableRecursively(self, "BetterFuelUsage -> (" .. self.typeName .. ")", 0, 1);
-    BetterFuelUsage.print("Specialization " .. BetterFuelUsage.name .. " loaded on " .. self.typeName);
-    BetterFuelUsage.print("isServer " .. tostring(self.isServer) .. " isClient " .. tostring(self.isClient));
+    BetterFuelUsage.print("BetterFuelUsage:load()");
+    BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
+    self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
 end
 
 function BetterFuelUsage:postLoad(savegame)
-    self.updateFuelUsage = BetterFuelUsage.updateFuelUsage;
-    for i, s in pairs(self.specializations) do
-        if s.driveControlFirstTimeRun then
-            self.driveControl.specialization = s;
-            break;
-        end
+    BetterFuelUsage.print("BetterFuelUsage:postLoad()");
+    self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
+    if savegame ~= nil and not savegame.resetVehicles then
+        self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
     end
-    if self.driveControl and self.driveControl.specialization then
-        self.driveControl.specialization.overlay4WD.y = self.driveControl.specialization.overlay4WD.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
-        self.driveControl.specialization.overlayDiffLockFront.y = self.driveControl.specialization.overlayDiffLockFront.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
-        self.driveControl.specialization.overlayDiffLockBack.y = self.driveControl.specialization.overlayDiffLockBack.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+    self:setFuelUsageFunction(self.BetterFuelUsage.useDefaultFuelUsageFunction);
+    --for i, s in pairs(self.specializations) do
+    --    if s.driveControlFirstTimeRun then
+    --        self.driveControl.specialization = s;
+    --        break;
+    --    end
+    --end
+    --if self.driveControl and self.driveControl.specialization then
+    --    self.driveControl.specialization.overlay4WD.y = self.driveControl.specialization.overlay4WD.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+    --    self.driveControl.specialization.overlayDiffLockFront.y = self.driveControl.specialization.overlayDiffLockFront.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+    --    self.driveControl.specialization.overlayDiffLockBack.y = self.driveControl.specialization.overlayDiffLockBack.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+    --end
+end
+
+function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
+    BetterFuelUsage.print(("BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent:%s)"):format(nodeIdent));
+    local attributes = string.format("useDefaultFuelUsageFunction=\"%s\"", self.BetterFuelUsage.useDefaultFuelUsageFunction);
+    local nodes = nil;
+    return attributes, nodes;
+end
+
+function BetterFuelUsage:setFuelUsageFunction(default)
+    BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(%s)"):format(default));
+    self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
+    if default then
+        self.updateFuelUsage = self.BetterFuelUsage.backup.updateFuelUsage;
+    else
+        self.updateFuelUsage = BetterFuelUsage.updateFuelUsage;
     end
 end
 
