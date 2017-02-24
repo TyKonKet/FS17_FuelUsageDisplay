@@ -22,7 +22,6 @@ BetterFuelUsage.fuelUsageText.text1.fontsize = BetterFuelUsage.fuelUsageText.tex
 BetterFuelUsage.fuelUsageText.text2.fontsize = BetterFuelUsage.fuelUsageText.text2.fontsize * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
-    BetterFuelUsage.print("BetterFuelUsage.prerequisitesPresent()");
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
         return true;
     else
@@ -31,7 +30,6 @@ function BetterFuelUsage.prerequisitesPresent(specializations)
 end
 
 function BetterFuelUsage.initSpecialization()
-    BetterFuelUsage.print("BetterFuelUsage.initSpecialization()");
 end
 
 function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
@@ -49,7 +47,6 @@ function BetterFuelUsage:preLoad(savegame)
     BetterFuelUsage.print("BetterFuelUsage:preLoad()");
     self.BetterFuelUsage = {};
     self.BetterFuelUsage.backup = {};
-    self.BetterFuelUsage.isActive = true;
     self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
     if self.isServer then
         self.BetterFuelUsage.server = {};
@@ -71,7 +68,6 @@ function BetterFuelUsage:preLoad(savegame)
 end
 
 function BetterFuelUsage:load(savegame)
-    BetterFuelUsage.print("BetterFuelUsage:load()");
     BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
 end
@@ -83,33 +79,36 @@ function BetterFuelUsage:postLoad(savegame)
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
     end
     self:setFuelUsageFunction(self.BetterFuelUsage.useDefaultFuelUsageFunction);
-    --for i, s in pairs(self.specializations) do
-    --    if s.driveControlFirstTimeRun then
-    --        self.driveControl.specialization = s;
-    --        break;
-    --    end
-    --end
-    --if self.driveControl and self.driveControl.specialization then
-    --    self.driveControl.specialization.overlay4WD.y = self.driveControl.specialization.overlay4WD.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
-    --    self.driveControl.specialization.overlayDiffLockFront.y = self.driveControl.specialization.overlayDiffLockFront.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
-    --    self.driveControl.specialization.overlayDiffLockBack.y = self.driveControl.specialization.overlayDiffLockBack.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
-    --end
+--for i, s in pairs(self.specializations) do
+--    if s.driveControlFirstTimeRun then
+--        self.driveControl.specialization = s;
+--        break;
+--    end
+--end
+--if self.driveControl and self.driveControl.specialization then
+--    self.driveControl.specialization.overlay4WD.y = self.driveControl.specialization.overlay4WD.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+--    self.driveControl.specialization.overlayDiffLockFront.y = self.driveControl.specialization.overlayDiffLockFront.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+--    self.driveControl.specialization.overlayDiffLockBack.y = self.driveControl.specialization.overlayDiffLockBack.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
+--end
 end
 
 function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
-    BetterFuelUsage.print(("BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent:%s)"):format(nodeIdent));
     local attributes = string.format("useDefaultFuelUsageFunction=\"%s\"", self.BetterFuelUsage.useDefaultFuelUsageFunction);
     local nodes = nil;
     return attributes, nodes;
 end
 
 function BetterFuelUsage:setFuelUsageFunction(default)
-    BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(%s)"):format(default));
-    self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
-    if default then
-        self.updateFuelUsage = self.BetterFuelUsage.backup.updateFuelUsage;
+    BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(default:%s)"):format(default));
+    if not self:getIsMotorStarted() then
+        self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
+        if default then
+            self.updateFuelUsage = self.BetterFuelUsage.backup.updateFuelUsage;
+        else
+            self.updateFuelUsage = BetterFuelUsage.updateFuelUsage;
+        end
     else
-        self.updateFuelUsage = BetterFuelUsage.updateFuelUsage;
+        g_currentMission:showBlinkingWarning(g_i18n:getText("BFU_SET_FUEL_USAGE_ERROR_TEXT_1"), 2500);
     end
 end
 
@@ -155,7 +154,12 @@ function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
 end
 
 function BetterFuelUsage:update(dt)
-    if self.isServer and self.BetterFuelUsage.isActive then
+    if self.isEntered then
+        if InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
+            self:setFuelUsageFunction(not self.BetterFuelUsage.useDefaultFuelUsageFunction);
+        end
+    end
+    if self.isServer then
         if self:getIsMotorStarted() then
             -- fuelUsage is expressed in l/ms
             local fuelFillLevelDiff = self.BetterFuelUsage.server.lastFillLevel - self.BetterFuelUsage.server.fuelFillLevel;
@@ -203,7 +207,15 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
 end
 
 function BetterFuelUsage:draw()
-    if self.isClient and self.isEntered and self.BetterFuelUsage.isActive then
+    if self.isEntered then
+        if not self:getIsMotorStarted() then
+            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            else
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            end
+        end
+
         local fuelUsage = self.BetterFuelUsage.client.fuelUsed;
         local maxFuelUsage = self.fuelUsage * self.BetterFuelUsage.client.fuelUsageFactor;
         

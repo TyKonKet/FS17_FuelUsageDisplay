@@ -4,4 +4,4 @@ Makes the fuel usage of motorized vehicles more realistic and displays the live 
   
 #TODO
 - [ ] Redoing the HUD by using the **Overlays** (*will also fix* [#1](/../../issues/1))
-- [ ] Giving the ability to choose from **GIANTS** and **Realistic** fuel consumption
+- [x] Giving the ability to choose from **GIANTS** and **Realistic** fuel consumption

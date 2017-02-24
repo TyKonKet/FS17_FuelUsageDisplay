@@ -20,6 +20,23 @@
     <specializations>
         <specialization name="betterFuelUsage" className="BetterFuelUsage" filename="betterFuelUsage.lua"/>
     </specializations>
+    <inputBindings>
+        <input name="BFU_SET_FUEL_USAGE" category="VEHICLE" key1="KEY_lctrl KEY_t" device="1" visible="true" />
+    </inputBindings>
+    <l10n>
+        <text name="input_BFU_SET_FUEL_USAGE">
+            <en>Change between defaul and realistic fuel usage</en>
+        </text>
+        <text name="BFU_SET_FUEL_USAGE_TEXT_1">
+            <en>Use realistic fuel usage</en>
+        </text>
+        <text name="BFU_SET_FUEL_USAGE_TEXT_2">
+            <en>Use defaul fuel usage</en>
+        </text>
+        <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
+            <en>You can't change the fuel usage mode while motor is running</en>
+        </text>
+    </l10n>
     <git>
         <host>GitHub</host>
         <url>https://github.com/TyKonKet/FS17_FuelUsageDisplay.git</url>
