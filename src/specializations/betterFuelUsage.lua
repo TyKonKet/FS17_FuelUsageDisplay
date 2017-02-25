@@ -70,6 +70,11 @@ end
 function BetterFuelUsage:load(savegame)
     BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
+    local size = 0.019;
+    local text = "123";
+    local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.515;
+    local y = 0.034722222222222 + g_currentMission.vehicleHudBg.height * 0.795;
+    self.dText = DynamicText:new({position = {x = x, y = y}, text = text, size = size, bold});
 end
 
 function BetterFuelUsage:postLoad(savegame)
@@ -113,38 +118,39 @@ function BetterFuelUsage:setFuelUsageFunction(default)
 end
 
 function BetterFuelUsage:updateFuelUsage(dt)
-    local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.server.lastLoadFactor * 100)) / 101;
-    self.BetterFuelUsage.server.lastLoadFactor = loadFactor;
-    
-    --BetterFuelUsage.print("Rpm factor " .. tostring(rpmFactor));
-    --BetterFuelUsage.print("Load factor " .. tostring(self.actualLoadPercentage) .. " Smoothed load factor " .. tostring(loadFactor));
-    self.BetterFuelUsage.server.fuelUsageFactor = 1.5;
-    if g_currentMission.missionInfo.fuelUsageLow then
-        self.BetterFuelUsage.server.fuelUsageFactor = 0.7;
-    end
-    
-    local fuelUsed = self.BetterFuelUsage.server.fuelUsageFactor * rpmFactor * (self.fuelUsage * dt) * 1.25 * loadFactor;
-    -- adding minimum usage
-    fuelUsed = fuelUsed + self.BetterFuelUsage.server.fuelUsageFactor * 0.02 * (self.fuelUsage * dt) * 1.25;
-    
-    if fuelUsed > 0 then
-        if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
-            self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
-            g_currentMission.missionStats:updateStats("fuelUsage", fuelUsed);
-        elseif self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
-            local delta = fuelUsed * g_currentMission.economyManager:getPricePerLiter(FillUtil.FILLTYPE_FUEL);
-            g_currentMission.missionStats:updateStats("expenses", delta);
-            g_currentMission:addSharedMoney(-delta, "purchaseFuel");
-            self.BetterFuelUsage.server.helperFuelUsed = self.BetterFuelUsage.server.helperFuelUsed + fuelUsed;
-        end
-    end
-    
-    if self.fuelUsageHud ~= nil then
-        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
-    end
-    
-    return true
+    --local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    --local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.server.lastLoadFactor * 100)) / 101;
+    --self.BetterFuelUsage.server.lastLoadFactor = loadFactor;
+    --
+    ----BetterFuelUsage.print("Rpm factor " .. tostring(rpmFactor));
+    ----BetterFuelUsage.print("Load factor " .. tostring(self.actualLoadPercentage) .. " Smoothed load factor " .. tostring(loadFactor));
+    --self.BetterFuelUsage.server.fuelUsageFactor = 1.5;
+    --if g_currentMission.missionInfo.fuelUsageLow then
+    --    self.BetterFuelUsage.server.fuelUsageFactor = 0.7;
+    --end
+    --
+    --local fuelUsed = self.BetterFuelUsage.server.fuelUsageFactor * rpmFactor * (self.fuelUsage * dt) * 1.25 * loadFactor;
+    ---- adding minimum usage
+    --fuelUsed = fuelUsed + self.BetterFuelUsage.server.fuelUsageFactor * 0.02 * (self.fuelUsage * dt) * 1.25;
+    --
+    --if fuelUsed > 0 then
+    --    if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
+    --        self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
+    --        g_currentMission.missionStats:updateStats("fuelUsage", fuelUsed);
+    --    elseif self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
+    --        local delta = fuelUsed * g_currentMission.economyManager:getPricePerLiter(FillUtil.FILLTYPE_FUEL);
+    --        g_currentMission.missionStats:updateStats("expenses", delta);
+    --        g_currentMission:addSharedMoney(-delta, "purchaseFuel");
+    --        self.BetterFuelUsage.server.helperFuelUsed = self.BetterFuelUsage.server.helperFuelUsed + fuelUsed;
+    --    end
+    --end
+    --
+    --if self.fuelUsageHud ~= nil then
+    --    VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
+    --end
+    --
+    --return true
+    return self.BetterFuelUsage.backup.updateFuelUsage(self, dt);
 end
 
 function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
@@ -215,7 +221,7 @@ function BetterFuelUsage:draw()
                 g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
             end
         end
-
+        
         local fuelUsage = self.BetterFuelUsage.client.fuelUsed;
         local maxFuelUsage = self.fuelUsage * self.BetterFuelUsage.client.fuelUsageFactor;
         
@@ -241,11 +247,13 @@ function BetterFuelUsage:draw()
             fuelUsage = string.format("%.0f", fuelUsage);
         end
         --setTextBold(true);
-        renderText(BetterFuelUsage.fuelUsageText.text1.x, BetterFuelUsage.fuelUsageText.text1.y, BetterFuelUsage.fuelUsageText.text1.fontsize, fuelUsage);
+        --renderText(BetterFuelUsage.fuelUsageText.text1.x, BetterFuelUsage.fuelUsageText.text1.y, BetterFuelUsage.fuelUsageText.text1.fontsize, fuelUsage);
         --setTextBold(false);
         setTextColor(1, 1, 1, 0.08);
         renderText(BetterFuelUsage.fuelUsageText.text1.x + getTextWidth(BetterFuelUsage.fuelUsageText.text1.fontsize, fuelUsage), BetterFuelUsage.fuelUsageText.text2.y, BetterFuelUsage.fuelUsageText.text2.fontsize, "  l/h");
         setTextColor(1, 1, 1, 1);
+        
+        self.dText:draw({text = fuelUsage});
     end
 end
 

@@ -35,7 +35,7 @@ function DynamicText:new(settings)
         },
         bold = false,
         size = 0.025,
-        text = "Fade Effect",
+        text = "Dynamic Text",
         shadow = {
             show = false,
             color = {
@@ -51,7 +51,9 @@ function DynamicText:new(settings)
         }
     };
     self.settings = defaultSettings;
-    self:overwriteSettings(self.settings, settings);
+    if settings ~= nil then
+        self:overwriteSettings(self.settings, settings);
+    end
     self.settings.size = self.settings.size * g_gameSettings:getValue("uiScale") * (g_screenAspectRatio / 1.7777777777777);
     self.settings.position.y = self.settings.position.y * (g_screenAspectRatio / 1.7777777777777);
     self:alignText();
@@ -90,7 +92,13 @@ function DynamicText:setText(text)
     self:alignText();
 end
 
-function DynamicText:draw()
+function DynamicText:draw(settings)
+    if settings ~= nil then
+        self:overwriteSettings(self.settings, settings);
+    end
+    if settings.text ~= nil then
+        self:alignText();
+    end
     setTextBold(self.settings.bold);
     if self.settings.shadow.show then
         setTextColor(self.settings.shadow.color.r, self.settings.shadow.color.g, self.settings.shadow.color.b, self.settings.shadow.color.a);
