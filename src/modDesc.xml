@@ -38,6 +38,11 @@
             <en>You can't change the fuel usage mode while motor is running</en>
         </text>
     </l10n>
+    <translatedBy>
+        <en>TyKonKet</en>
+        <it>TyKonKet</it>
+        <nl>Jantje van Speijk</nl>
+    </translatedBy>
     <git>
         <host>GitHub</host>
         <url>https://github.com/TyKonKet/FS17_FuelUsageDisplay.git</url>
