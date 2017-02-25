@@ -94,39 +94,34 @@ function BetterFuelUsage:setFuelUsageFunction(default)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
---local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
---local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.server.lastLoadFactor * 100)) / 101;
---self.BetterFuelUsage.server.lastLoadFactor = loadFactor;
---
-----BetterFuelUsage.print("Rpm factor " .. tostring(rpmFactor));
-----BetterFuelUsage.print("Load factor " .. tostring(self.actualLoadPercentage) .. " Smoothed load factor " .. tostring(loadFactor));
---self.BetterFuelUsage.server.fuelUsageFactor = 1.5;
---if g_currentMission.missionInfo.fuelUsageLow then
---    self.BetterFuelUsage.server.fuelUsageFactor = 0.7;
---end
---
---local fuelUsed = self.BetterFuelUsage.server.fuelUsageFactor * rpmFactor * (self.fuelUsage * dt) * 1.25 * loadFactor;
----- adding minimum usage
---fuelUsed = fuelUsed + self.BetterFuelUsage.server.fuelUsageFactor * 0.02 * (self.fuelUsage * dt) * 1.25;
---
---if fuelUsed > 0 then
---    if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
---        self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
---        g_currentMission.missionStats:updateStats("fuelUsage", fuelUsed);
---    elseif self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
---        local delta = fuelUsed * g_currentMission.economyManager:getPricePerLiter(FillUtil.FILLTYPE_FUEL);
---        g_currentMission.missionStats:updateStats("expenses", delta);
---        g_currentMission:addSharedMoney(-delta, "purchaseFuel");
---        self.BetterFuelUsage.server.helperFuelUsed = self.BetterFuelUsage.server.helperFuelUsed + fuelUsed;
---    end
---end
---
---if self.fuelUsageHud ~= nil then
---    VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
---end
---
---return true
-    return BetterFuelUsage.defaultUpdateFuelUsage(self, dt);
+    local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * 100)) / 101;
+    self.BetterFuelUsage.lastLoadFactor = loadFactor;
+    local fuelUsageFactor = 1.5;
+    if g_currentMission.missionInfo.fuelUsageLow then
+        fuelUsageFactor = 0.7;
+    end
+    local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt * 1.25 * loadFactor;
+    -- adding minimum usage
+    fuelUsed = fuelUsed + fuelUsageFactor * 0.02 * self.fuelUsage * dt * 1.25;
+    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.02 * self.fuelUsage * 1.25;
+    if fuelUsed > 0 then
+        if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
+            self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
+            g_currentMission.missionStats:updateStats("fuelUsage", fuelUsed);
+        elseif self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
+            local delta = fuelUsed * g_currentMission.economyManager:getPricePerLiter(FillUtil.FILLTYPE_FUEL);
+            g_currentMission.missionStats:updateStats("expenses", delta);
+            g_currentMission:addSharedMoney(-delta, "purchaseFuel");
+            self.BetterFuelUsage.helperFuelUsed = self.BetterFuelUsage.helperFuelUsed + fuelUsed;
+        end
+    end
+
+    if self.fuelUsageHud ~= nil then
+        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
+    end
+
+    return true
 end
 
 function BetterFuelUsage:defaultUpdateFuelUsage(dt)
