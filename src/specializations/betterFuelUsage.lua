@@ -6,20 +6,6 @@
 BetterFuelUsage = {};
 BetterFuelUsage.name = "BetterFuelUsage";
 BetterFuelUsage.debug = BetterFuelUsageRH.debug;
-BetterFuelUsage.fuelUsageText = {};
-BetterFuelUsage.fuelUsageText.text1 = {};
-BetterFuelUsage.fuelUsageText.text2 = {};
-BetterFuelUsage.fuelUsageText.text1.x = 0.8955;
-BetterFuelUsage.fuelUsageText.text1.y = 0.173;
-BetterFuelUsage.fuelUsageText.text1.fontsize = 0.019;
-BetterFuelUsage.fuelUsageText.text2.y = 0.173;
-BetterFuelUsage.fuelUsageText.text2.fontsize = 0.0112;
-BetterFuelUsage.fuelUsageText.baseAspectRatio = 1.7777777777777;
-BetterFuelUsage.fuelUsageText.aspectRatioMultiplier = g_screenAspectRatio / BetterFuelUsage.fuelUsageText.baseAspectRatio;
-BetterFuelUsage.fuelUsageText.text1.y = BetterFuelUsage.fuelUsageText.text1.y * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
-BetterFuelUsage.fuelUsageText.text2.y = BetterFuelUsage.fuelUsageText.text2.y * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
-BetterFuelUsage.fuelUsageText.text1.fontsize = BetterFuelUsage.fuelUsageText.text1.fontsize * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
-BetterFuelUsage.fuelUsageText.text2.fontsize = BetterFuelUsage.fuelUsageText.text2.fontsize * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier;
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
@@ -70,11 +56,10 @@ end
 function BetterFuelUsage:load(savegame)
     BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
-    local size = 0.019;
-    local text = "123";
-    local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.515;
-    local y = 0.034722222222222 + g_currentMission.vehicleHudBg.height * 0.795;
-    self.dText = DynamicText:new({position = {x = x, y = y}, text = text, size = size, bold});
+    local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
+    local y = 0.034722222222222 + g_currentMission.vehicleHudBg.height * 0.798;
+    self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 0.02});
+    self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 1, g = 1, b = 1, a = 0.08}});
 end
 
 function BetterFuelUsage:postLoad(savegame)
@@ -225,35 +210,30 @@ function BetterFuelUsage:draw()
         local fuelUsage = self.BetterFuelUsage.client.fuelUsed;
         local maxFuelUsage = self.fuelUsage * self.BetterFuelUsage.client.fuelUsageFactor;
         
+        local color = {};
+        
         -- chosing color of text
         if fuelUsage < (maxFuelUsage * 0.1) then
-            setTextColor(0, 1, 0, 1);
+            color = {0, 1, 0, 1};
         elseif fuelUsage < (maxFuelUsage * 0.45) then
-            setTextColor(1, 1, 1, 1);
+            color = {1, 1, 1, 1};
         elseif fuelUsage < (maxFuelUsage * 0.8) then
-            setTextColor(1, 1, 0, 1);
+            color = {1, 1, 0, 1};
         else
-            setTextColor(1, 0, 0, 1);
+            color = {1, 0, 0, 1};
         end
         
         -- converting fuelUsage in l/h
         fuelUsage = fuelUsage * 1000 * 60 * 60;
-        
         if fuelUsage < 10 then
-            fuelUsage = string.format("%.2f", fuelUsage);
-        elseif fuelUsage < 100 then
             fuelUsage = string.format("%.1f", fuelUsage);
         else
             fuelUsage = string.format("%.0f", fuelUsage);
         end
-        --setTextBold(true);
-        --renderText(BetterFuelUsage.fuelUsageText.text1.x, BetterFuelUsage.fuelUsageText.text1.y, BetterFuelUsage.fuelUsageText.text1.fontsize, fuelUsage);
-        --setTextBold(false);
-        setTextColor(1, 1, 1, 0.08);
-        renderText(BetterFuelUsage.fuelUsageText.text1.x + getTextWidth(BetterFuelUsage.fuelUsageText.text1.fontsize, fuelUsage), BetterFuelUsage.fuelUsageText.text2.y, BetterFuelUsage.fuelUsageText.text2.fontsize, "  l/h");
-        setTextColor(1, 1, 1, 1);
         
-        self.dText:draw({text = fuelUsage});
+        self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
+        local x, y = self.fuelText:getTextEnd();
+        self.lhText:draw({position = {x = x, y = y}});
     end
 end
 

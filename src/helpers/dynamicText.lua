@@ -96,7 +96,7 @@ function DynamicText:draw(settings)
     if settings ~= nil then
         self:overwriteSettings(self.settings, settings);
     end
-    if settings.text ~= nil then
+    if settings.text ~= nil or settings.position ~= nil or settings.size ~= nil or settings.align ~= nil then
         self:alignText();
     end
     setTextBold(self.settings.bold);
@@ -108,4 +108,8 @@ function DynamicText:draw(settings)
     renderText(self.settings.position.alignedX, self.settings.position.alignedY, self.settings.size, self.settings.text);
     setTextBold(false);
     setTextColor(1, 1, 1, 1);
+end
+
+function DynamicText:getTextEnd()
+    return self.settings.position.alignedX + getTextWidth(self.settings.size, self.settings.text), self.settings.position.alignedY;
 end
