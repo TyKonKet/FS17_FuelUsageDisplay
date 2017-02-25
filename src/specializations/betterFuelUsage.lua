@@ -34,23 +34,14 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage = {};
     self.BetterFuelUsage.backup = {};
     self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
-    if self.isServer then
-        self.BetterFuelUsage.server = {};
-        -- synchronized data
-        self.BetterFuelUsage.server.fuelUsed = 0;
-        self.BetterFuelUsage.server.fuelUsageFactor = 1;
-        -- server only data
-        self.BetterFuelUsage.server.fuelFillLevel = 0;
-        self.BetterFuelUsage.server.lastFillLevel = 0;
-        self.BetterFuelUsage.server.lastLoadFactor = 0;
-        self.BetterFuelUsage.server.helperFuelUsed = 0;
-    end
-    if self.isClient then
-        self.BetterFuelUsage.client = {};
-        -- synchronized data
-        self.BetterFuelUsage.client.fuelUsed = 0;
-        self.BetterFuelUsage.client.fuelUsageFactor = 1;
-    end
+    -- synchronized data
+    self.BetterFuelUsage.fuelUsed = 0;
+    self.BetterFuelUsage.fuelUsageFactor = 1;
+    -- server only data
+    self.BetterFuelUsage.fuelFillLevel = 0;
+    self.BetterFuelUsage.lastFillLevel = 0;
+    self.BetterFuelUsage.lastLoadFactor = 0;
+    self.BetterFuelUsage.helperFuelUsed = 0;
 end
 
 function BetterFuelUsage:load(savegame)
@@ -140,7 +131,7 @@ end
 
 function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
     if self.isServer then
-        self.BetterFuelUsage.server.fuelFillLevel = fuelFillLevel;
+        self.BetterFuelUsage.fuelFillLevel = fuelFillLevel;
     end
 end
 
@@ -153,47 +144,46 @@ function BetterFuelUsage:update(dt)
     if self.isServer then
         if self:getIsMotorStarted() then
             -- fuelUsage is expressed in l/ms
-            local fuelFillLevelDiff = self.BetterFuelUsage.server.lastFillLevel - self.BetterFuelUsage.server.fuelFillLevel;
-            if self.BetterFuelUsage.server.helperFuelUsed > 0 then
-                fuelFillLevelDiff = fuelFillLevelDiff + self.BetterFuelUsage.server.helperFuelUsed;
-                self.BetterFuelUsage.server.helperFuelUsed = 0;
+            local fuelFillLevelDiff = self.BetterFuelUsage.lastFillLevel - self.BetterFuelUsage.fuelFillLevel;
+            if self.BetterFuelUsage.helperFuelUsed > 0 then
+                fuelFillLevelDiff = fuelFillLevelDiff + self.BetterFuelUsage.helperFuelUsed;
+                self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                self.BetterFuelUsage.server.fuelUsed = fuelFillLevelDiff / dt;
+                self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
             end
-            self.BetterFuelUsage.server.lastFillLevel = self.BetterFuelUsage.server.fuelFillLevel;
+            self.BetterFuelUsage.lastFillLevel = self.BetterFuelUsage.fuelFillLevel;
         else
-            self.BetterFuelUsage.server.fuelUsed = 0;
-        end
-        --BetterFuelUsage.print("Fuel usage (server): " .. (self.BetterFuelUsage.server.fuelUsed * 1000 * 60 * 60) .. " l/h");
-        if self.isClient then
-            self.BetterFuelUsage.client.fuelUsed = self.BetterFuelUsage.server.fuelUsed;
-            self.BetterFuelUsage.client.fuelUsageFactor = self.BetterFuelUsage.server.fuelUsageFactor;
+            self.BetterFuelUsage.fuelUsed = 0;
         end
     end
 end
 
 function BetterFuelUsage:writeStream(streamId, connection)
---BetterFuelUsage.print("writeStream -> " .. tostring(streamId));
+    if not connection:getIsServer() then
+        streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
+        streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsageFactor);
+    end
 end
 
 function BetterFuelUsage:readStream(streamId, connection)
---BetterFuelUsage.print("readStream -> " .. tostring(streamId));
+    if connection:getIsServer() then
+        self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
+        self.BetterFuelUsage.fuelUsageFactor = streamReadFloat32(streamId);
+    end
 end
 
 function BetterFuelUsage:writeUpdateStream(streamId, connection, dirtyMask)
-    if self.isServer then
-        streamWriteFloat32(streamId, self.BetterFuelUsage.server.fuelUsed);
-        streamWriteFloat32(streamId, self.BetterFuelUsage.server.fuelUsageFactor);
-    --BetterFuelUsage.print("writeUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.server.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.server.fuelUsageFactor));
+    if not connection:getIsServer() then
+        streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
+        streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsageFactor);
     end
 end
 
 function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
-    if not self.isServer then
-        self.BetterFuelUsage.client.fuelUsed = streamReadFloat32(streamId);
-        self.BetterFuelUsage.client.fuelUsageFactor = streamReadFloat32(streamId);
-    --BetterFuelUsage.print("readUpdateStream -> fU:" .. tostring(self.BetterFuelUsage.client.fuelUsed) .. " fUF:" .. tostring(self.BetterFuelUsage.client.fuelUsageFactor));
+    if connection:getIsServer() then
+        self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
+        self.BetterFuelUsage.fuelUsageFactor = streamReadFloat32(streamId);
     end
 end
 
@@ -207,24 +197,21 @@ function BetterFuelUsage:draw()
             end
         end
         
-        local fuelUsage = self.BetterFuelUsage.client.fuelUsed;
-        local maxFuelUsage = self.fuelUsage * self.BetterFuelUsage.client.fuelUsageFactor;
+        local maxFuelUsage = self.fuelUsage * self.BetterFuelUsage.fuelUsageFactor;
         
         local color = {};
-        
-        -- chosing color of text
-        if fuelUsage < (maxFuelUsage * 0.1) then
+        if self.BetterFuelUsage.fuelUsed < (maxFuelUsage * 0.1) then
             color = {0, 1, 0, 1};
-        elseif fuelUsage < (maxFuelUsage * 0.45) then
+        elseif self.BetterFuelUsage.fuelUsed < (maxFuelUsage * 0.45) then
             color = {1, 1, 1, 1};
-        elseif fuelUsage < (maxFuelUsage * 0.8) then
+        elseif self.BetterFuelUsage.fuelUsed < (maxFuelUsage * 0.8) then
             color = {1, 1, 0, 1};
         else
             color = {1, 0, 0, 1};
         end
         
-        -- converting fuelUsage in l/h
-        fuelUsage = fuelUsage * 1000 * 60 * 60;
+        -- converting fuelUsage to l/h
+        local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
         if fuelUsage < 10 then
             fuelUsage = string.format("%.1f", fuelUsage);
         else
