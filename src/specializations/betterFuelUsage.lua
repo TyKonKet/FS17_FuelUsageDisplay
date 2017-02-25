@@ -48,7 +48,7 @@ function BetterFuelUsage:load(savegame)
     BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
     local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
-    local y = 0.034722222222222 + g_currentMission.vehicleHudBg.height * 0.798;
+    local y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * 0.798;
     self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 0.02});
     self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 1, g = 1, b = 1, a = 0.08}});
 end

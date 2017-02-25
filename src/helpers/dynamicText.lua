@@ -55,7 +55,7 @@ function DynamicText:new(settings)
         self:overwriteSettings(self.settings, settings);
     end
     self.settings.size = self.settings.size * g_gameSettings:getValue("uiScale") * (g_screenAspectRatio / 1.7777777777777);
-    self.settings.position.y = self.settings.position.y * (g_screenAspectRatio / 1.7777777777777);
+    self.settings.position.y = self.settings.position.y;
     self:alignText();
     return self;
 end
