@@ -39,8 +39,12 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.fuelFillLevel = 0;
     self.BetterFuelUsage.lastFillLevel = 0;
     self.BetterFuelUsage.lastLoadFactor = 0;
+    self.BetterFuelUsage.finalLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
     self.BetterFuelUsage.crushingLoad = 0;
+    self.BetterFuelUsage.woodHarvesterLoad = 0;
+    self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
+    self.BetterFuelUsage.loaderVehicleLoad = 0;
 end
 
 function BetterFuelUsage:load(savegame)
@@ -93,25 +97,53 @@ function BetterFuelUsage:setFuelUsageFunction(default)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    local loadFactor = ((self.actualLoadPercentage * math.random(1, 1)) + (self.BetterFuelUsage.lastLoadFactor * 100)) / 101;
+    local rpmFactor = 1; --(self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * 75)) / 76;
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil then
         local crushingLoad = 0;
         if self.crushingTime > 0 then
             crushingLoad = 0.75;
         end
-        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * 100)) / 101;
-        loadFactor = math.min(1, loadFactor + self.BetterFuelUsage.crushingLoad);
+        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * 75)) / 76;
+        loadFactor = loadFactor + self.BetterFuelUsage.crushingLoad;
     end
-    --BetterFuelUsage.print(("loadFactor:%s"):format(loadFactor));
-    local fuelUsageFactor = 1.5;
+    if self.typeName == "woodHarvester" then
+        local woodHarvesterLoad = 0;
+        if self:getIsTurnedOn() then
+            if self.cutParticleSystemsActive then
+                woodHarvesterLoad = 0.75;
+            else
+                woodHarvesterLoad = 0.18;
+            end
+        end
+        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * 75)) / 76;
+        loadFactor = loadFactor + self.BetterFuelUsage.woodHarvesterLoad;
+    end
+    if self.typeName == "selfPropelledPotatoHarvester" then
+        local selfPropelledPotatoHarvesterLoad = 0;
+        if self:getIsTurnedOn() then
+            selfPropelledPotatoHarvesterLoad = 0.3;
+        end
+        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * 75)) / 76;
+        loadFactor = loadFactor + self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad;
+    end
+    if self.typeName == "loaderVehicle" then
+        local loaderVehicleLoad = 0;
+        if self:getIsTurnedOn() then
+            loaderVehicleLoad = 0.2;
+        end
+        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * 75)) / 76;
+        loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
+    end
+    self.BetterFuelUsage.finalLoadFactor = loadFactor;
+    local fuelUsageFactor = 1.4;
     if g_currentMission.missionInfo.fuelUsageLow then
-        fuelUsageFactor = 0.7;
+        fuelUsageFactor = 0.6;
     end
-    local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt * 1.25 * loadFactor;
-    fuelUsed = fuelUsed + fuelUsageFactor * 0.02 * self.fuelUsage * dt * 1.25 * math.random(1, 1);
-    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.02 * self.fuelUsage * 1.25;
+    local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt * loadFactor;
+    fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
+    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.05 * self.fuelUsage;
     if fuelUsed > 0 then
         if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
             self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
@@ -213,6 +245,7 @@ end
 
 function BetterFuelUsage:draw()
     if self.isEntered then
+        BetterFuelUsage.debugDraw(self);
         if not self:getIsMotorStarted() then
             if self.BetterFuelUsage.useDefaultFuelUsageFunction then
                 g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
@@ -239,6 +272,27 @@ function BetterFuelUsage:draw()
         self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
         local x, y = self.fuelText:getTextEnd();
         self.lhText:draw({position = {x = x, y = y}});
+    end
+end
+
+function BetterFuelUsage:debugDraw()
+    if BetterFuelUsage.debug then
+        local x = 0.01;
+        local y = 0.99;
+        local size = 0.015;
+        local l_space = getTextHeight(size, "#");
+        local texts = {
+            string.format("Vehicle Type --> %s", self.typeName),
+            string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getLastMotorRpm(), self.motor:getMaxRpm()),
+            string.format("Motor Load --> %s", self.actualLoadPercentage),
+            string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
+        };
+        if self.getIsTurnedOn ~= nil then
+            table.insert(texts, 5 , string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+        end
+        for i, v in ipairs(texts) do
+            renderText(x, y - (l_space * i), size, v);
+        end
     end
 end
 
