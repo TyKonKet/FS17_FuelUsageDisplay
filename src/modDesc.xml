@@ -6,10 +6,20 @@
         <en>Better Fuel Usage</en>
     </title>
     <description>
-        <en>Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.</en>
+        <en>
+            <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
+
+Changelog 3.0.1
+- Ability to choose fuel usage mode
+- Fit with any resolution and hud scale
+- Improved realism of fuel usage
+- Improved affinity with DriveControl and Gearbox
+- Other small changes and fixes
+]]>
+        </en>
         <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore.</it>
-		<de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
-		<fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
+        <de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
+        <fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
         <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.</nl>
     </description>
     <iconFilename>icon.dds</iconFilename>
@@ -30,22 +40,22 @@
         <text name="input_BFU_SET_FUEL_USAGE">
             <en>Change between standard and realistic fuel usage</en>
             <it>Scegli tra consumo realistico e standard</it>
-	    	<nl>Verander tussen normaal en realitische brandstofgebruik</nl>
+            <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
             <en>Use realistic fuel usage</en>
             <it>Utilizza il consumo realistico</it>
-		    <nl>Gebruik realistische brandstofgebruik</nl> 
+            <nl>Gebruik realistische brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
             <en>Use standard fuel usage</en>
             <it>Utilizza il consumo standard</it>
-		    <nl>Gebruik standaard brandstofgebruik</nl>
+            <nl>Gebruik standaard brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
-		    <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>	
+            <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
             <en>Realistic fuel usage</en>
@@ -59,7 +69,7 @@
     <translatedBy>
         <en>TyKonKet</en>
         <it>TyKonKet</it>
-        <nl>Jantje van Speijk, FarmingvidsHD</nl>    
+        <nl>Jantje van Speijk, FarmingvidsHD</nl>
     </translatedBy>
     <git>
         <host>GitHub</host>
