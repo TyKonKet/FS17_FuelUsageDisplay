@@ -51,6 +51,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.woodHarvesterLoad = 0;
     self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
     self.BetterFuelUsage.loaderVehicleLoad = 0;
+    self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.47, y = 0.95}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
 end
 
 function BetterFuelUsage:load(savegame)
@@ -103,6 +104,11 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
     BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(default:%s)"):format(default));
     if not self:getIsMotorStarted() then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
+        if default then
+            self.BetterFuelUsage.fuelFade:play("Default fuel usage");
+        else
+            self.BetterFuelUsage.fuelFade:play("Realistic fuel usage");
+        end
         if self.isServer or noSend then
             if default then
                 self.updateFuelUsage = BetterFuelUsage.defaultUpdateFuelUsage;
@@ -213,11 +219,20 @@ function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
     end
 end
 
+function BetterFuelUsage:onEnter()
+    if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+        self.BetterFuelUsage.fuelFade:play("Default fuel usage");
+    else
+        self.BetterFuelUsage.fuelFade:play("Realistic fuel usage");
+    end
+end
+
 function BetterFuelUsage:update(dt)
     if self.isEntered then
         if InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
             self:setFuelUsageFunction(not self.BetterFuelUsage.useDefaultFuelUsageFunction);
         end
+        self.BetterFuelUsage.fuelFade:update(dt);
     end
     if self.isServer then
         if self:getIsMotorStarted() then
@@ -266,6 +281,7 @@ end
 
 function BetterFuelUsage:draw()
     BetterFuelUsage.debugDraw(self);
+    self.BetterFuelUsage.fuelFade:draw();
     if not self:getIsMotorStarted() then
         if self.BetterFuelUsage.useDefaultFuelUsageFunction then
             g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);

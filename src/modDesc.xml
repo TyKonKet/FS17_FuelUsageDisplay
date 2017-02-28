@@ -15,6 +15,7 @@
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
     <extraSourceFiles>
+        <sourceFile filename="fadeEffect.lua"/>
         <sourceFile filename="dynamicText.lua"/>
         <sourceFile filename="setFuelUsageFunctionEvent.lua"/>
         <sourceFile filename="register.lua"/>
