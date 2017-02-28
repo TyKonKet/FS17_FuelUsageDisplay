@@ -261,35 +261,33 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
 end
 
 function BetterFuelUsage:draw()
-    if self.isEntered then
-        BetterFuelUsage.debugDraw(self);
-        if not self:getIsMotorStarted() then
-            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-            else
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-            end
-        end
-        local color = {};
-        if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
-            color = {0, 1, 0, 1};
-        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
-            color = {1, 1, 1, 1};
-        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
-            color = {1, 1, 0, 1};
+    BetterFuelUsage.debugDraw(self);
+    if not self:getIsMotorStarted() then
+        if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
         else
-            color = {1, 0, 0, 1};
+            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
         end
-        local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-        if fuelUsage < 10 then
-            fuelUsage = string.format("%.1f", fuelUsage);
-        else
-            fuelUsage = string.format("%.0f", fuelUsage);
-        end
-        self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
-        local x, y = self.fuelText:getTextEnd();
-        self.lhText:draw({position = {x = x, y = y}});
     end
+    local color = {};
+    if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
+        color = {0, 1, 0, 1};
+    elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
+        color = {1, 1, 1, 1};
+    elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
+        color = {1, 1, 0, 1};
+    else
+        color = {1, 0, 0, 1};
+    end
+    local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
+    if fuelUsage < 10 then
+        fuelUsage = string.format("%.1f", fuelUsage);
+    else
+        fuelUsage = string.format("%.0f", fuelUsage);
+    end
+    self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
+    local x, y = self.fuelText:getTextEnd();
+    self.lhText:draw({position = {x = x, y = y}});
 end
 
 function BetterFuelUsage:debugDraw()
