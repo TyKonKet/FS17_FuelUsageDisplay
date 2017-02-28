@@ -27,21 +27,29 @@
     <l10n>
         <text name="input_BFU_SET_FUEL_USAGE">
             <en>Change between default and realistic fuel usage</en>
+	    	<nl>Verander tussen normaal en realitische brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
             <en>Use realistic fuel usage</en>
+		<nl>Gebruik realistische brandstofgebruik</nl> 
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
             <en>Use default fuel usage</en>
+		<nl>Gebruik standaard brandstofgebruik</nl>
+		
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
+		<nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
+		
         </text>
     </l10n>
     <translatedBy>
         <en>TyKonKet</en>
         <it>TyKonKet</it>
         <nl>Jantje van Speijk</nl>
+	    <nl>FarmingvidsHD</nl>
+	    
     </translatedBy>
     <git>
         <host>GitHub</host>
