@@ -51,7 +51,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.woodHarvesterLoad = 0;
     self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
     self.BetterFuelUsage.loaderVehicleLoad = 0;
-    self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.47, y = 0.95}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
+    self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
 end
 
 function BetterFuelUsage:load(savegame)
@@ -105,9 +105,9 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
     if not self:getIsMotorStarted() then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
         if default then
-            self.BetterFuelUsage.fuelFade:play("Default fuel usage");
+            self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
         else
-            self.BetterFuelUsage.fuelFade:play("Realistic fuel usage");
+            self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
         end
         if self.isServer or noSend then
             if default then
@@ -221,9 +221,9 @@ end
 
 function BetterFuelUsage:onEnter()
     if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-        self.BetterFuelUsage.fuelFade:play("Default fuel usage");
+        self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
     else
-        self.BetterFuelUsage.fuelFade:play("Realistic fuel usage");
+        self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
     end
 end
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="32">
     <author>TyKonKet</author>
-    <version>3.0.0-rc1</version>
+    <version>3.0.1</version>
     <title>
         <en>Better Fuel Usage</en>
     </title>
@@ -28,8 +28,8 @@
     </inputBindings>
     <l10n>
         <text name="input_BFU_SET_FUEL_USAGE">
-            <en>Change between default and realistic fuel usage</en>
-            <it>Scegli tra consumo realistico e predefinito</it>
+            <en>Change between standard and realistic fuel usage</en>
+            <it>Scegli tra consumo realistico e standard</it>
 	    	<nl>Verander tussen normaal en realitische brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
@@ -38,14 +38,22 @@
 		    <nl>Gebruik realistische brandstofgebruik</nl> 
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
-            <en>Use default fuel usage</en>
-            <it>Utilizza il consumo predefinito</it>
+            <en>Use standard fuel usage</en>
+            <it>Utilizza il consumo standard</it>
 		    <nl>Gebruik standaard brandstofgebruik</nl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
 		    <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>	
+        </text>
+        <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
+            <en>Realistic fuel usage</en>
+            <it>Consumo realistico</it>
+        </text>
+        <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
+            <en>Standard fuel usage</en>
+            <it>Consumo standard</it>
         </text>
     </l10n>
     <translatedBy>
