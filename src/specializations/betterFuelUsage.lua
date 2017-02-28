@@ -67,9 +67,9 @@ function BetterFuelUsage:dcLoad()
     local overlay4WD = BetterFuelUsage.driveControl.overlay4WD;
     local overlayDiffLockFront = BetterFuelUsage.driveControl.overlayDiffLockFront;
     local overlayDiffLockBack = BetterFuelUsage.driveControl.overlayDiffLockBack;
-    local height = g_currentMission.vehicleHudBg.height * 0.06 * g_gameSettings:getValue("uiScale");
+    local height = g_currentMission.vehicleHudBg.height * 0.065 * g_gameSettings:getValue("uiScale");
     local width = height / g_screenAspectRatio;
-    local yMuli = 0.39;
+    local yMuli = 0.13;--0.39;
     overlay4WD.height = height;
     overlay4WD.width = width;
     overlayDiffLockFront.height = height;
@@ -79,9 +79,9 @@ function BetterFuelUsage:dcLoad()
     overlay4WD.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
     overlayDiffLockFront.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
     overlayDiffLockBack.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
-    overlay4WD.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.13;
-    overlayDiffLockFront.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.17;
-    overlayDiffLockBack.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.21;
+    overlay4WD.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.47;
+    overlayDiffLockFront.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.51;
+    overlayDiffLockBack.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.55;
 end
 
 function BetterFuelUsage:postLoad(savegame)
