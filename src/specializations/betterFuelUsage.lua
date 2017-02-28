@@ -6,6 +6,7 @@
 BetterFuelUsage = {};
 BetterFuelUsage.name = "BetterFuelUsage";
 BetterFuelUsage.debug = BetterFuelUsageRH.debug;
+BetterFuelUsage.driveControl = nil;
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
@@ -16,6 +17,11 @@ function BetterFuelUsage.prerequisitesPresent(specializations)
 end
 
 function BetterFuelUsage.initSpecialization()
+    local dc = SpecializationUtil.getSpecialization("ZZZ_driveControl.driveControl");
+    if dc ~= nil then
+        dc.load = Utils.appendedFunction(dc.load, BetterFuelUsage.dcLoad);
+        BetterFuelUsage.driveControl = dc;
+    end
 end
 
 function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
@@ -56,6 +62,28 @@ function BetterFuelUsage:load(savegame)
     self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 1, g = 1, b = 1, a = 0.08}});
 end
 
+function BetterFuelUsage:dcLoad()
+    BetterFuelUsage.print("driveControl loaded on " .. self.typeName);
+    local overlay4WD = BetterFuelUsage.driveControl.overlay4WD;
+    local overlayDiffLockFront = BetterFuelUsage.driveControl.overlayDiffLockFront;
+    local overlayDiffLockBack = BetterFuelUsage.driveControl.overlayDiffLockBack;
+    local height = g_currentMission.vehicleHudBg.height * 0.06 * g_gameSettings:getValue("uiScale");
+    local width = height / g_screenAspectRatio;
+    local yMuli = 0.39;
+    overlay4WD.height = height;
+    overlay4WD.width = width;
+    overlayDiffLockFront.height = height;
+    overlayDiffLockFront.width = width;
+    overlayDiffLockBack.height = height;
+    overlayDiffLockBack.width = width;
+    overlay4WD.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
+    overlayDiffLockFront.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
+    overlayDiffLockBack.y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * yMuli;
+    overlay4WD.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.13;
+    overlayDiffLockFront.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.17;
+    overlayDiffLockBack.x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.21;
+end
+
 function BetterFuelUsage:postLoad(savegame)
     BetterFuelUsage.print("BetterFuelUsage:postLoad()");
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
@@ -63,17 +91,6 @@ function BetterFuelUsage:postLoad(savegame)
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
     end
     self:setFuelUsageFunction(self.BetterFuelUsage.useDefaultFuelUsageFunction);
---for i, s in pairs(self.specializations) do
---    if s.driveControlFirstTimeRun then
---        self.driveControl.specialization = s;
---        break;
---    end
---end
---if self.driveControl and self.driveControl.specialization then
---    self.driveControl.specialization.overlay4WD.y = self.driveControl.specialization.overlay4WD.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
---    self.driveControl.specialization.overlayDiffLockFront.y = self.driveControl.specialization.overlayDiffLockFront.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
---    self.driveControl.specialization.overlayDiffLockBack.y = self.driveControl.specialization.overlayDiffLockBack.y + (0.00365 * BetterFuelUsage.fuelUsageText.aspectRatioMultiplier);
---end
 end
 
 function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
@@ -288,7 +305,7 @@ function BetterFuelUsage:debugDraw()
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
         if self.getIsTurnedOn ~= nil then
-            table.insert(texts, 5 , string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+            table.insert(texts, 5, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
         for i, v in ipairs(texts) do
             renderText(x, y - (l_space * i), size, v);
