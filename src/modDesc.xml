@@ -16,6 +16,7 @@
     <multiplayer supported="true"/>
     <extraSourceFiles>
         <sourceFile filename="dynamicText.lua"/>
+        <sourceFile filename="setFuelUsageFunctionEvent.lua"/>
         <sourceFile filename="register.lua"/>
     </extraSourceFiles>
     <specializations>

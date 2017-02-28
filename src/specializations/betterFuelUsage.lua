@@ -69,7 +69,7 @@ function BetterFuelUsage:dcLoad()
     local overlayDiffLockBack = BetterFuelUsage.driveControl.overlayDiffLockBack;
     local height = g_currentMission.vehicleHudBg.height * 0.065 * g_gameSettings:getValue("uiScale");
     local width = height / g_screenAspectRatio;
-    local yMuli = 0.13;--0.39;
+    local yMuli = 0.13;
     overlay4WD.height = height;
     overlay4WD.width = width;
     overlayDiffLockFront.height = height;
@@ -90,7 +90,7 @@ function BetterFuelUsage:postLoad(savegame)
     if savegame ~= nil and not savegame.resetVehicles then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
     end
-    self:setFuelUsageFunction(self.BetterFuelUsage.useDefaultFuelUsageFunction);
+    self:setFuelUsageFunction(self.BetterFuelUsage.useDefaultFuelUsageFunction, true);
 end
 
 function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
@@ -99,14 +99,18 @@ function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
     return attributes, nodes;
 end
 
-function BetterFuelUsage:setFuelUsageFunction(default)
+function BetterFuelUsage:setFuelUsageFunction(default, noSend)
     BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(default:%s)"):format(default));
     if not self:getIsMotorStarted() then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
-        if default then
-            self.updateFuelUsage = BetterFuelUsage.defaultUpdateFuelUsage;
+        if self.isServer or noSend then
+            if default then
+                self.updateFuelUsage = BetterFuelUsage.defaultUpdateFuelUsage;
+            else
+                self.updateFuelUsage = BetterFuelUsage.realisticUpdateFuelUsage;
+            end
         else
-            self.updateFuelUsage = BetterFuelUsage.realisticUpdateFuelUsage;
+            g_client:getServerConnection():sendEvent(SetFuelUsageFunctionEvent:new(default, self));
         end
     else
         g_currentMission:showBlinkingWarning(g_i18n:getText("BFU_SET_FUEL_USAGE_ERROR_TEXT_1"), 2500);
