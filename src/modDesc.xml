@@ -71,9 +71,4 @@ Changelog 3.0.1
         <it>TyKonKet</it>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
     </translatedBy>
-    <git>
-        <host>GitHub</host>
-        <url>https://github.com/TyKonKet/FS17_FuelUsageDisplay.git</url>
-    </git>
-    <website>http://tykonket.github.io/FS17_FuelUsageDisplay/</website>
 </modDesc>
