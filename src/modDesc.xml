@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="32">
-    <author>TyKonKet</author>
-    <version>3.0.1</version>
+<modDesc descVersion="37">
+    <author>TyKonKet (Team FSI Modding)</author>
+    <version>3.1.0</version>
     <title>
         <en>Better Fuel Usage</en>
         <ru>Улучшено потребление топлива</ru>
@@ -9,19 +9,40 @@
     <description>
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
-Changelog 3.0.1
-- Ability to choose fuel usage mode
-- Fit with any resolution and hud scale
-- Improved realism of fuel usage
-- Improved affinity with DriveControl and Gearbox
-- Other small changes and fixes
+Changelog 3.1.0
+You can find this project on GitHub!
 ]]>
         </en>
-        <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore.</it>
-        <de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
-        <fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
-        <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.</nl>
-	<ru>[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.</ru>
+        <it>
+            <![CDATA[Rende più realistico e mostra il consumo di carburante dei veicoli a motore.
+Changelog 3.1.0
+You can find this project on GitHub!
+]]>
+        </it>
+        <de>
+            <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
+Changelog 3.1.0
+You can find this project on GitHub!
+]]>
+        </de>
+        <fr>
+            <![CDATA[Affiche la consommation de carburant des véhicules motorisés.
+Changelog 3.1.0
+You can find this project on GitHub!
+]]>
+        </fr>
+        <nl>
+            <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
+Changelog 3.1.0
+You can find this project on GitHub!
+]]>
+        </nl>
+        <ru>
+            <![CDATA[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
+Changelog 3.1.0
+You can find this project on GitHub!
+]]>
+        </ru>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
@@ -39,44 +60,58 @@ Changelog 3.0.1
     </inputBindings>
     <l10n>
         <text name="input_BFU_SET_FUEL_USAGE">
-            <en>Change between standard and realistic fuel usage</en>
-            <it>Scegli tra consumo realistico e standard</it>
+            <en>Enable/Disable realistic fuel usage</en>
+            <it>Attiva/Disattiva il consumo realistico</it>
+            <de>Aktivieren/Deaktivieren des realistischen Kraftstoffverbrauchs</de>
+            <fr>Activer/désactiver l'utilisation réaliste du carburant</fr>
             <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
-			<ru>Изменение между стандартным и реалистичным потреблением топлива</ru>
+            <ru>Изменение между стандартным и реалистичным потреблением топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
-            <en>Use realistic fuel usage</en>
-            <it>Utilizza il consumo realistico</it>
+            <en>Enable realistic fuel usage</en>
+            <it>Abilita il consumo realistico</it>
+            <de>Aktivieren des realistischen Kraftstoffverbrauchs</de>
+            <fr>Activer l'utilisation réaliste du carburant</fr>
             <nl>Gebruik realistische brandstofgebruik</nl>
-			<ru>Использовать реалистичное потребление топлива</ru>
+            <ru>Использовать реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
-            <en>Use standard fuel usage</en>
-            <it>Utilizza il consumo standard</it>
+            <en>Disable realistic fuel usage</en>
+            <it>Disabilita il consumo realistico</it>
+            <de>Deaktivieren des realistischen Kraftstoffverbrauchs</de>
+            <fr>Désactiver l'utilisation réaliste du carburant</fr>
             <nl>Gebruik standaard brandstofgebruik</nl>
-			<ru>Использовать стандартное потребление топлива</ru>
+            <ru>Использовать стандартное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
+            <de>Sie können den Kraftstoffverbrauchsmodus nicht ändern, während der Motor läuft</de>
+            <fr>Vous ne pouvez pas changer le mode d'utilisation du carburant lorsque le moteur tourne</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
-			<ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
+            <ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
-            <en>Realistic fuel usage</en>
-            <it>Consumo realistico</it>
-			<ru>Реалистичное потребление топлива</ru>
+            <en>Realistic fuel usage on</en>
+            <it>Consumo realistico attivo</it>
+            <de>Realistischer Kraftstoffverbrauch an</de>
+            <fr>Utilisation réaliste du carburant actif</fr>
+            <ru>Реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
-            <en>Standard fuel usage</en>
-            <it>Consumo standard</it>
-			<ru>Стандартное потребление топлива</ru>
+            <en>Realistic fuel usage off</en>
+            <it>Consumo realistico disattivo</it>
+            <de>Realistischer Kraftstoffverbrauch aus</de>
+            <fr>Utilisation réaliste du carburant inactif</fr>
+            <ru>Стандартное потребление топлива</ru>
         </text>
     </l10n>
     <translatedBy>
         <en>TyKonKet</en>
         <it>TyKonKet</it>
+        <de>TyKonKet</de>
+        <fr>TyKonKet</fr>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
-		<ru>Gonimy_Vetrom (Vasyl'ko)</ru>
+        <ru>Gonimy_Vetrom (Vasyl'ko)</ru>
     </translatedBy>
 </modDesc>
