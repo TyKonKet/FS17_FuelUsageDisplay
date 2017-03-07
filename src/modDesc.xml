@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="37">
+<modDesc descVersion="32">
     <author>TyKonKet</author>
     <version>3.0.1</version>
     <title>
@@ -9,7 +9,6 @@
     <description>
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
-
 Changelog 3.0.1
 - Ability to choose fuel usage mode
 - Fit with any resolution and hud scale
@@ -18,28 +17,11 @@ Changelog 3.0.1
 - Other small changes and fixes
 ]]>
         </en>
-        <de>
-            <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
-
-Changelog 3.0.1
-- Möglichkeit den Modus zu ändern
-- Passt sich dem HUD an
-- Kraftstoffverbrauch angepasst
-- Kompatibilität zu DriveControl und Gearbox Addon verfeinert
-- Weitere kleine Änderungen
-]]>
-        </de>
-		<ru>
-		<![CDATA[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
-
-Changelog 3.0.1
-- Ability to choose fuel usage mode
-- Fit with any resolution and hud scale
-- Improved realism of fuel usage
-- Improved affinity with DriveControl and Gearbox
-- Other small changes and fixes
-]]>
-</ru>
+        <it>Rende più realistico e mostra il consumo di carburante dei veicoli a motore.</it>
+        <de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
+        <fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
+        <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.</nl>
+	<ru>[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.</ru>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
