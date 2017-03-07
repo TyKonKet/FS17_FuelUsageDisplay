@@ -47,13 +47,13 @@ You can find this project on GitHub!
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
     <extraSourceFiles>
-        <sourceFile filename="fadeEffect.lua"/>
-        <sourceFile filename="dynamicText.lua"/>
-        <sourceFile filename="setFuelUsageFunctionEvent.lua"/>
+        <sourceFile filename="helpers/fadeEffect.lua"/>
+        <sourceFile filename="helpers/dynamicText.lua"/>
+        <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
         <sourceFile filename="register.lua"/>
     </extraSourceFiles>
     <specializations>
-        <specialization name="betterFuelUsage" className="BetterFuelUsage" filename="betterFuelUsage.lua"/>
+        <specialization name="betterFuelUsage" className="BetterFuelUsage" filename="specializations/betterFuelUsage.lua"/>
     </specializations>
     <inputBindings>
         <input name="BFU_SET_FUEL_USAGE" category="VEHICLE" key1="KEY_lctrl KEY_t" device="1" visible="true" />
