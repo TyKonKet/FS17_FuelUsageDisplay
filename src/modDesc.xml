@@ -4,11 +4,11 @@
     <version>3.0.1</version>
     <title>
         <en>Better Fuel Usage</en>
+        <ru>Улучшено потребление топлива</ru>
     </title>
     <description>
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
-
 Changelog 3.0.1
 - Ability to choose fuel usage mode
 - Fit with any resolution and hud scale
@@ -21,6 +21,7 @@ Changelog 3.0.1
         <de>Zeigt den Treibstoffverbrauch von Fahrzeugen an.</de>
         <fr>Affiche la consommation de carburant des véhicules motorisés.</fr>
         <nl>Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.</nl>
+	<ru>[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.</ru>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
@@ -41,34 +42,41 @@ Changelog 3.0.1
             <en>Change between standard and realistic fuel usage</en>
             <it>Scegli tra consumo realistico e standard</it>
             <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
+			<ru>Изменение между стандартным и реалистичным потреблением топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
             <en>Use realistic fuel usage</en>
             <it>Utilizza il consumo realistico</it>
             <nl>Gebruik realistische brandstofgebruik</nl>
+			<ru>Использовать реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
             <en>Use standard fuel usage</en>
             <it>Utilizza il consumo standard</it>
             <nl>Gebruik standaard brandstofgebruik</nl>
+			<ru>Использовать стандартное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
+			<ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
             <en>Realistic fuel usage</en>
             <it>Consumo realistico</it>
+			<ru>Реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
             <en>Standard fuel usage</en>
             <it>Consumo standard</it>
+			<ru>Стандартное потребление топлива</ru>
         </text>
     </l10n>
     <translatedBy>
         <en>TyKonKet</en>
         <it>TyKonKet</it>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
+		<ru>Gonimy_Vetrom (Vasyl'ko)</ru>
     </translatedBy>
 </modDesc>
