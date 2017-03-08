@@ -5,7 +5,7 @@
     <title>
         <en>Better Fuel Usage</en>
         <ru>Улучшено потребление топлива</ru>
-        <fr>Consomation de carburant réaliste</fr>
+        <fr>Consommation de carburant réaliste</fr>
     </title>
     <description>
         <en>
@@ -72,7 +72,7 @@ You can find this project on GitHub!
             <en>Enable realistic fuel usage</en>
             <it>Abilita il consumo realistico</it>
             <de>Aktivieren des realistischen Kraftstoffverbrauchs</de>
-            <fr>Activer la consomation réaliste du carburant</fr>
+            <fr>Activer la consommation réaliste du carburant</fr>
             <nl>Gebruik realistische brandstofgebruik</nl>
             <ru>Использовать реалистичное потребление топлива</ru>
         </text>
@@ -80,7 +80,7 @@ You can find this project on GitHub!
             <en>Disable realistic fuel usage</en>
             <it>Disabilita il consumo realistico</it>
             <de>Deaktivieren des realistischen Kraftstoffverbrauchs</de>
-            <fr>Désactiver la consomation réaliste du carburant</fr>
+            <fr>Désactiver la consommation réaliste du carburant</fr>
             <nl>Gebruik standaard brandstofgebruik</nl>
             <ru>Использовать стандартное потребление топлива</ru>
         </text>
@@ -88,7 +88,7 @@ You can find this project on GitHub!
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
             <de>Sie können den Kraftstoffverbrauchsmodus nicht ändern, während der Motor läuft</de>
-            <fr>Vous ne pouvez pas changer le mode de consomation du carburant lorsque le moteur est en marche</fr>
+            <fr>Vous ne pouvez pas changer le mode de consommation du carburant lorsque le moteur est en marche</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
             <ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
         </text>
