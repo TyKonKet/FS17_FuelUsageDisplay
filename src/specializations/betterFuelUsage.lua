@@ -220,11 +220,11 @@ function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
 end
 
 function BetterFuelUsage:onEnter()
-    if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-        self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
-    else
-        self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
-    end
+    --if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+    --    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
+    --else
+    --    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+    --end
 end
 
 function BetterFuelUsage:update(dt)
