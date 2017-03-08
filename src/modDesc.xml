@@ -5,6 +5,7 @@
     <title>
         <en>Better Fuel Usage</en>
         <ru>Улучшено потребление топлива</ru>
+        <fr>Consomation de carburant réaliste</fr>
     </title>
     <description>
         <en>
@@ -26,9 +27,9 @@ You can find this project on GitHub!
 ]]>
         </de>
         <fr>
-            <![CDATA[Affiche la consommation de carburant des véhicules motorisés.
+            <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consomation de façon plus réaliste.
 Changelog 3.1.0
-You can find this project on GitHub!
+Vous pouvez retrouver ce projet sur GitHub!
 ]]>
         </fr>
         <nl>
@@ -63,7 +64,7 @@ You can find this project on GitHub!
             <en>Enable/Disable realistic fuel usage</en>
             <it>Attiva/Disattiva il consumo realistico</it>
             <de>Aktivieren/Deaktivieren des realistischen Kraftstoffverbrauchs</de>
-            <fr>Activer/désactiver l'utilisation réaliste du carburant</fr>
+            <fr>Cons. carburant réaliste : Activer / Désactiver</fr>
             <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
             <ru>Изменение между стандартным и реалистичным потреблением топлива</ru>
         </text>
@@ -71,7 +72,7 @@ You can find this project on GitHub!
             <en>Enable realistic fuel usage</en>
             <it>Abilita il consumo realistico</it>
             <de>Aktivieren des realistischen Kraftstoffverbrauchs</de>
-            <fr>Activer l'utilisation réaliste du carburant</fr>
+            <fr>Activer la consomation réaliste du carburant</fr>
             <nl>Gebruik realistische brandstofgebruik</nl>
             <ru>Использовать реалистичное потребление топлива</ru>
         </text>
@@ -79,7 +80,7 @@ You can find this project on GitHub!
             <en>Disable realistic fuel usage</en>
             <it>Disabilita il consumo realistico</it>
             <de>Deaktivieren des realistischen Kraftstoffverbrauchs</de>
-            <fr>Désactiver l'utilisation réaliste du carburant</fr>
+            <fr>Désactiver la consomation réaliste du carburant</fr>
             <nl>Gebruik standaard brandstofgebruik</nl>
             <ru>Использовать стандартное потребление топлива</ru>
         </text>
@@ -87,7 +88,7 @@ You can find this project on GitHub!
             <en>You can't change the fuel usage mode while motor is running</en>
             <it>Non puoi cambiare la modalità di consumo mentre il motore è acceso</it>
             <de>Sie können den Kraftstoffverbrauchsmodus nicht ändern, während der Motor läuft</de>
-            <fr>Vous ne pouvez pas changer le mode d'utilisation du carburant lorsque le moteur tourne</fr>
+            <fr>Vous ne pouvez pas changer le mode de consomation du carburant lorsque le moteur est en marche</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
             <ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
         </text>
@@ -95,14 +96,14 @@ You can find this project on GitHub!
             <en>Realistic fuel usage on</en>
             <it>Consumo realistico attivo</it>
             <de>Realistischer Kraftstoffverbrauch an</de>
-            <fr>Utilisation réaliste du carburant actif</fr>
+            <fr>Utilisation réaliste du carburant activée</fr>
             <ru>Реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
             <en>Realistic fuel usage off</en>
             <it>Consumo realistico disattivo</it>
             <de>Realistischer Kraftstoffverbrauch aus</de>
-            <fr>Utilisation réaliste du carburant inactif</fr>
+            <fr>Utilisation réaliste du carburant désactivé</fr>
             <ru>Стандартное потребление топлива</ru>
         </text>
     </l10n>
@@ -110,7 +111,7 @@ You can find this project on GitHub!
         <en>TyKonKet</en>
         <it>TyKonKet</it>
         <de>TyKonKet</de>
-        <fr>TyKonKet</fr>
+        <fr>TyKonKet, NaeJ</fr>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
         <ru>Gonimy_Vetrom (Vasyl'ko)</ru>
     </translatedBy>
