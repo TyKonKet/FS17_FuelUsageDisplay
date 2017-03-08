@@ -6,7 +6,9 @@
 BetterFuelUsage = {};
 BetterFuelUsage.name = "BetterFuelUsage";
 BetterFuelUsage.debug = BetterFuelUsageRH.debug;
+BetterFuelUsage.dir = g_currentModDirectory;
 BetterFuelUsage.driveControl = nil;
+BetterFuelUsage.vehiclesOverwrites = {};
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
@@ -21,6 +23,20 @@ function BetterFuelUsage.initSpecialization()
     if dc ~= nil then
         dc.load = Utils.appendedFunction(dc.load, BetterFuelUsage.dcLoad);
         BetterFuelUsage.driveControl = dc;
+    end
+    local xml = loadXMLFile("vehiclesOverwritesXML", BetterFuelUsage.dir .. "vehiclesOverwrites.xml");
+    local index = 0;
+    while true do
+        local query = string.format("vehiclesOverwrites.vehicle(%d)", index);
+        if not hasXMLProperty(xml, query) then
+            break;
+        end
+        local i3d = getXMLString(xml, string.format("%s#i3d", query));
+        local fuelUsage = getXMLFloat(xml, string.format("%s#fuelUsage", query));
+        BetterFuelUsage.vehiclesOverwrites[i3d] = {};
+        BetterFuelUsage.vehiclesOverwrites[i3d].fuelUsage = fuelUsage;
+        BetterFuelUsage.print(("vehiclesOverwrite -> i3d:%s fuelUsage:%s"):format(i3d, fuelUsage));
+        index = index + 1;
     end
 end
 
@@ -41,7 +57,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.backup = {};
     self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
     self.BetterFuelUsage.fuelUsed = 0;
-    self.BetterFuelUsage.maxFuelUsage = 1000;
+    self.BetterFuelUsage.maxFuelUsage = 1;
     self.BetterFuelUsage.fuelFillLevel = 0;
     self.BetterFuelUsage.lastFillLevel = 0;
     self.BetterFuelUsage.lastLoadFactor = 0;
@@ -88,6 +104,10 @@ end
 function BetterFuelUsage:postLoad(savegame)
     BetterFuelUsage.print("BetterFuelUsage:postLoad()");
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
+    self.fuelUsage = (self.motor.maxMotorPower / 2000) / (60 * 60 * 1000);
+    if BetterFuelUsage.vehiclesOverwrites[self.i3dFilename] ~= nil then
+        self.fuelUsage = BetterFuelUsage.vehiclesOverwrites[self.i3dFilename].fuelUsage / (60 * 60 * 1000);
+    end
     if savegame ~= nil and not savegame.resetVehicles then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
     end
@@ -104,10 +124,12 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
     BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(default:%s)"):format(default));
     if not self:getIsMotorStarted() then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
-        if default then
-            self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
-        else
-            self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+        if not noSend then
+            if default then
+                self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
+            else
+                self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+            end
         end
         if self.isServer or noSend then
             if default then
@@ -125,14 +147,14 @@ end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = 1; --(self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * 75)) / 76;
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * 50)) / 51;
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil then
         local crushingLoad = 0;
         if self.crushingTime > 0 then
             crushingLoad = 0.75;
         end
-        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * 75)) / 76;
+        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * 50)) / 51;
         loadFactor = loadFactor + self.BetterFuelUsage.crushingLoad;
     end
     if self.typeName == "woodHarvester" then
@@ -144,7 +166,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
                 woodHarvesterLoad = 0.18;
             end
         end
-        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * 75)) / 76;
+        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * 50)) / 51;
         loadFactor = loadFactor + self.BetterFuelUsage.woodHarvesterLoad;
     end
     if self.typeName == "selfPropelledPotatoHarvester" then
@@ -152,7 +174,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         if self:getIsTurnedOn() then
             selfPropelledPotatoHarvesterLoad = 0.3;
         end
-        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * 75)) / 76;
+        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * 50)) / 51;
         loadFactor = loadFactor + self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad;
     end
     if self.typeName == "loaderVehicle" then
@@ -160,13 +182,13 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         if self:getIsTurnedOn() then
             loaderVehicleLoad = 0.2;
         end
-        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * 75)) / 76;
+        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * 50)) / 51;
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
-    local fuelUsageFactor = 1.4;
+    local fuelUsageFactor = 1.1;
     if g_currentMission.missionInfo.fuelUsageLow then
-        fuelUsageFactor = 0.6;
+        fuelUsageFactor = 0.7;
     end
     local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt * loadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
@@ -220,11 +242,11 @@ function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
 end
 
 function BetterFuelUsage:onEnter()
-    --if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-    --    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
-    --else
-    --    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
-    --end
+--if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+--    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
+--else
+--    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+--end
 end
 
 function BetterFuelUsage:update(dt)
@@ -316,9 +338,10 @@ function BetterFuelUsage:debugDraw()
         local y = 0.99;
         local size = 0.015;
         local l_space = getTextHeight(size, "#");
-        local texts = {          
+        local texts = {
             string.format("Vehicle name --> %s", self.i3dFilename),
             string.format("Vehicle Type --> %s", self.typeName),
+            string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
             string.format("Fuel Usage --> %s (%s)", self.fuelUsage, self.fuelUsage * 1000 * 60 * 60),
             string.format("Final Fuel Usage --> %s (%s)", self.BetterFuelUsage.maxFuelUsage, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
             string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getLastMotorRpm(), self.motor:getMaxRpm()),
@@ -326,7 +349,7 @@ function BetterFuelUsage:debugDraw()
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
         if self.getIsTurnedOn ~= nil then
-            table.insert(texts, 8, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+            table.insert(texts, 9, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
         for i, v in ipairs(texts) do
             renderText(x, y - (l_space * i), size, v);

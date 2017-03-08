@@ -1,0 +1,5 @@
+<vehiclesOverwrites>
+    <vehicle i3d="data/vehicles/steerable/newHolland/newHollandFR850.i3d" fuelUsage="303" />
+    <vehicle i3d="data/vehicles/steerable/krone/kroneBiGX580.i3d" fuelUsage="213.5" />
+    <vehicle i3d="data/vehicles/steerable/rostselmash/rsm1403.i3d" fuelUsage="162.5" />
+</vehiclesOverwrites>
