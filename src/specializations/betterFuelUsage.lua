@@ -316,15 +316,17 @@ function BetterFuelUsage:debugDraw()
         local y = 0.99;
         local size = 0.015;
         local l_space = getTextHeight(size, "#");
-        local texts = {
+        local texts = {          
+            string.format("Vehicle name --> %s", self.i3dFilename),
             string.format("Vehicle Type --> %s", self.typeName),
             string.format("Fuel Usage --> %s (%s)", self.fuelUsage, self.fuelUsage * 1000 * 60 * 60),
+            string.format("Final Fuel Usage --> %s (%s)", self.BetterFuelUsage.maxFuelUsage, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
             string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getLastMotorRpm(), self.motor:getMaxRpm()),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
         if self.getIsTurnedOn ~= nil then
-            table.insert(texts, 6, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+            table.insert(texts, 8, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
         for i, v in ipairs(texts) do
             renderText(x, y - (l_space * i), size, v);
