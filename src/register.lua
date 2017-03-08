@@ -9,7 +9,7 @@ BetterFuelUsageRH.specialization = {};
 BetterFuelUsageRH.specialization.title = "BetterFuelUsage";
 BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
-BetterFuelUsageRH.debug = false;
+BetterFuelUsageRH.debug = true;
 
 function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
     if self.debug then
@@ -36,8 +36,8 @@ end
 
 function BetterFuelUsageRH:loadMap(name)
     if self.debug then
-        addConsoleCommand("AAAFUDPrintVheicle", "", "FUDPrintVheicle", self);
-        addConsoleCommand("AAAFUDSetGraph", "", "FUDSetGraph", self);
+        addConsoleCommand("AAABFUToggleDebug", "", "FUToggleDebug", self);
+        addConsoleCommand("AAAPrintVehicleValue", "", "PrintVehicleValue", self);
     end
     BetterFuelUsageRH:registerSpecialization();
 end
@@ -57,29 +57,18 @@ end
 function BetterFuelUsageRH:draw()
 end
 
-function BetterFuelUsageRH.FUDPrintVheicle(self)
---DebugUtil.printTableRecursively(FuelUsageDisplay.currentVehicle, "", 0, 1);
+function BetterFuelUsageRH.FUToggleDebug(self)
+    self.debug = not self.debug;
+    BetterFuelUsage.debug = self.debug;
+    return "FUToggleDebug = " ..  tostring(self.debug);
 end
 
-function BetterFuelUsageRH.FUDSetGraph(self, t1x, t1y, t1fs, t2fs)
-    if t1x == "-" then
-        t1x = FuelUsageDisplay.fuelUsageText.text1.x;
+function BetterFuelUsageRH.PrintVehicleValue(self, p1)
+    if g_currentMission.controlledVehicle == nil then
+        return "controlledVehicle == nil";
+    else
+        self:print(tostring(g_currentMission.controlledVehicle[p1]));
     end
-    if t1y == "-" then
-        t1y = FuelUsageDisplay.fuelUsageText.text1.y;
-    end
-    if t1fs == "-" then
-        t1fs = FuelUsageDisplay.fuelUsageText.text1.fontsize;
-    end
-    if t2fs == "-" then
-        t2fs = FuelUsageDisplay.fuelUsageText.text2.fontsize;
-    end
-    FuelUsageDisplay.fuelUsageText.text1.x = tonumber(t1x);
-    FuelUsageDisplay.fuelUsageText.text1.y = tonumber(t1y);
-    FuelUsageDisplay.fuelUsageText.text1.fontsize = tonumber(t1fs);
-    FuelUsageDisplay.fuelUsageText.text2.y = tonumber(t1y);
-    FuelUsageDisplay.fuelUsageText.text2.fontsize = tonumber(t2fs);
-    return string.format("x1 = %f, y1 = %f, fs1 = %f, y2 = %f, fs2 = %f", t1x, t1y, t1fs, t1y, t2fs);
 end
 
 addModEventListener(BetterFuelUsageRH);
