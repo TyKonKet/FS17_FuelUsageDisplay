@@ -260,7 +260,7 @@ function BetterFuelUsage:update(dt)
                 self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 100 then
+                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 70 then
                     self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
                     self.BetterFuelUsage.fuelUsedDisplayTime = 0;
                 else
