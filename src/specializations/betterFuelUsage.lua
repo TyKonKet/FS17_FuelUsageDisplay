@@ -57,6 +57,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.backup = {};
     self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
     self.BetterFuelUsage.fuelUsed = 0;
+    self.BetterFuelUsage.fuelUsedDisplayTime = 0;
     self.BetterFuelUsage.maxFuelUsage = 1;
     self.BetterFuelUsage.fuelFillLevel = 0;
     self.BetterFuelUsage.lastFillLevel = 0;
@@ -204,9 +205,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
             self.BetterFuelUsage.helperFuelUsed = self.BetterFuelUsage.helperFuelUsed + fuelUsed;
         end
     end
-    if self.fuelUsageHud ~= nil then
-        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
-    end
     return true
 end
 
@@ -228,9 +226,6 @@ function BetterFuelUsage:defaultUpdateFuelUsage(dt)
             g_currentMission:addSharedMoney(-delta, "purchaseFuel");
             self.BetterFuelUsage.helperFuelUsed = self.BetterFuelUsage.helperFuelUsed + fuelUsed;
         end
-    end
-    if self.fuelUsageHud ~= nil then
-        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsed * 1000 / dt * 60 * 60);
     end
     return true;
 end
@@ -264,7 +259,12 @@ function BetterFuelUsage:update(dt)
                 self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
+                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 100 then
+                    self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
+                    self.BetterFuelUsage.fuelUsedDisplayTime = 0;
+                else
+                    self.BetterFuelUsage.fuelUsedDisplayTime = self.BetterFuelUsage.fuelUsedDisplayTime + dt;
+                end
             end
             self.BetterFuelUsage.lastFillLevel = self.BetterFuelUsage.fuelFillLevel;
         else
@@ -322,6 +322,9 @@ function BetterFuelUsage:draw()
         color = {1, 0, 0, 1};
     end
     local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
+    if self.fuelUsageHud ~= nil then
+        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
+    end
     if fuelUsage < 10 then
         fuelUsage = string.format("%.1f", fuelUsage);
     else
