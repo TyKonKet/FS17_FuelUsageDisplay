@@ -147,15 +147,16 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    local rpmFactor = 1; --(self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * 50)) / 51;
+    local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    local smoothFactor = 100;
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (50 * rpmFactor + 10))) / (50 * rpmFactor + 11);
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil then
         local crushingLoad = 0;
         if self.crushingTime > 0 then
             crushingLoad = 0.75;
         end
-        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * 50)) / 51;
+        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.crushingLoad;
     end
     if self.typeName == "woodHarvester" then
@@ -167,7 +168,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
                 woodHarvesterLoad = 0.18;
             end
         end
-        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * 50)) / 51;
+        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.woodHarvesterLoad;
     end
     if self.typeName == "selfPropelledPotatoHarvester" then
@@ -175,7 +176,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         if self:getIsTurnedOn() then
             selfPropelledPotatoHarvesterLoad = 0.3;
         end
-        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * 50)) / 51;
+        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad;
     end
     if self.typeName == "loaderVehicle" then
@@ -183,7 +184,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         if self:getIsTurnedOn() then
             loaderVehicleLoad = 0.2;
         end
-        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * 50)) / 51;
+        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
@@ -191,7 +192,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     if g_currentMission.missionInfo.fuelUsageLow then
         fuelUsageFactor = 0.7;
     end
-    local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt * loadFactor;
+    local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * loadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
     self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.05 * self.fuelUsage;
     if fuelUsed > 0 then
