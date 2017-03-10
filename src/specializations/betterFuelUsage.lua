@@ -69,6 +69,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
     self.BetterFuelUsage.loaderVehicleLoad = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
+    self.debugDrawTexts = {};
 end
 
 function BetterFuelUsage:load(savegame)
@@ -149,7 +150,10 @@ end
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
     local smoothFactor = 150;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (110 * rpmFactor + 10))) / (110 * rpmFactor + 11);
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (45 * rpmFactor + 5))) / (45 * rpmFactor + 6);
+    if loadFactor < 0.0001 then
+        loadFactor = 0;
+    end
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil and self:getIsTurnedOn() then
         local crushingLoad = 0.15;
@@ -250,6 +254,10 @@ function BetterFuelUsage:onEnter()
 --end
 end
 
+function BetterFuelUsage:startMotor()
+    self.BetterFuelUsage.lastLoadFactor = 0;
+end
+
 function BetterFuelUsage:update(dt)
     if self.isEntered then
         if InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
@@ -309,8 +317,6 @@ end
 
 function BetterFuelUsage:draw()
     if self.isEntered then
-        BetterFuelUsage.debugDraw(self);
-        self.BetterFuelUsage.fuelFade:draw();
         if not self:getIsMotorStarted() then
             if self.BetterFuelUsage.useDefaultFuelUsageFunction then
                 g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
@@ -318,16 +324,20 @@ function BetterFuelUsage:draw()
                 g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
             end
         end
-        local color = {};
-        if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
-            color = {0, 1, 0, 1};
-        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
-            color = {1, 1, 1, 1};
-        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
-            color = {1, 1, 0, 1};
-        else
-            color = {1, 0, 0, 1};
-        end
+        --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
+        BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
+        BetterFuelUsage.debugDraw(self);
+        self.BetterFuelUsage.fuelFade:draw();
+        local color = {1, 1, 1, 1};
+        --if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
+        --    color = {0, 1, 0, 1};
+        --elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
+        --    color = {1, 1, 1, 1};
+        --elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
+        --    color = {1, 1, 0, 1};
+        --else
+        --    color = {1, 0, 0, 1};
+        --end
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
         if self.fuelUsageHud ~= nil then
             VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
@@ -343,13 +353,71 @@ function BetterFuelUsage:draw()
     end
 end
 
+function BetterFuelUsage:drawRightMeter(value)
+    local step = math.rad(360 / 22);
+    --table.insert(self.debugDrawTexts, string.format("Step --> %s", step));
+    local offset = -0.455 * math.pi;
+    --table.insert(self.debugDrawTexts, string.format("Offset --> %s", offset));
+    value = (1 - value) * (2 * math.pi);
+    local maxValue = 2 * math.pi;
+    --table.insert(self.debugDrawTexts, string.format("Value --> %s", value));
+    for i = math.pi + step, 2 * math.pi, step do
+        local posX = math.cos(i - offset) * g_currentMission.speedMeterRadiusX * 0.835;
+        local posY = math.sin(i - offset) * g_currentMission.speedMeterRadiusY * 0.835;
+        local overlay = g_currentMission.speedMeterIconOverlay;
+        --table.insert(self.debugDrawTexts, string.format("if %s > %s", (i - math.pi) * 2, value));
+        local bColor = {overlay.r, overlay.g, overlay.b, overlay.a};
+        if (i - math.pi) * 2 > value then
+            if 1 - i / maxValue < 0.10 then
+                overlay:setColor(0, 1, 0, 0.35);
+            elseif 1 - i / maxValue < 0.35 then
+                overlay:setColor(1, 1, 0, 0.35);
+            else
+                overlay:setColor(1, 0, 0, 0.35);
+            end
+        end
+        overlay:setPosition(g_currentMission.vehicleSpeedBg.x + g_currentMission.vehicleSpeedBg.width * 0.5 + posX - g_currentMission.speedMeterIconOverlay.width * 0.5, g_currentMission.vehicleSpeedBg.y + g_currentMission.speedMeterCenterOffsetY + posY - g_currentMission.speedMeterIconOverlay.height * 0.5);
+        overlay:render();
+        overlay:setColor(unpack(bColor));
+    end
+end
+
+function BetterFuelUsage:drawLeftMeter(value)
+    local step = math.rad(360 / 22);
+    --table.insert(self.debugDrawTexts, string.format("Step --> %s", step));
+    local offset = -0.455 * math.pi;
+    --table.insert(self.debugDrawTexts, string.format("Offset --> %s", offset));
+    value = (1 - value) * (2 * math.pi);
+    local maxValue = 2 * math.pi;
+    --table.insert(self.debugDrawTexts, string.format("Value --> %s", value));
+    for i = step, math.pi, step do
+        local posX = math.cos(i - offset) * g_currentMission.speedMeterRadiusX * 0.835;
+        local posY = math.sin(i - offset) * g_currentMission.speedMeterRadiusY * 0.835;
+        local overlay = g_currentMission.speedMeterIconOverlay;
+        --table.insert(self.debugDrawTexts, string.format("if %s > %s", i * 2, value));
+        local bColor = {overlay.r, overlay.g, overlay.b, overlay.a};
+        if i * 2 > value then
+            if 1 - i / maxValue < 0.60 then
+                overlay:setColor(0, 1, 0, 0.35);
+            elseif 1 - i / maxValue < 0.85 then
+                overlay:setColor(1, 1, 0, 0.35);
+            else
+                overlay:setColor(1, 0, 0, 0.35);
+            end
+        end
+        overlay:setPosition(g_currentMission.vehicleSpeedBg.x + g_currentMission.vehicleSpeedBg.width * 0.5 + posX - g_currentMission.speedMeterIconOverlay.width * 0.5, g_currentMission.vehicleSpeedBg.y + g_currentMission.speedMeterCenterOffsetY + posY - g_currentMission.speedMeterIconOverlay.height * 0.5);
+        overlay:render();
+        overlay:setColor(unpack(bColor));
+    end
+end
+
 function BetterFuelUsage:debugDraw()
     if BetterFuelUsage.debug then
         local x = 0.01;
         local y = 0.99;
         local size = 0.015;
         local l_space = getTextHeight(size, "#");
-        local texts = {
+        self.debugDrawTexts = {
             string.format("Vehicle name --> %s", self.i3dFilename),
             string.format("Vehicle Type --> %s", self.typeName),
             string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
@@ -360,13 +428,13 @@ function BetterFuelUsage:debugDraw()
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
         if self.getIsTurnedOn ~= nil then
-            table.insert(texts, 9, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+            table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
         if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
             local cuttingLoad = 1 - (self.sampleThreshing.currentPitchOffset - self.sampleThreshing.cuttingPitchOffset) / (self.sampleThreshing.pitchOffset - self.sampleThreshing.cuttingPitchOffset);
-            table.insert(texts, 10, string.format("Cutting load --> min:%s, max:%s, cur:%s, load:%s", self.sampleThreshing.cuttingPitchOffset, self.sampleThreshing.pitchOffset, self.sampleThreshing.currentPitchOffset, cuttingLoad));
+            table.insert(self.debugDrawTexts, string.format("Cutting load --> min:%s, max:%s, cur:%s, load:%s", self.sampleThreshing.cuttingPitchOffset, self.sampleThreshing.pitchOffset, self.sampleThreshing.currentPitchOffset, cuttingLoad));
         end
-        for i, v in ipairs(texts) do
+        for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
         end
     end

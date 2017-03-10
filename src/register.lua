@@ -39,6 +39,8 @@ function BetterFuelUsageRH:loadMap(name)
         addConsoleCommand("AAABFUToggleDebug", "", "FUToggleDebug", self);
         addConsoleCommand("AAAPrintVehicleValue", "", "PrintVehicleValue", self);
     end
+    g_currentMission.speedMeterRadiusX = g_currentMission.speedMeterRadiusX * 1.05;
+    g_currentMission.speedMeterRadiusY = g_currentMission.speedMeterRadiusY * 1.05;
     BetterFuelUsageRH:registerSpecialization();
 end
 
@@ -60,7 +62,7 @@ end
 function BetterFuelUsageRH.FUToggleDebug(self)
     self.debug = not self.debug;
     BetterFuelUsage.debug = self.debug;
-    return "FUToggleDebug = " ..  tostring(self.debug);
+    return "FUToggleDebug = " .. tostring(self.debug);
 end
 
 function BetterFuelUsageRH.PrintVehicleValue(self, p1)
