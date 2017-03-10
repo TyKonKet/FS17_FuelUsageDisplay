@@ -147,9 +147,9 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    local rpmFactor = (self.motor:getLastMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
     local smoothFactor = 100;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (50 * rpmFactor + 10))) / (50 * rpmFactor + 11);
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (130 * rpmFactor + 20))) / (130 * rpmFactor + 21);
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil then
         local crushingLoad = 0;
@@ -346,9 +346,9 @@ function BetterFuelUsage:debugDraw()
             string.format("Vehicle name --> %s", self.i3dFilename),
             string.format("Vehicle Type --> %s", self.typeName),
             string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
-            string.format("Fuel Usage --> %s (%s)", self.fuelUsage, self.fuelUsage * 1000 * 60 * 60),
-            string.format("Final Fuel Usage --> %s (%s)", self.BetterFuelUsage.maxFuelUsage, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
-            string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getLastMotorRpm(), self.motor:getMaxRpm()),
+            string.format("Max Fuel Usage --> %s", self.fuelUsage * 1000 * 60 * 60),
+            string.format("Final Max Fuel Usage --> %s", self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
+            string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm()),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
