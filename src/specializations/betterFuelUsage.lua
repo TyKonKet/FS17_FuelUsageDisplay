@@ -149,7 +149,7 @@ end
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
     local smoothFactor = 150;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (130 * rpmFactor + 10))) / (130 * rpmFactor + 11);
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (110 * rpmFactor + 10))) / (110 * rpmFactor + 11);
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
     if self.crushingTime ~= nil and self:getIsTurnedOn() then
         local crushingLoad = 0.15;
@@ -186,6 +186,11 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         end
         self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
+    end
+    if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
+        local cuttingLoad = 1 - (self.sampleThreshing.currentPitchOffset - self.sampleThreshing.cuttingPitchOffset) / (self.sampleThreshing.pitchOffset - self.sampleThreshing.cuttingPitchOffset);
+        cuttingLoad = cuttingLoad * 0.15;
+        loadFactor = loadFactor + cuttingLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
     local fuelUsageFactor = 1.1;
@@ -356,6 +361,10 @@ function BetterFuelUsage:debugDraw()
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(texts, 9, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+        end
+        if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
+            local cuttingLoad = 1 - (self.sampleThreshing.currentPitchOffset - self.sampleThreshing.cuttingPitchOffset) / (self.sampleThreshing.pitchOffset - self.sampleThreshing.cuttingPitchOffset);
+            table.insert(texts, 10, string.format("Cutting load --> min:%s, max:%s, cur:%s, load:%s", self.sampleThreshing.cuttingPitchOffset, self.sampleThreshing.pitchOffset, self.sampleThreshing.currentPitchOffset, cuttingLoad));
         end
         for i, v in ipairs(texts) do
             renderText(x, y - (l_space * i), size, v);
