@@ -148,13 +148,13 @@ end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    local smoothFactor = 100;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (130 * rpmFactor + 20))) / (130 * rpmFactor + 21);
+    local smoothFactor = 150;
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (130 * rpmFactor + 10))) / (130 * rpmFactor + 11);
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
-    if self.crushingTime ~= nil then
-        local crushingLoad = 0;
+    if self.crushingTime ~= nil and self:getIsTurnedOn() then
+        local crushingLoad = 0.15;
         if self.crushingTime > 0 then
-            crushingLoad = 0.75;
+            crushingLoad = 0.8;
         end
         self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.crushingLoad;
@@ -163,9 +163,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         local woodHarvesterLoad = 0;
         if self:getIsTurnedOn() then
             if self.cutParticleSystemsActive then
-                woodHarvesterLoad = 0.75;
+                woodHarvesterLoad = 0.7;
             else
-                woodHarvesterLoad = 0.18;
+                woodHarvesterLoad = 0.25;
             end
         end
         self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
@@ -174,7 +174,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     if self.typeName == "selfPropelledPotatoHarvester" then
         local selfPropelledPotatoHarvesterLoad = 0;
         if self:getIsTurnedOn() then
-            selfPropelledPotatoHarvesterLoad = 0.3;
+            selfPropelledPotatoHarvesterLoad = 0.35;
         end
         self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad;
@@ -182,7 +182,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     if self.typeName == "loaderVehicle" then
         local loaderVehicleLoad = 0;
         if self:getIsTurnedOn() then
-            loaderVehicleLoad = 0.2;
+            loaderVehicleLoad = 0.25;
         end
         self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
@@ -303,37 +303,39 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
 end
 
 function BetterFuelUsage:draw()
-    BetterFuelUsage.debugDraw(self);
-    self.BetterFuelUsage.fuelFade:draw();
-    if not self:getIsMotorStarted() then
-        if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-        else
-            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+    if self.isEntered then
+        BetterFuelUsage.debugDraw(self);
+        self.BetterFuelUsage.fuelFade:draw();
+        if not self:getIsMotorStarted() then
+            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            else
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            end
         end
+        local color = {};
+        if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
+            color = {0, 1, 0, 1};
+        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
+            color = {1, 1, 1, 1};
+        elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
+            color = {1, 1, 0, 1};
+        else
+            color = {1, 0, 0, 1};
+        end
+        local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
+        if self.fuelUsageHud ~= nil then
+            VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
+        end
+        if fuelUsage < 10 then
+            fuelUsage = string.format("%.1f", fuelUsage);
+        else
+            fuelUsage = string.format("%.0f", fuelUsage);
+        end
+        self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
+        local x, y = self.fuelText:getTextEnd();
+        self.lhText:draw({position = {x = x, y = y}});
     end
-    local color = {};
-    if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
-        color = {0, 1, 0, 1};
-    elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
-        color = {1, 1, 1, 1};
-    elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
-        color = {1, 1, 0, 1};
-    else
-        color = {1, 0, 0, 1};
-    end
-    local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-    if self.fuelUsageHud ~= nil then
-        VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
-    end
-    if fuelUsage < 10 then
-        fuelUsage = string.format("%.1f", fuelUsage);
-    else
-        fuelUsage = string.format("%.0f", fuelUsage);
-    end
-    self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
-    local x, y = self.fuelText:getTextEnd();
-    self.lhText:draw({position = {x = x, y = y}});
 end
 
 function BetterFuelUsage:debugDraw()
