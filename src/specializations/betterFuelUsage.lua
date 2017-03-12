@@ -78,7 +78,7 @@ function BetterFuelUsage:load(savegame)
     local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
     local y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * 0.798;
     self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 0.02});
-    self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 1, g = 1, b = 1, a = 0.08}});
+    self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 0.0865, g = 0.0865, b = 0.0865, a = 1}});
 end
 
 function BetterFuelUsage:dcLoad()
@@ -273,7 +273,7 @@ function BetterFuelUsage:update(dt)
                 self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 70 then
+                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 80 then
                     self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
                     self.BetterFuelUsage.fuelUsedDisplayTime = 0;
                 else
@@ -329,15 +329,6 @@ function BetterFuelUsage:draw()
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
         local color = {1, 1, 1, 1};
-        --if self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.1) then
-        --    color = {0, 1, 0, 1};
-        --elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.3) then
-        --    color = {1, 1, 1, 1};
-        --elseif self.BetterFuelUsage.fuelUsed < (self.BetterFuelUsage.maxFuelUsage * 0.65) then
-        --    color = {1, 1, 0, 1};
-        --else
-        --    color = {1, 0, 0, 1};
-        --end
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
         if self.fuelUsageHud ~= nil then
             VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
@@ -398,11 +389,11 @@ function BetterFuelUsage:drawLeftMeter(value)
         local bColor = {overlay.r, overlay.g, overlay.b, overlay.a};
         if i * 2 > value then
             if 1 - i / maxValue < 0.60 then
-                overlay:setColor(0, 1, 0, 0.35);
+                overlay:setColor(0.0097, 0.8069, 0.0097, 1);
             elseif 1 - i / maxValue < 0.85 then
-                overlay:setColor(1, 1, 0, 0.35);
+                overlay:setColor(0.8069, 0.8069, 0.0097, 1);
             else
-                overlay:setColor(1, 0, 0, 0.35);
+                overlay:setColor(0.8069, 0.0097, 0.0097, 1);
             end
         end
         overlay:setPosition(g_currentMission.vehicleSpeedBg.x + g_currentMission.vehicleSpeedBg.width * 0.5 + posX - g_currentMission.speedMeterIconOverlay.width * 0.5, g_currentMission.vehicleSpeedBg.y + g_currentMission.speedMeterCenterOffsetY + posY - g_currentMission.speedMeterIconOverlay.height * 0.5);

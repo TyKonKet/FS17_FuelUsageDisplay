@@ -38,9 +38,12 @@ function BetterFuelUsageRH:loadMap(name)
     if self.debug then
         addConsoleCommand("AAABFUToggleDebug", "", "FUToggleDebug", self);
         addConsoleCommand("AAAPrintVehicleValue", "", "PrintVehicleValue", self);
+        addConsoleCommand("AAASetFuelFillLevel", "", "SetFuelFillLevel", self);
     end
     g_currentMission.speedMeterRadiusX = g_currentMission.speedMeterRadiusX * 1.05;
     g_currentMission.speedMeterRadiusY = g_currentMission.speedMeterRadiusY * 1.05;
+    g_currentMission.fuelLevelTextAlpha = 1;
+    g_currentMission.fuelLevelTextAlphaDown = true;
     BetterFuelUsageRH:registerSpecialization();
 end
 
@@ -70,6 +73,14 @@ function BetterFuelUsageRH.PrintVehicleValue(self, p1)
         return "controlledVehicle == nil";
     else
         self:print(tostring(g_currentMission.controlledVehicle[p1]));
+    end
+end
+
+function BetterFuelUsageRH.SetFuelFillLevel(self, p1)
+    if g_currentMission.controlledVehicle == nil then
+        return "controlledVehicle == nil";
+    else
+        g_currentMission.controlledVehicle:setFuelFillLevel(tonumber(p1));
     end
 end
 

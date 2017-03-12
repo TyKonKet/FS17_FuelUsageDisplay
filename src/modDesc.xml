@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="37">
     <author>TyKonKet (Team FSI Modding)</author>
-    <version>3.1.0</version>
+    <version>3.5.0</version>
     <title>
         <en>Better Fuel Usage</en>
         <ru>Улучшено потребление топлива</ru>
@@ -48,6 +48,7 @@ You can find this project on GitHub!
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
     <extraSourceFiles>
+        <sourceFile filename="extensions/FSBaseMission.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
