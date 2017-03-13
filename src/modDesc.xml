@@ -55,11 +55,11 @@ You can find this project on GitHub!
 Changelog 3.5.0
 - Un meilleur réalisme
 - Utilisation de carburant en fonction de la puissance du véhicule au lieu du réservoir de carburant
-- Fixation de la consommation et de la puissance maximale de certains véhicules
-- Des traductions nouvelles et améliorées
+- Fixé la consommation et de la puissance maximale de certains véhicules
+- Amélioration des traductions
 - Correction du scintillement du texte du carburant
-- Nouveau HUD sur panneau de véhicule
-- Nouveaux avertissements «faible consommation»
+- Nouvel ATH (HUD) sur panneau du véhicule
+- Nouveaux avertissements «Niveau de carburant bas»
 - Suppression de textes fastidieux
 Vous pouvez retrouver ce projet sur GitHub!
 ]]>
