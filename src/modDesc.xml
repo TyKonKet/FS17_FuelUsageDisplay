@@ -79,17 +79,17 @@ You can find this project on GitHub!
 ]]>
         </nl>
         <ru>
-            <![CDATA[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
+            <![CDATA[Повышает реалистичность потребления топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
 Changelog 3.5.0
-- Better realism ever had
-- Fuel usage based on vehicle power instead of fuel tank
-- Fixed max fuel usage and power of some vehicles
-- New and improved translations
-- Fixed flickering of fuel text
-- New HUD on vehicle panel
-- New "low fuel" warnings
-- Removed tedious texts
-You can find this project on GitHub!
+- Лучший реализм чем когда-либо был
+- Потребление топлива в зависимости от мощности техники вместо топливного бака
+- Исправлено максимальное потребление топлива и мощности на некоторой технике
+- Новые и исправленные переводы
+- Исправлено мерцание текста топлива
+- Новый HUD на панели техники
+- Новое предупреждение "низкий уровень топлива"
+- Удалены надоедливые тексты
+Вы можете найти этот проект на GitHub!
 ]]>
         </ru>
     </description>
@@ -115,7 +115,7 @@ You can find this project on GitHub!
             <de>Aktivieren/Deaktivieren des realistischen Kraftstoffverbrauchs</de>
             <fr>Cons. carburant réaliste : Activer / Désactiver</fr>
             <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
-            <ru>Изменение между стандартным и реалистичным потреблением топлива</ru>
+            <ru>Вкл/Выкл реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
             <en>Enable realistic fuel usage</en>
@@ -123,7 +123,7 @@ You can find this project on GitHub!
             <de>Aktivieren des realistischen Kraftstoffverbrauchs</de>
             <fr>Activer la consommation réaliste du carburant</fr>
             <nl>Gebruik realistische brandstofgebruik</nl>
-            <ru>Использовать реалистичное потребление топлива</ru>
+            <ru>Включить реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
             <en>Disable realistic fuel usage</en>
@@ -131,7 +131,7 @@ You can find this project on GitHub!
             <de>Deaktivieren des realistischen Kraftstoffverbrauchs</de>
             <fr>Désactiver la consommation réaliste du carburant</fr>
             <nl>Gebruik standaard brandstofgebruik</nl>
-            <ru>Использовать стандартное потребление топлива</ru>
+            <ru>Выключить реалистичное потребление топлива</ru>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
@@ -139,21 +139,21 @@ You can find this project on GitHub!
             <de>Sie können den Kraftstoffverbrauchsmodus nicht ändern, während der Motor läuft</de>
             <fr>Vous ne pouvez pas changer le mode de consommation du carburant lorsque le moteur est en marche</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
-            <ru>Вы не можете изменить режим потребления топлива при работающем двигателе</ru>
+            <ru>Невозможно изменить режим потребления топлива при работающем двигателе</ru>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
             <en>Realistic fuel usage on</en>
             <it>Consumo realistico attivo</it>
             <de>Realistischer Kraftstoffverbrauch an</de>
             <fr>Utilisation réaliste du carburant activée</fr>
-            <ru>Реалистичное потребление топлива</ru>
+            <ru>Реалистичное потребление топлива включено</ru>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
             <en>Realistic fuel usage off</en>
             <it>Consumo realistico disattivo</it>
             <de>Realistischer Kraftstoffverbrauch aus</de>
             <fr>Utilisation réaliste du carburant désactivée</fr>
-            <ru>Стандартное потребление топлива</ru>
+            <ru>Реалистичное потребление топлива выключено</ru>
         </text>
     </l10n>
     <translatedBy>
