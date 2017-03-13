@@ -19,37 +19,76 @@ Changelog 3.5.0
 - New HUD on vehicle panel
 - New "low fuel" warnings
 - Removed tedious texts
-- Smoothed fuel usage
 You can find this project on GitHub!
 ]]>
         </en>
         <it>
             <![CDATA[Rende più realistico e mostra il consumo di carburante dei veicoli a motore.
 Changelog 3.5.0
+- Miglior realismo di sempre
+- Consumo di carburante basato sulla potenza del veicolo invece che sulla capacità del serbatoio
+- Nuove traduzioni e miglioramento di quelle esistenti
+- Risolto sfarfallio del consumo del carburante
+- Nuovi avvissi di basso livello del carburante
+- Migliorato il consumo di alcuni veicoli
+- Nuova HUD nel pannello dei vehicoli
+- Rimossi i testi fastidiosi
 You can find this project on GitHub!
 ]]>
         </it>
         <de>
             <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 Changelog 3.5.0
+- Besserer Realismus hatte jemals
+- Kraftstoffverbrauch auf der Grundlage der Fahrzeugleistung anstelle des Kraftstofftanks
+- Feste max Kraftstoffverbrauch und Kraft von einigen Fahrzeugen
+- Neue und verbesserte Übersetzungen
+- Fixed Flackern von Treibstoff Text
+- Neues HUD auf Fahrzeugpanel
+- Neue Warnmeldungen "low fuel"
+- Entfernt mühsame Texte
 You can find this project on GitHub!
 ]]>
         </de>
         <fr>
             <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 Changelog 3.5.0
+- Un meilleur réalisme
+- Utilisation de carburant en fonction de la puissance du véhicule au lieu du réservoir de carburant
+- Fixation de la consommation et de la puissance maximale de certains véhicules
+- Des traductions nouvelles et améliorées
+- Correction du scintillement du texte du carburant
+- Nouveau HUD sur panneau de véhicule
+- Nouveaux avertissements «faible consommation»
+- Suppression de textes fastidieux
 Vous pouvez retrouver ce projet sur GitHub!
 ]]>
         </fr>
         <nl>
             <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
 Changelog 3.5.0
+- Better realism ever had
+- Fuel usage based on vehicle power instead of fuel tank
+- Fixed max fuel usage and power of some vehicles
+- New and improved translations
+- Fixed flickering of fuel text
+- New HUD on vehicle panel
+- New "low fuel" warnings
+- Removed tedious texts
 You can find this project on GitHub!
 ]]>
         </nl>
         <ru>
             <![CDATA[Повышает реалистичность потребление топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
 Changelog 3.5.0
+- Better realism ever had
+- Fuel usage based on vehicle power instead of fuel tank
+- Fixed max fuel usage and power of some vehicles
+- New and improved translations
+- Fixed flickering of fuel text
+- New HUD on vehicle panel
+- New "low fuel" warnings
+- Removed tedious texts
 You can find this project on GitHub!
 ]]>
         </ru>
