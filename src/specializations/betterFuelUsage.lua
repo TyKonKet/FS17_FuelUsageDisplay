@@ -167,7 +167,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         local woodHarvesterLoad = 0;
         if self:getIsTurnedOn() then
             if self.cutParticleSystemsActive then
-                woodHarvesterLoad = 0.7;
+                woodHarvesterLoad = 0.95;
+            elseif self.isAttachedSplitShapeMoving then
+                woodHarvesterLoad = 0.65;
             else
                 woodHarvesterLoad = 0.25;
             end
