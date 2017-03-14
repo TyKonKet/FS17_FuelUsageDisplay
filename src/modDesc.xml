@@ -155,6 +155,13 @@ Changelog 3.5.0
             <fr>Utilisation réaliste du carburant désactivée</fr>
             <ru>Реалистичное потребление топлива выключено</ru>
         </text>
+        <text name="BFU_LITERS_PER_HOUR">
+            <en>l/h</en>
+            <it>l/h</it>
+            <de>l/h</de>
+            <fr>l/h</fr>
+            <ru>l/h</ru>
+        </text>
     </l10n>
     <translatedBy>
         <en>TyKonKet</en>

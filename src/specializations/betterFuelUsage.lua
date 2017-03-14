@@ -78,7 +78,7 @@ function BetterFuelUsage:load(savegame)
     local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
     local y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * 0.798;
     self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 0.02});
-    self.lhText = DynamicText:new({size = 0.0112, text = " l/h", color = {r = 0.0865, g = 0.0865, b = 0.0865, a = 1}});
+    self.lhText = DynamicText:new({size = 0.0112, text = string.format(" %s", g_i18n:getText("BFU_LITERS_PER_HOUR")), color = {r = 0.0865, g = 0.0865, b = 0.0865, a = 1}});
 end
 
 function BetterFuelUsage:dcLoad()
