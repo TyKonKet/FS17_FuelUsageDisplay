@@ -6,6 +6,7 @@
         <en>Better Fuel Usage</en>
         <ru>Улучшеное потребление топлива</ru>
         <fr>Consommation de carburant réaliste</fr>
+        <nl>Realistische Brandstofgebruik</nl>
     </title>
     <description>
         <en>
@@ -67,15 +68,15 @@ Vous pouvez retrouver ce projet sur GitHub!
         <nl>
             <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
 Changelog 3.5.0
-- Better realism ever had
-- Fuel usage based on vehicle power instead of fuel tank
-- Fixed max fuel usage and power of some vehicles
-- New and improved translations
-- Fixed flickering of fuel text
-- New HUD on vehicle panel
-- New "low fuel" warnings
-- Removed tedious texts
-You can find this project on GitHub!
+- Betere Realisme ooit
+- Brandstofverbruik op basis van vermogen in plaats van brandstoftank
+- max brandstofverbruik en vermogen van sommige voertuigen Aangepast!
+- Nieuwe en verbeterde vertalingen
+- Knipperen van brandstof tekst Aangepast! 
+- Nieuw display op voertuig paneel
+- Nieuw "Weinig brandstof" signaal
+- Vervelende teksten verwijderd
+Je kan dit project op GitHub vinden
 ]]>
         </nl>
         <ru>
@@ -147,6 +148,7 @@ Changelog 3.5.0
             <de>Realistischer Kraftstoffverbrauch an</de>
             <fr>Utilisation réaliste du carburant activée</fr>
             <ru>Реалистичное потребление топлива включено</ru>
+            <nl>Realistisch brandstofgebruik aan</nl>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
             <en>Realistic fuel usage off</en>
@@ -154,6 +156,7 @@ Changelog 3.5.0
             <de>Realistischer Kraftstoffverbrauch aus</de>
             <fr>Utilisation réaliste du carburant désactivée</fr>
             <ru>Реалистичное потребление топлива выключено</ru>
+            <nl>Realistisch brandstofgebruik uit</nl>
         </text>
         <text name="BFU_LITERS_PER_HOUR">
             <en>l/h</en>
@@ -161,6 +164,7 @@ Changelog 3.5.0
             <de>l/h</de>
             <fr>l/h</fr>
             <ru>l/h</ru>
+            <nl>l/h</nl>
         </text>
     </l10n>
     <translatedBy>
