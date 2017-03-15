@@ -97,7 +97,7 @@ function FadeEffect:stop()
 end
 
 function FadeEffect:draw()
-    if self.state ~= FadeEffect.STATES.IDLE then       
+    if self.state ~= FadeEffect.STATES.IDLE then
         setTextBold(self.settings.bold);
         if self.settings.shadow then
             setTextColor(0, 0, 0, self.alpha);
