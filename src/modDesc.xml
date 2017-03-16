@@ -5,7 +5,7 @@
     <title>
         <en>Better Fuel Usage</en>
         <ru>Улучшеное потребление топлива</ru>
-        <fr>Consommation de carburant réaliste</fr>
+        <fr>Better Fuel Usage</fr>
         <nl>Realistische Brandstofgebruik</nl>
     </title>
     <description>
@@ -20,7 +20,6 @@ Changelog 3.5.0
 - New HUD on vehicle panel
 - New "low fuel" warnings
 - Removed tedious texts
-You can find this project on GitHub!
 ]]>
         </en>
         <it>
@@ -34,7 +33,6 @@ Changelog 3.5.0
 - Migliorato il consumo di alcuni veicoli
 - Nuova HUD nel pannello dei vehicoli
 - Rimossi i testi fastidiosi
-You can find this project on GitHub!
 ]]>
         </it>
         <de>
@@ -48,7 +46,6 @@ Changelog 3.5.0
 - Neues HUD auf Fahrzeugpanel
 - Neue Warnmeldungen "low fuel"
 - Entfernt mühsame Texte
-You can find this project on GitHub!
 ]]>
         </de>
         <fr>
@@ -62,7 +59,6 @@ Changelog 3.5.0
 - Nouvel ATH (HUD) sur panneau du véhicule
 - Nouveaux avertissements «Niveau de carburant bas»
 - Suppression de textes fastidieux
-Vous pouvez retrouver ce projet sur GitHub!
 ]]>
         </fr>
         <nl>
@@ -76,7 +72,6 @@ Changelog 3.5.0
 - Nieuw display op voertuig paneel
 - Nieuw "Weinig brandstof" signaal
 - Vervelende teksten verwijderd
-Je kan dit project op GitHub vinden
 ]]>
         </nl>
         <ru>
@@ -90,7 +85,6 @@ Changelog 3.5.0
 - Новый HUD на панели техники
 - Новое предупреждение "низкий уровень топлива"
 - Удалены надоедливые тексты
-Вы можете найти этот проект на GitHub!
 ]]>
         </ru>
     </description>
