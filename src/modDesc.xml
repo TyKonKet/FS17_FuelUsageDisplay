@@ -7,6 +7,7 @@
         <ru>Улучшеное потребление топлива</ru>
         <fr>Better Fuel Usage</fr>
         <nl>Realistische Brandstofgebruik</nl>
+        <pl>Lepsze zużycie paliwa</pl>
     </title>
     <description>
         <en>
@@ -93,6 +94,20 @@ Changelog 3.5.0
 - Удалены надоедливые тексты
 ]]>
         </ru>
+        <pl>
+            <![CDATA[Zmienia zużycie paliwa przez pojazdy na bardziej realistyczne oraz wyświetla aktualne spalanie.
+
+Dziennik zmian dla wersji 3.5.0
+- Największy jak do tej pory realizm
+- Zużycie paliwa bazuje na mocy silnika zamiast na pojemności baku
+- Poprawa maksymalnego zużycia paliwa i mocy dla niektórych pojazdów
+- Nowe i poprawione tłumaczenia
+- Poprawa migotania tekstu
+- Nowy interfejs w panelu pojazdu
+- Nowe ostrzeżenia o niskim poziomie paliwa
+- Usunięte żmudne teksty
+]]>
+        </pl>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
@@ -117,6 +132,7 @@ Changelog 3.5.0
             <fr>Cons. carburant réaliste : Activer / Désactiver</fr>
             <nl>Verander tussen normaal en realitische brandstofgebruik</nl>
             <ru>Вкл/Выкл реалистичное потребление топлива</ru>
+            <pl>Włącz/Wyłącz realistyczne zużycie paliwa</pl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_1">
             <en>Enable realistic fuel usage</en>
@@ -125,6 +141,7 @@ Changelog 3.5.0
             <fr>Activer la consommation réaliste du carburant</fr>
             <nl>Gebruik realistische brandstofgebruik</nl>
             <ru>Включить реалистичное потребление топлива</ru>
+            <pl>Włącz realistyczne zużycie paliwa</pl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_TEXT_2">
             <en>Disable realistic fuel usage</en>
@@ -133,6 +150,7 @@ Changelog 3.5.0
             <fr>Désactiver la consommation réaliste du carburant</fr>
             <nl>Gebruik standaard brandstofgebruik</nl>
             <ru>Выключить реалистичное потребление топлива</ru>
+            <pl>Wyłącz realistyczne zużycie paliwa</pl>
         </text>
         <text name="BFU_SET_FUEL_USAGE_ERROR_TEXT_1">
             <en>You can't change the fuel usage mode while motor is running</en>
@@ -141,6 +159,7 @@ Changelog 3.5.0
             <fr>Vous ne pouvez pas changer le mode de consommation du carburant lorsque le moteur est en marche</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
             <ru>Невозможно изменить режим потребления топлива при работающем двигателе</ru>
+            <en>Nie można zmienić trybu zużycia paliwa w czasie pracy silnika</en>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
             <en>Realistic fuel usage on</en>
@@ -149,6 +168,7 @@ Changelog 3.5.0
             <fr>Utilisation réaliste du carburant activée</fr>
             <ru>Реалистичное потребление топлива включено</ru>
             <nl>Realistisch brandstofgebruik aan</nl>
+            <pl>Realistyczne zużycie paliwa włączone</pl>
         </text>
         <text name="BFU_FUEL_USAGE_DEFAULT_TEXT_1">
             <en>Realistic fuel usage off</en>
@@ -157,6 +177,7 @@ Changelog 3.5.0
             <fr>Utilisation réaliste du carburant désactivée</fr>
             <ru>Реалистичное потребление топлива выключено</ru>
             <nl>Realistisch brandstofgebruik uit</nl>
+            <pl>Realistyczne zużycie paliwa wyłączone</pl>
         </text>
         <text name="BFU_LITERS_PER_HOUR">
             <en>l/h</en>
@@ -165,6 +186,7 @@ Changelog 3.5.0
             <fr>l/h</fr>
             <ru>л/ч</ru>
             <nl>l/h</nl>
+            <pl>l/h</pl>
         </text>
     </l10n>
     <translatedBy>
@@ -174,5 +196,6 @@ Changelog 3.5.0
         <fr>NaeJ</fr>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
         <ru>Gonimy_Vetrom (Vasyl'ko)</ru>
+        <pl>Dzi4d3k</pl>
     </translatedBy>
 </modDesc>
