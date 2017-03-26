@@ -46,6 +46,6 @@ COPY "%mod_path_out%\%mod_name%.zip" "%fs17_mods_path%%mod_name%.zip"
 
 ECHO ################################### %mod_name% published ###################################
 
-CALL "C:\Program Files (x86)\Farming Simulator 2017\FarmingSimulator2017.exe"
+CALL "C:\Program Files (x86)\Farming Simulator 2017\FarmingSimulator2017.exe" -cheats -restart
 ENDLOCAL
 EXIT
