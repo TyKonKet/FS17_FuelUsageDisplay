@@ -1,7 +1,7 @@
 --
--- BetterFuelUsage
+-- Better Fuel Usage
 --
--- @author  TyKonKet
+-- @author TyKonKet
 -- @date 27/10/2016
 BetterFuelUsageRH = {};
 BetterFuelUsageRH.name = "FuelUsageDisplayRH";
@@ -9,7 +9,7 @@ BetterFuelUsageRH.specialization = {};
 BetterFuelUsageRH.specialization.title = "BetterFuelUsage";
 BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
-BetterFuelUsageRH.debug = false;
+BetterFuelUsageRH.debug = true;
 
 function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
     if self.debug then

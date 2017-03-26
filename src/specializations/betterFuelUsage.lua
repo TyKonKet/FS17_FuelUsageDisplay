@@ -1,7 +1,7 @@
 --
--- BetterFuelUsage
+-- Better Fuel Usage
 --
--- @author  TyKonKet
+-- @author TyKonKet
 -- @date 27/10/2016
 BetterFuelUsage = {};
 BetterFuelUsage.name = "BetterFuelUsage";
@@ -195,6 +195,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     end
     if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
         local cuttingLoad = 1 - (self.sampleThreshing.currentPitchOffset - self.sampleThreshing.cuttingPitchOffset) / (self.sampleThreshing.pitchOffset - self.sampleThreshing.cuttingPitchOffset);
+        if cuttingLoad ~= cuttingLoad then
+            cuttingLoad = 0;
+        end
         cuttingLoad = cuttingLoad * 0.15;
         loadFactor = loadFactor + cuttingLoad;
     end

@@ -1,7 +1,7 @@
 --
--- BetterFuelUsage
+-- Better Fuel Usage
 --
--- @author  TyKonKet
+-- @author TyKonKet
 -- @date 24/02/2017
 DynamicText = {};
 DynamicText.ALIGNS = {};

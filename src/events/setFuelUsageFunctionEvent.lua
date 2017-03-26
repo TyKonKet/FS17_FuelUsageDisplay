@@ -1,7 +1,7 @@
 --
--- BetterFuelUsage
+-- Better Fuel Usage
 --
--- @author  TyKonKet
+-- @author TyKonKet
 -- @date 28/02/2017
 SetFuelUsageFunctionEvent = {};
 SetFuelUsageFunctionEvent_mt = Class(SetFuelUsageFunctionEvent, Event);

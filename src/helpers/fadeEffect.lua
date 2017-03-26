@@ -1,7 +1,7 @@
 --
--- CreatorTools
+-- Better Fuel Usage
 --
--- @author  TyKonKet
+-- @author TyKonKet
 -- @date 17/02/2017
 FadeEffect = {};
 FadeEffect.STATES = {};

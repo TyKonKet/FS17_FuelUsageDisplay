@@ -1,3 +1,8 @@
+--
+-- Better Fuel Usage
+--
+-- @author TyKonKet
+-- @date 26/03/2017
 FSBaseMission.drawVehicleHud = function(self, vehicle)
     self.vehicleHudBg:render();
     self.vehicleSpeedBg:render();
