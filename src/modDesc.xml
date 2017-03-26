@@ -4,6 +4,7 @@
     <version>3.5.0</version>
     <title>
         <en>Better Fuel Usage</en>
+        <de>Realistischer Kraftstoffverbrauch</de>
         <ru>Улучшеное потребление топлива</ru>
         <fr>Better Fuel Usage</fr>
         <nl>Realistische Brandstofgebruik</nl>
@@ -42,14 +43,14 @@ Changelog 3.5.0
             <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 
 Changelog 3.5.0
-- Besserer Realismus hatte jemals
-- Kraftstoffverbrauch auf der Grundlage der Fahrzeugleistung anstelle des Kraftstofftanks
-- Feste max Kraftstoffverbrauch und Kraft von einigen Fahrzeugen
+- Realistischer als jemals zuvor
+- Kraftstoffverbrauch auf Grundlage der Fahrzeugleistung anstelle des Kraftstofftanks
+- Maximaler Kraftstoffverbrauch und Leistung von einigen Fahrzeugen angepasst
 - Neue und verbesserte Übersetzungen
-- Fixed Flackern von Treibstoff Text
-- Neues HUD auf Fahrzeugpanel
-- Neue Warnmeldungen "low fuel"
-- Entfernt mühsame Texte
+- Flackernder Text behoben
+- Neues HUD auf dem Fahrzeugpanel
+- Neue Warnmeldung "low fuel"
+- Störende Texte wurden entfernt
 ]]>
         </de>
         <fr>
@@ -192,7 +193,7 @@ Dziennik zmian dla wersji 3.5.0
     <translatedBy>
         <en>TyKonKet</en>
         <it>TyKonKet</it>
-        <de>TyKonKet</de>
+        <de>TyKonKet, mieperDE</de>
         <fr>NaeJ</fr>
         <nl>Jantje van Speijk, FarmingvidsHD</nl>
         <ru>Gonimy_Vetrom (Vasyl'ko)</ru>
