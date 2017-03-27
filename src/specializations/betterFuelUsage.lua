@@ -149,9 +149,11 @@ end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
+    rpmFactor = Utils.clamp(rpmFactor, 0, 1);
     local smoothFactor = 150;
     local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (45 * rpmFactor + 5))) / (45 * rpmFactor + 6);
-    if loadFactor < 0.0001 then
+    loadFactor = Utils.clamp(loadFactor, 0, 1);
+    if loadFactor < 0.001 then
         loadFactor = 0;
     end
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
@@ -419,7 +421,7 @@ function BetterFuelUsage:debugDraw()
             string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
             string.format("Max Fuel Usage --> %s", self.fuelUsage * 1000 * 60 * 60),
             string.format("Final Max Fuel Usage --> %s", self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
-            string.format("Motor Rpm --> min:%s cur:%s max:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm()),
+            string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
         };
