@@ -115,6 +115,7 @@ Dziennik zmian dla wersji 3.6.1
     <extraSourceFiles>
         <sourceFile filename="extensions/FSBaseMission.lua"/>
         <sourceFile filename="extensions/PowerConsumer.lua"/>
+        <sourceFile filename="extensions/Mower.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
