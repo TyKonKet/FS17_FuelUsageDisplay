@@ -5,8 +5,9 @@
 -- @date 27/03/2017
 function PowerConsumer:postLoad(savegame)
     BetterFuelUsage.print("PowerConsumer extension loaded on " .. self.typeName);
+    self.getPtoPowerMultiplier = PowerConsumer.getPtoPowerMultiplier;
     local m = 1.25;
-    local mp = 2;
+    local mp = 1.5;
     --BetterFuelUsage.print(string.format("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m));
     self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
     --BetterFuelUsage.print(string.format("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m));

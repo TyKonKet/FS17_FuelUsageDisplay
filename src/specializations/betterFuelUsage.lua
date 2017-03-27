@@ -307,6 +307,18 @@ function BetterFuelUsage:update(dt)
     end
 end
 
+function BetterFuelUsage:updateTick(dt)
+    if self.exhaustEffects ~= nil then
+        for _, effect in pairs(self.exhaustEffects) do
+            local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+            local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+            local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+            local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.finalLoadFactor);
+            setShaderParameter(effect.effectNode, "exhaustColor", r, g, b, a, false);
+        end
+    end
+end
+
 function BetterFuelUsage:writeStream(streamId, connection)
     if not connection:getIsServer() then
         streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
@@ -443,6 +455,15 @@ function BetterFuelUsage:debugDraw()
         end
         if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
             table.insert(self.debugDrawTexts, string.format("Cutting load --> min:%s, max:%s, cur:%s, load:%s", self.sampleThreshing.cuttingPitchOffset, self.sampleThreshing.pitchOffset, self.sampleThreshing.currentPitchOffset, self.BetterFuelUsage.cuttingLoad));
+        end
+        if self.exhaustEffects ~= nil then
+            for i, effect in pairs(self.exhaustEffects) do
+                local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+                local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+                local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
+                local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.finalLoadFactor);
+                table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%s, g:%s, b:%s, a:%s", i, r, g, b, a));
+            end
         end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
