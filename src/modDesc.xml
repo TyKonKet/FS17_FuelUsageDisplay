@@ -121,6 +121,8 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/Cultivator.lua"/>
         <sourceFile filename="extensions/Trailer.lua"/>
         <sourceFile filename="extensions/Baler.lua"/>
+        <sourceFile filename="extensions/TreeSaw.lua"/>
+        <sourceFile filename="extensions/StumpCutter.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
