@@ -75,11 +75,30 @@ function BetterFuelUsageRH.FUToggleDebug(self)
     return "FUToggleDebug = " .. tostring(self.debug);
 end
 
-function BetterFuelUsageRH.PrintVehicleValue(self, p1)
+function BetterFuelUsageRH.PrintVehicleValue(self, ...)
     if g_currentMission.controlledVehicle == nil then
         return "controlledVehicle == nil";
     else
-        self:print(tostring(g_currentMission.controlledVehicle[p1]));
+        local args = {...};
+        local object = g_currentMission.controlledVehicle;
+        for i, v in ipairs(args) do
+            if tonumber(v) ~= nil then
+                v = tonumber(v);
+            end
+            if i == #args then
+                if object[v] == nil then
+                    self:print(v .. " = nil");
+                else
+                    self:print(object[v]);
+                end
+            else
+                object = object[v];
+                if object == nil then
+                    self:print(v .. " = nil");
+                    break;
+                end
+            end
+        end
     end
 end
 
