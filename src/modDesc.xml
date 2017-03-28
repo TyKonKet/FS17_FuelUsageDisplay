@@ -124,6 +124,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/TreeSaw.lua"/>
         <sourceFile filename="extensions/StumpCutter.lua"/>
         <sourceFile filename="extensions/Tedder.lua"/>
+        <sourceFile filename="extensions/Windrower.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
