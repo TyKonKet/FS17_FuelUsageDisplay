@@ -117,6 +117,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/PowerConsumer.lua"/>
         <sourceFile filename="extensions/Mower.lua"/>
         <sourceFile filename="extensions/WoodCrusher.lua"/>
+        <sourceFile filename="extensions/Cutter.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>

@@ -64,11 +64,9 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.lastLoadFactor = 0;
     self.BetterFuelUsage.finalLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
-    self.BetterFuelUsage.crushingLoad = 0;
     self.BetterFuelUsage.woodHarvesterLoad = 0;
     self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
     self.BetterFuelUsage.loaderVehicleLoad = 0;
-    self.BetterFuelUsage.cuttingLoad = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -190,23 +188,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         end
         self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
-    end
-    if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
-        local cuttingLoad = 1 - (self.sampleThreshing.currentPitchOffset - self.sampleThreshing.cuttingPitchOffset) / (self.sampleThreshing.pitchOffset - self.sampleThreshing.cuttingPitchOffset);
-        if cuttingLoad ~= cuttingLoad then
-            cuttingLoad = 0;
-        end
-        cuttingLoad = cuttingLoad * 0.2;
-        if cuttingLoad == 0 then
-            for object, _ in pairs(self.attachedCutters) do
-                if object.lastCutterAreaBiggerZero then
-                    cuttingLoad = 0.2;
-                    break;
-                end
-            end
-        end
-        self.BetterFuelUsage.cuttingLoad = (cuttingLoad + (self.BetterFuelUsage.cuttingLoad * (smoothFactor / 5))) / ((smoothFactor / 5) + 1);
-        loadFactor = loadFactor + self.BetterFuelUsage.cuttingLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
     local fuelUsageFactor = 1.1;
@@ -444,9 +425,6 @@ function BetterFuelUsage:debugDraw()
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
-        end
-        if self.sampleThreshing ~= nil and self.sampleThreshing.sample ~= nil and self.sampleThreshing.currentPitchOffset ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Cutting load --> min:%s, max:%s, cur:%s, load:%s", self.sampleThreshing.cuttingPitchOffset, self.sampleThreshing.pitchOffset, self.sampleThreshing.currentPitchOffset, self.BetterFuelUsage.cuttingLoad));
         end
         if self.exhaustEffects ~= nil then
             for i, effect in pairs(self.exhaustEffects) do
