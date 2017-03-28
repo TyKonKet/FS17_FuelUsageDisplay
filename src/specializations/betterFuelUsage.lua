@@ -193,7 +193,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     if self.overloading ~= nil then
         local overloadingLoad = 0;
         if self.overloading.didOverload then
-            overloadingLoad = 0.1;
+            overloadingLoad = 0.2;
         end
         self.BetterFuelUsage.overloadingLoad = (overloadingLoad + (self.BetterFuelUsage.overloadingLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.overloadingLoad;
