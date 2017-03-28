@@ -16,6 +16,5 @@ function Cutter:getPtoPowerMultiplier(superFunc)
     if self.lastCutterAreaBiggerZero then
         powerMultiplier = powerMultiplier + 0.3;
     end
-    BetterFuelUsage.print("powerMultiplier " .. powerMultiplier);
     return powerMultiplier;
 end

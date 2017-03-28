@@ -67,6 +67,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.woodHarvesterLoad = 0;
     self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
     self.BetterFuelUsage.loaderVehicleLoad = 0;
+    self.BetterFuelUsage.overloadingLoad = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -188,6 +189,14 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         end
         self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
+    end
+    if self.overloading ~= nil then
+        local overloadingLoad = 0;
+        if self.overloading.didOverload then
+            overloadingLoad = 0.1;
+        end
+        self.BetterFuelUsage.overloadingLoad = (overloadingLoad + (self.BetterFuelUsage.overloadingLoad * smoothFactor)) / (smoothFactor + 1);
+        loadFactor = loadFactor + self.BetterFuelUsage.overloadingLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
     local fuelUsageFactor = 1.1;
