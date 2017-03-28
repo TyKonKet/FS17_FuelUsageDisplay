@@ -3,9 +3,20 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function PowerConsumer:postLoad(savegame)
-    BetterFuelUsage.print("PowerConsumer extension loaded on " .. self.typeName);
+function PowerConsumer:preLoad(savegame)
+    assert(self.getPowerMultiplier == nil, "PowerConsumer needs to be the first specialization which implements getPowerMultiplier");
+    self.getConsumedPtoTorque = PowerConsumer.getConsumedPtoTorque;
+    self.getPtoRpm = PowerConsumer.getPtoRpm;
+    self.getDoConsumePtoPower = PowerConsumer.getDoConsumePtoPower;
+    self.getPowerMultiplier = PowerConsumer.getPowerMultiplier;
+    self.getCanBeTurnedOn = Utils.overwrittenFunction(self.getCanBeTurnedOn, PowerConsumer.getCanBeTurnedOn);
+    self.getIsTurnedOnAllowed = Utils.overwrittenFunction(self.getIsTurnedOnAllowed, PowerConsumer.getIsTurnedOnAllowed);
+    self.getTurnedOnNotAllowedWarning = Utils.overwrittenFunction(self.getTurnedOnNotAllowedWarning, PowerConsumer.getTurnedOnNotAllowedWarning);
     self.getPtoPowerMultiplier = PowerConsumer.getPtoPowerMultiplier;
+end
+
+function PowerConsumer:postLoad()
+    BetterFuelUsage.print("PowerConsumer extension loaded on " .. self.typeName);
     local m = 1.25;
     local mp = 1.5;
     --BetterFuelUsage.print(string.format("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m));

@@ -161,14 +161,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         loadFactor = 0;
     end
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
-    if self.crushingTime ~= nil and self:getIsTurnedOn() then
-        local crushingLoad = 0.15;
-        if self.crushingTime > 0 then
-            crushingLoad = 0.8;
-        end
-        self.BetterFuelUsage.crushingLoad = (crushingLoad + (self.BetterFuelUsage.crushingLoad * smoothFactor)) / (smoothFactor + 1);
-        loadFactor = loadFactor + self.BetterFuelUsage.crushingLoad;
-    end
     if self.typeName == "woodHarvester" then
         local woodHarvesterLoad = 0;
         if self:getIsTurnedOn() then
