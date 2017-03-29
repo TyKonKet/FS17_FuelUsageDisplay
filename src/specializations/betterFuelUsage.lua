@@ -412,6 +412,9 @@ function BetterFuelUsage:debugDraw()
         if self.foldAnimTime ~= nil then
             table.insert(self.debugDrawTexts, string.format("Fold time --> %s", self.foldAnimTime));
         end
+        if self.pipeCurrentState ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Pipe state --> %s", self.pipeCurrentState));
+        end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
         end

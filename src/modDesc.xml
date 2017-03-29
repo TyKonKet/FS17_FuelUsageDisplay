@@ -131,6 +131,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/Cylindered.lua"/>
         <sourceFile filename="extensions/Foldable.lua"/>
         <sourceFile filename="extensions/Motorized.lua"/>
+        <sourceFile filename="extensions/Pipe.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
