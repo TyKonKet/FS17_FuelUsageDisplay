@@ -1,0 +1,6 @@
+<motorizedOverwrites>
+    <vehicle xml="data/vehicles/steerable/newHolland/newHollandFR850.xml" fuelUsage="303" />
+    <vehicle xml="data/vehicles/steerable/krone/kroneBiGX580.xml" fuelUsage="213.5" />
+    <vehicle xml="data/vehicles/steerable/rostselmash/rsm1403.xml" fuelUsage="162.5" />
+    <vehicle xml="data/vehicles/trailers/jenz/jenzBA725.xml" fuelUsage="195" />
+</motorizedOverwrites>

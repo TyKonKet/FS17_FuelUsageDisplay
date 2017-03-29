@@ -8,7 +8,7 @@ BetterFuelUsage.name = "BetterFuelUsage";
 BetterFuelUsage.debug = BetterFuelUsageRH.debug;
 BetterFuelUsage.dir = g_currentModDirectory;
 BetterFuelUsage.driveControl = nil;
-BetterFuelUsage.vehiclesOverwrites = {};
+BetterFuelUsage.motorizedOverwrites = {};
 
 function BetterFuelUsage.prerequisitesPresent(specializations)
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
@@ -24,18 +24,18 @@ function BetterFuelUsage.initSpecialization()
         dc.load = Utils.appendedFunction(dc.load, BetterFuelUsage.dcLoad);
         BetterFuelUsage.driveControl = dc;
     end
-    local xml = loadXMLFile("vehiclesOverwritesXML", BetterFuelUsage.dir .. "vehiclesOverwrites.xml");
+    local xml = loadXMLFile("motorizedOverwritesXML", BetterFuelUsage.dir .. "motorizedOverwrites.xml");
     local index = 0;
     while true do
-        local query = string.format("vehiclesOverwrites.vehicle(%d)", index);
+        local query = string.format("motorizedOverwrites.vehicle(%d)", index);
         if not hasXMLProperty(xml, query) then
             break;
         end
-        local i3d = getXMLString(xml, string.format("%s#i3d", query));
+        local xmlC = getXMLString(xml, string.format("%s#xml", query));
         local fuelUsage = getXMLFloat(xml, string.format("%s#fuelUsage", query));
-        BetterFuelUsage.vehiclesOverwrites[i3d] = {};
-        BetterFuelUsage.vehiclesOverwrites[i3d].fuelUsage = fuelUsage;
-        BetterFuelUsage.print(("vehiclesOverwrite -> i3d:%s fuelUsage:%s"):format(i3d, fuelUsage));
+        BetterFuelUsage.motorizedOverwrites[xmlC] = {};
+        BetterFuelUsage.motorizedOverwrites[xmlC].fuelUsage = fuelUsage;
+        BetterFuelUsage.print(("motorizedOverwrite -> xml:%s fuelUsage:%s"):format(xmlC, fuelUsage));
         index = index + 1;
     end
 end
@@ -65,8 +65,6 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.finalLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
     self.BetterFuelUsage.woodHarvesterLoad = 0;
-    self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = 0;
-    self.BetterFuelUsage.loaderVehicleLoad = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -109,8 +107,8 @@ function BetterFuelUsage:postLoad(savegame)
     end
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
     self.fuelUsage = (self.motor.maxMotorPower / 2000) / (60 * 60 * 1000);
-    if BetterFuelUsage.vehiclesOverwrites[self.i3dFilename] ~= nil then
-        self.fuelUsage = BetterFuelUsage.vehiclesOverwrites[self.i3dFilename].fuelUsage / (60 * 60 * 1000);
+    if BetterFuelUsage.motorizedOverwrites[self.configFileName] ~= nil then
+        self.fuelUsage = BetterFuelUsage.motorizedOverwrites[self.configFileName].fuelUsage / (60 * 60 * 1000);
     end
     if savegame ~= nil and not savegame.resetVehicles then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);
@@ -172,22 +170,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         end
         self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
         loadFactor = loadFactor + self.BetterFuelUsage.woodHarvesterLoad;
-    end
-    if self.typeName == "selfPropelledPotatoHarvester" then
-        local selfPropelledPotatoHarvesterLoad = 0;
-        if self:getIsTurnedOn() then
-            selfPropelledPotatoHarvesterLoad = 0.35;
-        end
-        self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad = (selfPropelledPotatoHarvesterLoad + (self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
-        loadFactor = loadFactor + self.BetterFuelUsage.selfPropelledPotatoHarvesterLoad;
-    end
-    if self.typeName == "loaderVehicle" then
-        local loaderVehicleLoad = 0;
-        if self:getIsTurnedOn() then
-            loaderVehicleLoad = 0.25;
-        end
-        self.BetterFuelUsage.loaderVehicleLoad = (loaderVehicleLoad + (self.BetterFuelUsage.loaderVehicleLoad * smoothFactor)) / (smoothFactor + 1);
-        loadFactor = loadFactor + self.BetterFuelUsage.loaderVehicleLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
     local fuelUsageFactor = 1.25;
@@ -419,7 +401,7 @@ function BetterFuelUsage:debugDraw()
         local size = 0.015;
         local l_space = getTextHeight(size, "#");
         self.debugDrawTexts = {
-            string.format("Vehicle name --> %s", self.i3dFilename),
+            string.format("Vehicle --> %s", self.configFileName),
             string.format("Vehicle Type --> %s", self.typeName),
             string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
             string.format("Max Fuel Usage --> %s", self.fuelUsage * 1000 * 60 * 60),
