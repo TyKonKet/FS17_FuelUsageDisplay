@@ -24,11 +24,16 @@ end
 
 function BetterFuelUsageRH:registerSpecialization()
     local specialization = SpecializationUtil.getSpecialization(self.specialization.name);
+    local powerConsumer = SpecializationUtil.getSpecialization("powerConsumer");
     for _, vehicleType in pairs(VehicleTypeUtil.vehicleTypes) do
         if vehicleType ~= nil then
             if specialization.prerequisitesPresent(vehicleType.specializations) and not self.specialization.blackList[vehicleType.name] then
                 table.insert(vehicleType.specializations, specialization);
                 self:print(self.specialization.title .. " added to " .. vehicleType.name);
+            end
+            if powerConsumer.prerequisitesPresent(vehicleType.specializations) and not SpecializationUtil.hasSpecialization(PowerConsumer, vehicleType.specializations) then
+                table.insert(vehicleType.specializations, powerConsumer);
+                self:print("PowerConsumer added to " .. vehicleType.name);
             end
         end
     end
