@@ -62,9 +62,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.fuelFillLevel = 0;
     self.BetterFuelUsage.lastFillLevel = 0;
     self.BetterFuelUsage.lastLoadFactor = 0;
-    self.BetterFuelUsage.finalLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
-    self.BetterFuelUsage.woodHarvesterLoad = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -157,21 +155,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         loadFactor = 0;
     end
     self.BetterFuelUsage.lastLoadFactor = loadFactor;
-    if self.typeName == "woodHarvester" then
-        local woodHarvesterLoad = 0;
-        if self:getIsTurnedOn() then
-            if self.cutParticleSystemsActive then
-                woodHarvesterLoad = 0.95;
-            elseif self.isAttachedSplitShapeMoving then
-                woodHarvesterLoad = 0.65;
-            else
-                woodHarvesterLoad = 0.25;
-            end
-        end
-        self.BetterFuelUsage.woodHarvesterLoad = (woodHarvesterLoad + (self.BetterFuelUsage.woodHarvesterLoad * smoothFactor)) / (smoothFactor + 1);
-        loadFactor = loadFactor + self.BetterFuelUsage.woodHarvesterLoad;
-    end
-    self.BetterFuelUsage.finalLoadFactor = loadFactor;
     local fuelUsageFactor = 1.25;
     if g_currentMission.missionInfo.fuelUsageLow then
         fuelUsageFactor = 0.75;
@@ -265,10 +248,10 @@ end
 function BetterFuelUsage:updateTick(dt)
     if self.exhaustEffects ~= nil then
         for _, effect in pairs(self.exhaustEffects) do
-            local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-            local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-            local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-            local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.finalLoadFactor);
+            local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+            local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+            local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+            local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.lastLoadFactor);
             setShaderParameter(effect.effectNode, "exhaustColor", r, g, b, a, false);
         end
     end
@@ -278,6 +261,7 @@ function BetterFuelUsage:writeStream(streamId, connection)
     if not connection:getIsServer() then
         streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
         streamWriteFloat32(streamId, self.BetterFuelUsage.maxFuelUsage);
+        streamWriteFloat32(streamId, self.BetterFuelUsage.lastLoadFactor);
     end
 end
 
@@ -285,6 +269,7 @@ function BetterFuelUsage:readStream(streamId, connection)
     if connection:getIsServer() then
         self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
         self.BetterFuelUsage.maxFuelUsage = streamReadFloat32(streamId);
+        self.BetterFuelUsage.lastLoadFactor = streamReadFloat32(streamId);
     end
 end
 
@@ -292,6 +277,7 @@ function BetterFuelUsage:writeUpdateStream(streamId, connection, dirtyMask)
     if not connection:getIsServer() then
         streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
         streamWriteFloat32(streamId, self.BetterFuelUsage.maxFuelUsage);
+        streamWriteFloat32(streamId, self.BetterFuelUsage.lastLoadFactor);
     end
 end
 
@@ -299,6 +285,7 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
     if connection:getIsServer() then
         self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
         self.BetterFuelUsage.maxFuelUsage = streamReadFloat32(streamId);
+        self.BetterFuelUsage.lastLoadFactor = streamReadFloat32(streamId);
     end
 end
 
@@ -404,22 +391,21 @@ function BetterFuelUsage:debugDraw()
             string.format("Vehicle --> %s", self.configFileName),
             string.format("Vehicle Type --> %s", self.typeName),
             string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
-            string.format("Max Fuel Usage --> %s", self.fuelUsage * 1000 * 60 * 60),
-            string.format("Final Max Fuel Usage --> %s", self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
+            string.format("Max Fuel Usage --> %s (:%s)", self.fuelUsage * 1000 * 60 * 60, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
             string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
-            string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor),
-            string.format("Real Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
+            string.format("Final Motor Load --> %s", self.BetterFuelUsage.lastLoadFactor),
+            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
         if self.exhaustEffects ~= nil then
             for i, effect in pairs(self.exhaustEffects) do
-                local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-                local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-                local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.finalLoadFactor);
-                local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.finalLoadFactor);
+                local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+                local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+                local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
+                local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.lastLoadFactor);
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%s, g:%s, b:%s, a:%s", i, r, g, b, a));
             end
         end
