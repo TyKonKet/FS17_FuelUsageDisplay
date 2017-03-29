@@ -149,7 +149,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
     rpmFactor = Utils.clamp(rpmFactor, 0, 1);
     local smoothFactor = 150;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (45 * rpmFactor + 5))) / (45 * rpmFactor + 6);
+    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (65 * rpmFactor + 8))) / (65 * rpmFactor + 9);
     loadFactor = Utils.clamp(loadFactor, 0, 1);
     if loadFactor < 0.001 then
         loadFactor = 0;
