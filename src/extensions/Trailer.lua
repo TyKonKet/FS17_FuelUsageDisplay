@@ -7,6 +7,7 @@ function Trailer:postLoad(savegame)
     --BetterFuelUsage.print("Trailer extension loaded on " .. self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Trailer.getPtoPowerMultiplier);
     self.getDoConsumePtoPower = Utils.overwrittenFunction(self.getDoConsumePtoPower, Trailer.getDoConsumePtoPower);
+    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Trailer.getConsumedPtoTorque);
 end
 
 function Trailer:getPtoPowerMultiplier(superFunc)
@@ -18,6 +19,17 @@ function Trailer:getPtoPowerMultiplier(superFunc)
         powerMultiplier = powerMultiplier + 0.3;
     end
     return powerMultiplier;
+end
+
+function Trailer:getConsumedPtoTorque(superFunc)
+    local torque = 0;
+    if superFunc ~= nil then
+        torque = superFunc(self);
+    end
+    if torque == 0 and (self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING) then
+        torque = torque + (50 / (540 * math.pi / 30));
+    end
+    return torque;
 end
 
 function Trailer:getDoConsumePtoPower(superFunc)
