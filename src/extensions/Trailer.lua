@@ -15,7 +15,7 @@ function Trailer:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if (self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING) and (self.getIsTurnedOn ~= nil and self:getIsTurnedOn()) then
-        powerMultiplier = powerMultiplier + 0.25;
+        powerMultiplier = powerMultiplier + 0.3;
     end
     return powerMultiplier;
 end

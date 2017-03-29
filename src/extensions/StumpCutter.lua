@@ -14,7 +14,7 @@ function StumpCutter:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.curSplitShape ~= nil then
-        powerMultiplier = powerMultiplier + 1.75;
+        powerMultiplier = powerMultiplier + 2;
     end
     return powerMultiplier;
 end

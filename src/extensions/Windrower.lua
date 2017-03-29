@@ -15,7 +15,7 @@ function Windrower:getPtoPowerMultiplier(superFunc)
     end
     for _, ps in pairs(self.sortedWindrowerParticleSystems) do
         if ps.isEnabled then
-            powerMultiplier = powerMultiplier + 0.25;
+            powerMultiplier = powerMultiplier + 0.3;
             break;
         end
     end

@@ -14,7 +14,7 @@ function TreeSaw:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.treeSaw.cutTimer > 0 then
-        powerMultiplier = powerMultiplier + 2.5;
+        powerMultiplier = powerMultiplier + 2.75;
     end
     return powerMultiplier;
 end

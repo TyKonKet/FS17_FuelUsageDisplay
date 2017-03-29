@@ -14,7 +14,7 @@ function Cultivator:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.cultivatorHasGroundContact then
-        powerMultiplier = powerMultiplier + 0.35;
+        powerMultiplier = powerMultiplier + 0.4;
     end
     return powerMultiplier;
 end

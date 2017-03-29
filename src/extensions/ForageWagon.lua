@@ -14,7 +14,7 @@ function ForageWagon:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.forageWagon.lastAreaBiggerZero then
-        powerMultiplier = powerMultiplier + 0.50;
+        powerMultiplier = powerMultiplier + 0.55;
     end
     return powerMultiplier;
 end

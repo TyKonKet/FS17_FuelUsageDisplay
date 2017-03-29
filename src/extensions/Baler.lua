@@ -15,7 +15,7 @@ function Baler:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.baler.lastAreaBiggerZero then
-        powerMultiplier = powerMultiplier + 0.75;
+        powerMultiplier = powerMultiplier + 0.8;
     end
     return powerMultiplier;
 end

@@ -21,7 +21,7 @@ function Mower:getPtoPowerMultiplier(superFunc)
         end
     end
     if mowerEffectActive then
-        powerMultiplier = powerMultiplier + 0.5;
+        powerMultiplier = powerMultiplier + 0.55;
     end
     return powerMultiplier;
 end
