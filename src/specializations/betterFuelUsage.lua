@@ -77,8 +77,8 @@ function BetterFuelUsage:load(savegame)
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
     local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
     local y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * 0.798;
-    self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 0.02});
-    self.lhText = DynamicText:new({size = 0.0112, text = string.format(" %s", g_i18n:getText("BFU_LITERS_PER_HOUR")), color = {r = 0.0865, g = 0.0865, b = 0.0865, a = 1}});
+    self.fuelText = DynamicText:new({position = {x = x, y = y}, size = 14, color = {r = 1, g = 1, b = 1, a = 1}});
+    self.lhText = DynamicText:new({size = 8, text = string.format(" %s", g_i18n:getText("BFU_LITERS_PER_HOUR")), color = {r = 0.0865, g = 0.0865, b = 0.0865, a = 1}});
 end
 
 function BetterFuelUsage:dcLoad()
@@ -199,9 +199,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         loadFactor = loadFactor + self.BetterFuelUsage.overloadingLoad;
     end
     self.BetterFuelUsage.finalLoadFactor = loadFactor;
-    local fuelUsageFactor = 1.1;
+    local fuelUsageFactor = 1.25;
     if g_currentMission.missionInfo.fuelUsageLow then
-        fuelUsageFactor = 0.7;
+        fuelUsageFactor = 0.75;
     end
     local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * loadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
@@ -275,7 +275,7 @@ function BetterFuelUsage:update(dt)
                 self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 80 then
+                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 100 then
                     self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
                     self.BetterFuelUsage.fuelUsedDisplayTime = 0;
                 else
@@ -342,17 +342,21 @@ function BetterFuelUsage:draw()
         BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
-        local color = {1, 1, 1, 1};
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
         if self.fuelUsageHud ~= nil then
             VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
         end
+        local hoursFactor = 0.25;
+        if self.operatingTime ~= nil then
+            hoursFactor = (Utils.lerp(0, 500, (self.operatingTime / (1000 * 60 * 60))) / 500) * 0.25;
+        end
+        fuelUsage = fuelUsage * (0.5 + hoursFactor);
         if fuelUsage < 10 then
             fuelUsage = string.format("%.1f", fuelUsage);
         else
             fuelUsage = string.format("%.0f", fuelUsage);
         end
-        self.fuelText:draw({text = fuelUsage, color = {r = color[1], g = color[2], b = color[3], a = color[4]}});
+        self.fuelText:draw({text = fuelUsage});
         local x, y = self.fuelText:getTextEnd();
         self.lhText:draw({position = {x = x, y = y}});
     end
@@ -430,7 +434,8 @@ function BetterFuelUsage:debugDraw()
             string.format("Final Max Fuel Usage --> %s", self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
             string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
-            string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor)
+            string.format("Final Motor Load --> %s", self.BetterFuelUsage.finalLoadFactor),
+            string.format("Real Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
