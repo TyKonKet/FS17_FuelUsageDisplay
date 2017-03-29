@@ -321,8 +321,8 @@ function BetterFuelUsage:draw()
         end
         local hoursFactor = 0.25;
         if self.operatingTime ~= nil then
-            local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 500);
-            hoursFactor = (opTime / 500) * 0.25;
+            local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
+            hoursFactor = (opTime / 300) * 0.25;
         end
         fuelUsage = fuelUsage * (0.5 + hoursFactor);
         if fuelUsage < 10 then

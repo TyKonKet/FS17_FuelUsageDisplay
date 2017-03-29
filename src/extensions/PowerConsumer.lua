@@ -3,6 +3,31 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
+PowerConsumer.powerConsumerOverwrites = {};
+
+function PowerConsumer.initSpecialization()
+    local xml = loadXMLFile("powerConsumerOverwritesXML", BetterFuelUsage.dir .. "powerConsumerOverwrites.xml");
+    local index = 0;
+    while true do
+        local query = string.format("powerConsumerOverwrites.vehicle(%d)", index);
+        if not hasXMLProperty(xml, query) then
+            break;
+        end
+        local xmlC = getXMLString(xml, string.format("%s#xml", query));
+        local forceFactor = getXMLFloat(xml, string.format("%s#forceFactor", query));
+        local maxForce = getXMLFloat(xml, string.format("%s#maxForce", query));
+        local neededPtoPower = getXMLFloat(xml, string.format("%s#neededPtoPower", query));
+        local ptoRpm = getXMLFloat(xml, string.format("%s#ptoRpm", query));
+        PowerConsumer.powerConsumerOverwrites[xmlC] = {};
+        PowerConsumer.powerConsumerOverwrites[xmlC].forceFactor = forceFactor;
+        PowerConsumer.powerConsumerOverwrites[xmlC].maxForce = maxForce;
+        PowerConsumer.powerConsumerOverwrites[xmlC].neededPtoPower = neededPtoPower;
+        PowerConsumer.powerConsumerOverwrites[xmlC].ptoRpm = ptoRpm;
+        BetterFuelUsage.print(("powerConsumerOverwrite -> xml:%s, forceFactor:%s, maxForce:%s, neededPtoPower:%s, ptoRpm:%s"):format(xmlC, forceFactor, maxForce, neededPtoPower, ptoRpm));
+        index = index + 1;
+    end
+end
+
 function PowerConsumer:preLoad(savegame)
     assert(self.getPowerMultiplier == nil, "PowerConsumer needs to be the first specialization which implements getPowerMultiplier");
     self.getConsumedPtoTorque = PowerConsumer.getConsumedPtoTorque;
@@ -17,6 +42,21 @@ end
 
 function PowerConsumer:postLoad()
     BetterFuelUsage.print("PowerConsumer extension loaded on " .. self.typeName);
+    if PowerConsumer.powerConsumerOverwrites[self.configFileName] ~= nil then
+        local o = PowerConsumer.powerConsumerOverwrites[self.configFileName];
+        if o.forceFactor ~= nil then
+            self.powerConsumer.forceFactor = o.forceFactor;
+        end
+        if o.maxForce ~= nil then
+            self.powerConsumer.maxForce = o.maxForce;
+        end
+        if o.neededPtoPower ~= nil then
+            self.powerConsumer.neededPtoPower = o.neededPtoPower;
+        end
+        if o.ptoRpm ~= nil then
+            self.powerConsumer.ptoRpm = o.ptoRpm;
+        end
+    end
     local m = 1.3;
     local mp = 1.4;
     --BetterFuelUsage.print(string.format("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m));
