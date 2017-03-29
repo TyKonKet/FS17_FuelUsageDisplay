@@ -27,7 +27,7 @@ function Trailer:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if torque == 0 and (self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING) then
-        torque = torque + (50 / (540 * math.pi / 30));
+        torque = torque + (80 / (540 * math.pi / 30));
     end
     return torque;
 end

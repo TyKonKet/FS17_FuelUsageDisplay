@@ -409,6 +409,9 @@ function BetterFuelUsage:debugDraw()
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%s, g:%s, b:%s, a:%s", i, r, g, b, a));
             end
         end
+        if self.foldAnimTime ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Fold time --> %s", self.foldAnimTime));
+        end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
         end
