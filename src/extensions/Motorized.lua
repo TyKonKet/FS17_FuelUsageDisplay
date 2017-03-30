@@ -169,35 +169,35 @@ function Motorized:update(dt)
                 end;
                 
                 if self.sampleMotorRun.sample ~= nil then
-                    local motorSoundRunPitch = math.min(self.sampleMotorRun.pitchOffset + self.motorSoundRunPitchScale * math.abs(roundPerSecondSmoothed), self.motorSoundRunPitchMax);
-                    SoundUtil.setSamplePitch(self.sampleMotorRun, motorSoundRunPitch);
+                    self.motorSoundRunPitch = self.sampleMotorRun.pitchOffset + self.motorSoundRunPitchScale * math.abs(roundPerSecondSmoothed);
+                    SoundUtil.setSamplePitch(self.sampleMotorRun, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax));
                     if self.motorSoundLoadFactor < self.BetterFuelUsage.lastLoadFactor then
                         self.motorSoundLoadFactor = math.min(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor + dt / 750);
                     elseif self.motorSoundLoadFactor > self.BetterFuelUsage.lastLoadFactor then
                         self.motorSoundLoadFactor = math.max(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor - dt / 1000);
                     end
-                    local runVolume = (self.motorSoundLoadFactor + roundPerMinute / (maxRpm - minRpm));
+                    self.motorSoundRunVolume = (self.motorSoundLoadFactor + roundPerMinute / (maxRpm - minRpm));
+                    self.motorSoundRunVolume = Utils.clamp(self.motorSoundRunVolume, 0.0, 1.0);
                     if math.abs(accInput) < 0.01 or Utils.sign(accInput) ~= self.movingDirection then
-                        runVolume = runVolume * 0.8;
-                    end;
-                    runVolume = Utils.clamp(runVolume, 0.0, 1.0);
+                        self.motorSoundRunVolume = self.motorSoundRunVolume * 0.8;
+                    end
                     if self.sampleMotorLoad.sample == nil then
-                        SoundUtil.setSampleVolume(self.sampleMotorRun, runVolume * self.sampleMotorRun.volume);
+                        SoundUtil.setSampleVolume(self.sampleMotorRun, self.motorSoundRunVolume * self.sampleMotorRun.volume);
                         if Vehicle.debugRendering then
-                            renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", runVolume));
+                            renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));
                         end
                     else
-                        local motorSoundLoadPitch = math.min(self.sampleMotorLoad.pitchOffset + self.motorSoundLoadPitchScale * math.abs(roundPerSecondSmoothed), self.motorSoundLoadPitchMax);
-                        SoundUtil.setSamplePitch(self.sampleMotorLoad, motorSoundLoadPitch);
-                        local loadVolume = runVolume;
-                        runVolume = runVolume / 2;
-                        SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, runVolume * self.sampleMotorRun.volume));
+                        self.motorSoundLoadPitch = self.sampleMotorLoad.pitchOffset + self.motorSoundLoadPitchScale * math.abs(roundPerSecondSmoothed);
+                        SoundUtil.setSamplePitch(self.sampleMotorLoad, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax));
+                        self.motorSoundLoadVolume = self.motorSoundRunVolume;
+                        self.motorSoundRunVolume = self.motorSoundRunVolume / 2;
+                        SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume));
                         if Vehicle.debugRendering then
-                            renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", runVolume));
+                            renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));
                         end
-                        SoundUtil.setSampleVolume(self.sampleMotorLoad, math.max(self.motorSoundLoadMinimalVolumeFactor, loadVolume * self.sampleMotorLoad.volume));
+                        SoundUtil.setSampleVolume(self.sampleMotorLoad, math.max(self.motorSoundLoadMinimalVolumeFactor, self.motorSoundLoadVolume * self.sampleMotorLoad.volume));
                         if Vehicle.debugRendering then
-                            renderText(0.3, 0.06, getCorrectTextSize(0.02), string.format("loadVolume = %.2f", loadVolume));
+                            renderText(0.3, 0.06, getCorrectTextSize(0.02), string.format("loadVolume = %.2f", self.motorSoundLoadVolume));
                         end
                     end
                 end

@@ -410,8 +410,7 @@ function BetterFuelUsage:debugDraw()
             string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.lastLoadFactor),
-            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60),
-            string.format("Sound load --> %s", self.motorSoundLoadFactor)
+            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
@@ -425,11 +424,11 @@ function BetterFuelUsage:debugDraw()
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%s, g:%s, b:%s, a:%s", i, r, g, b, a));
             end
         end
-        if self.foldAnimTime ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Fold time --> %s", self.foldAnimTime));
+        if self.motorSoundRunPitch ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%s (%s) volume:%s", self.motorSoundRunPitch, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax), self.motorSoundRunVolume));
         end
-        if self.pipeCurrentState ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Pipe state --> %s", self.pipeCurrentState));
+        if self.motorSoundLoadPitch ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%s (%s) volume:%s", self.motorSoundLoadPitch, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax), self.motorSoundLoadVolume));
         end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
