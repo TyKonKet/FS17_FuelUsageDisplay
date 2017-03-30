@@ -14,7 +14,7 @@ function Overloading:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.overloading.didOverload then
-        torque = torque + (100 / (540 * math.pi / 30));
+        torque = torque + ((self.overloading.capacity / 3) / (540 * math.pi / 30));
     end
     return torque;
 end
