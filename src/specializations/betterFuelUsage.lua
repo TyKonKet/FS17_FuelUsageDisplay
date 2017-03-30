@@ -406,7 +406,8 @@ function BetterFuelUsage:debugDraw()
             string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %s", self.actualLoadPercentage),
             string.format("Final Motor Load --> %s", self.BetterFuelUsage.lastLoadFactor),
-            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
+            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60),
+            string.format("Sound load --> %s", self.motorSoundLoadFactor)
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
