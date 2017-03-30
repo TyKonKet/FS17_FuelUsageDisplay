@@ -182,15 +182,16 @@ function Motorized:update(dt)
                         self.motorSoundRunVolume = self.motorSoundRunVolume * 0.8;
                     end
                     if self.sampleMotorLoad.sample == nil then
-                        SoundUtil.setSampleVolume(self.sampleMotorRun, self.motorSoundRunVolume * self.sampleMotorRun.volume);
+                        self.motorSoundRunVolume = self.motorSoundRunVolume;
+                        SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume));
                         if Vehicle.debugRendering then
                             renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));
                         end
                     else
                         self.motorSoundLoadPitch = self.sampleMotorLoad.pitchOffset + self.motorSoundLoadPitchScale * math.abs(roundPerSecondSmoothed);
                         SoundUtil.setSamplePitch(self.sampleMotorLoad, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax));
-                        self.motorSoundLoadVolume = self.motorSoundRunVolume;
-                        self.motorSoundRunVolume = self.motorSoundRunVolume / 2;
+                        self.motorSoundLoadVolume = (self.motorSoundRunVolume + self.BetterFuelUsage.lastLoadFactor) / 2;
+                        self.motorSoundRunVolume = (self.motorSoundRunVolume * 2 + self.BetterFuelUsage.lastLoadFactor) / 3;
                         SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume));
                         if Vehicle.debugRendering then
                             renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));

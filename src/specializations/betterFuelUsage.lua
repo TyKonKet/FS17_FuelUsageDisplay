@@ -69,6 +69,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.lastLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
     self.BetterFuelUsage.fuelDisplayed = 0;
+    self.motorSoundLoadFactor = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -425,10 +426,10 @@ function BetterFuelUsage:debugDraw()
             end
         end
         if self.motorSoundRunPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%s (%s) volume:%s", self.motorSoundRunPitch, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax), self.motorSoundRunVolume));
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%s (%s) volume:%s (%s)", self.motorSoundRunPitch, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax), self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume)));
         end
         if self.motorSoundLoadPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%s (%s) volume:%s", self.motorSoundLoadPitch, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax), self.motorSoundLoadVolume));
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%s (%s) volume:%s (%s)", self.motorSoundLoadPitch, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax), self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor, self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
         end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
