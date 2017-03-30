@@ -19,6 +19,11 @@ function BetterFuelUsage.prerequisitesPresent(specializations)
 end
 
 function BetterFuelUsage.initSpecialization()
+    local gb = SpecializationUtil.getSpecialization("FS17_GearboxAddon.gearboxMogli");
+    if gb ~= nil then
+        gb.draw = Utils.prependedFunction(gb.draw, BetterFuelUsage.gbDraw);
+        BetterFuelUsage.gearBox = gb;
+    end
     local dc = SpecializationUtil.getSpecialization("ZZZ_driveControl.driveControl");
     if dc ~= nil then
         dc.load = Utils.appendedFunction(dc.load, BetterFuelUsage.dcLoad);
@@ -63,6 +68,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.lastFillLevel = 0;
     self.BetterFuelUsage.lastLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
+    self.BetterFuelUsage.fuelDisplayed = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -289,6 +295,10 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
     end
 end
 
+function BetterFuelUsage:gbDraw()
+    self.mrGbMD.Fuel = self.BetterFuelUsage.fuelDisplayed;
+end
+
 function BetterFuelUsage:draw()
     if self.isEntered then
         if not self:getIsMotorStarted() then
@@ -299,7 +309,7 @@ function BetterFuelUsage:draw()
             end
         end
         --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
-        BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
+        BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.lastLoadFactor);
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
@@ -312,6 +322,7 @@ function BetterFuelUsage:draw()
             hoursFactor = (opTime / 300) * 0.25;
         end
         fuelUsage = fuelUsage * (0.5 + hoursFactor);
+        self.BetterFuelUsage.fuelDisplayed = fuelUsage;
         if fuelUsage < 10 then
             fuelUsage = string.format("%.1f", fuelUsage);
         else
