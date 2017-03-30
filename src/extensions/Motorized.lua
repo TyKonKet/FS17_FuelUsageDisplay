@@ -1,3 +1,8 @@
+--
+--Better Fuel Usage
+--
+--@author TyKonKet
+--@date 30/03/2017
 function Motorized:update(dt)
     if self.isClient then
         if self.isEntered and self:getIsActiveForInput(false) and not g_currentMission.missionInfo.automaticMotorStartEnabled then
