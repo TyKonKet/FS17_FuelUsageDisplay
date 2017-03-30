@@ -318,15 +318,15 @@ function BetterFuelUsage:draw()
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-        if self.fuelUsageHud ~= nil then
-            VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
-        end
         local hoursFactor = 0.25;
         if self.operatingTime ~= nil then
             local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
             hoursFactor = (opTime / 300) * 0.25;
         end
         fuelUsage = fuelUsage * (0.5 + hoursFactor);
+        if self.fuelUsageHud ~= nil then
+            VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
+        end
         self.BetterFuelUsage.fuelDisplayed = fuelUsage;
         if fuelUsage < 10 then
             fuelUsage = string.format("%.1f", fuelUsage);
