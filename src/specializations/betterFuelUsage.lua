@@ -222,6 +222,10 @@ function BetterFuelUsage:startMotor()
     self.BetterFuelUsage.lastLoadFactor = 0;
 end
 
+function BetterFuelUsage:stopMotor()
+    self.BetterFuelUsage.lastLoadFactor = 0;
+end
+
 function BetterFuelUsage:update(dt)
     if self.isEntered then
         if InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
