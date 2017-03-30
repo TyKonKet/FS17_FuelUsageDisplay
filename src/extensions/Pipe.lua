@@ -15,7 +15,7 @@ function Pipe:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.pipeCurrentState == 0 then
-        torque = torque + (10 / (540 * math.pi / 30));
+        torque = torque + (50 / (540 * math.pi / 30));
     end
     return torque;
 end
