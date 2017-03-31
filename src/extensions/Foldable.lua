@@ -22,6 +22,7 @@ function Foldable:postPostLoad(savegame)
     countedParts = nil;
     BetterFuelUsage.print("Foldable extension loaded on " .. self.typeName .. " animPartsCount " .. self.animPartsCount);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Foldable.getConsumedPtoTorque);
+    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Foldable.getPtoRpm);
 end
 Foldable.postLoad = Utils.appendedFunction(Foldable.postLoad, Foldable.postPostLoad);
 
@@ -31,7 +32,18 @@ function Foldable:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.foldAnimTime > 0 and self.foldAnimTime < 1 and self.foldAnimTime ~= self.foldMiddleAnimTime then
-        torque = torque + (8 * self.animPartsCount / (540 * math.pi / 30));
+        torque = torque + (8 * self.animPartsCount / (870 * math.pi / 30));
     end
     return torque;
+end
+
+function Foldable:getPtoRpm(superFunc)
+    local ptoRpm = 0;
+    if superFunc ~= nil then
+        ptoRpm = superFunc(self);
+    end
+    if self.foldAnimTime > 0 and self.foldAnimTime < 1 and self.foldAnimTime ~= self.foldMiddleAnimTime then
+        ptoRpm = math.max(ptoRpm, 870);
+    end
+    return ptoRpm;
 end
