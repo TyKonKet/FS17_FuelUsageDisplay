@@ -6,6 +6,7 @@
 function WoodHarvester:postLoad(savegame)
     BetterFuelUsage.print("WoodHarvester extension loaded on " .. self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, WoodHarvester.getConsumedPtoTorque);
+    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, WoodHarvester.getPtoRpm);
 end
 
 function WoodHarvester:getConsumedPtoTorque(superFunc)
@@ -14,12 +15,26 @@ function WoodHarvester:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self:getIsTurnedOn() then
-        torque = torque + ((200 * self.cutMaxRadius) / (540 * math.pi / 30));
+        torque = torque + ((100 * self.cutMaxRadius) / (540 * math.pi / 30));
         if self.cutParticleSystemsActive then
-            torque = torque + ((400 * self.cutMaxRadius) / (540 * math.pi / 30));
+            torque = torque + ((400 * self.cutMaxRadius) / (1080 * math.pi / 30));
         elseif self.isAttachedSplitShapeMoving then
-            torque = torque + ((300 * self.cutMaxRadius) / (540 * math.pi / 30));
+            torque = torque + ((300 * self.cutMaxRadius) / (1080 * math.pi / 30));
         end
     end
     return torque;
+end
+
+function WoodHarvester:getPtoRpm(superFunc)
+    local ptoRpm = 0;
+    if superFunc ~= nil then
+        ptoRpm = superFunc(self);
+    end
+    if self:getIsTurnedOn() then
+        ptoRpm = math.max(ptoRpm, 540);
+        if self.cutParticleSystemsActive or self.isAttachedSplitShapeMoving then
+            ptoRpm = math.max(ptoRpm, 1080);
+        end
+    end
+    return ptoRpm;
 end
