@@ -1,5 +1,5 @@
 <powerConsumerOverwrites>
     <vehicle xml="data/vehicles/steerable/grimme/grimmeTectron415.xml" ptoRpm="540" neededPtoPower="180"/>
-    <vehicle xml="data/vehicles/steerable/holmer/holmerTerraFelis2.xml" ptoRpm="540" neededPtoPower="120"/>
+    <vehicle xml="data/vehicles/steerable/holmer/holmerTerraFelis2.xml" ptoRpm="540" neededPtoPower="150"/>
     <vehicle xml="data/vehicles/tools/jcb/jcbStumpCutter.xml" ptoRpm="540" neededPtoPower="15"/>
 </powerConsumerOverwrites>
