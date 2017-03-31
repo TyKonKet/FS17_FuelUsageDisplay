@@ -33,4 +33,3 @@ function WoodCrusher:getPtoRpm(superFunc)
     end
     return ptoRpm;
 end
-
