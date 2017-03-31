@@ -151,60 +151,56 @@ function Motorized:update(dt)
                 -- The actual rpm offset is 50% from the motor and 50% from the speed
                 local targetRpmOffset = (motorRpm - minRpm) * 0.5 + math.min(self.lastSpeed / maxSpeed, 1) * (maxRpm - minRpm) * 0.5;
                 
-                if Vehicle.debugRendering then
-                    renderText(0.3, 0.14, getCorrectTextSize(0.02), string.format("getLastMotorRpm() = %.2f", self.motor:getLastMotorRpm()));
-                    renderText(0.3, 0.12, getCorrectTextSize(0.02), string.format("getEqualziedMotorRpm() = %.2f", self.motor:getEqualizedMotorRpm()));
-                    renderText(0.3, 0.10, getCorrectTextSize(0.02), string.format("targetRpmOffset = %.2f", targetRpmOffset));
-                end
-                
-                
+                --if Vehicle.debugRendering then
+                renderText(0.3, 0.14, getCorrectTextSize(0.02), string.format("getLastMotorRpm() = %.2f", self.motor:getLastMotorRpm()));
+                renderText(0.3, 0.12, getCorrectTextSize(0.02), string.format("getEqualziedMotorRpm() = %.2f", self.motor:getEqualizedMotorRpm()));
+                renderText(0.3, 0.10, getCorrectTextSize(0.02), string.format("targetRpmOffset = %.2f", targetRpmOffset));
+                --end
                 local alpha = math.pow(0.01, dt * 0.001);
                 local roundPerMinute = targetRpmOffset + alpha * (self.lastRoundPerMinute - targetRpmOffset);
-                
+                renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("roundPerMinute = %.2f", roundPerMinute));
                 self.lastRoundPerMinute = roundPerMinute;
                 
                 local roundPerSecondSmoothed = roundPerMinute / 60;
+                renderText(0.3, 0.06, getCorrectTextSize(0.02), string.format("roundPerSecondSmoothed = %.2f", roundPerSecondSmoothed));
                 
                 if self.sampleMotor.sample ~= nil then
                     local motorSoundPitch = math.min(self.sampleMotor.pitchOffset + self.motorSoundPitchScale * math.abs(roundPerSecondSmoothed), self.motorSoundPitchMax);
                     SoundUtil.setSamplePitch(self.sampleMotor, motorSoundPitch);
-                    
                     local deltaVolume = (self.sampleMotor.volume - self.motorSoundVolumeMin) * math.max(0.0, math.min(1.0, self:getLastSpeed() / self.motorSoundVolumeMinSpeed))
                     SoundUtil.setSampleVolume(self.sampleMotor, math.max(self.motorSoundVolumeMin, self.sampleMotor.volume - deltaVolume));
-                end;
+                end
                 
                 if self.sampleMotorRun.sample ~= nil then
-                    self.motorSoundRunPitch = self.sampleMotorRun.pitchOffset + self.motorSoundRunPitchScale * math.abs(roundPerSecondSmoothed);
-                    SoundUtil.setSamplePitch(self.sampleMotorRun, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax));
                     if self.motorSoundLoadFactor < self.BetterFuelUsage.lastLoadFactor then
-                        self.motorSoundLoadFactor = math.min(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor + dt / 750);
+                        self.motorSoundLoadFactor = math.min(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor + dt / 3000);
                     elseif self.motorSoundLoadFactor > self.BetterFuelUsage.lastLoadFactor then
-                        self.motorSoundLoadFactor = math.max(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor - dt / 1000);
-                    end
-                    self.motorSoundRunVolume = (self.motorSoundLoadFactor + roundPerMinute / (maxRpm - minRpm));
-                    self.motorSoundRunVolume = Utils.clamp(self.motorSoundRunVolume, 0.0, 1.0);
-                    if math.abs(accInput) < 0.01 or Utils.sign(accInput) ~= self.movingDirection then
-                        self.motorSoundRunVolume = self.motorSoundRunVolume * 0.8;
+                        self.motorSoundLoadFactor = math.max(self.BetterFuelUsage.lastLoadFactor, self.motorSoundLoadFactor - dt / 2000);
                     end
                     if self.sampleMotorLoad.sample == nil then
+                        self.motorSoundRunVolume = (self.motorSoundLoadFactor + roundPerMinute / (maxRpm - minRpm));
+                        self.motorSoundRunVolume = Utils.clamp(self.motorSoundRunVolume, 0.0, 1.0);
+                        if math.abs(accInput) < 0.01 or Utils.sign(accInput) ~= self.movingDirection then
+                            self.motorSoundRunVolume = self.motorSoundRunVolume * 0.8;
+                        end
                         self.motorSoundRunVolume = self.motorSoundRunVolume;
                         SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume));
                         if Vehicle.debugRendering then
                             renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));
                         end
                     else
-                        self.motorSoundLoadPitch = self.sampleMotorLoad.pitchOffset + self.motorSoundLoadPitchScale * math.abs(roundPerSecondSmoothed);
-                        SoundUtil.setSamplePitch(self.sampleMotorLoad, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax));
-                        self.motorSoundLoadVolume = (self.motorSoundRunVolume + self.BetterFuelUsage.lastLoadFactor) / 2;
-                        self.motorSoundRunVolume = (self.motorSoundRunVolume * 2 + self.BetterFuelUsage.lastLoadFactor) / 3;
+                        self.motorSoundRunVolume = roundPerMinute / (maxRpm - minRpm);
+                        self.motorSoundLoadVolume = Utils.clamp(self.motorSoundLoadFactor + (0.3 * self.motorSoundRunVolume), 0.0, 1.0);
+                        self.motorSoundRunPitch = self.sampleMotorRun.pitchOffset + (self.motorSoundRunPitchMax - self.sampleMotorRun.pitchOffset) * self.motorSoundRunVolume;
+                        self.motorSoundLoadPitch = self.sampleMotorLoad.pitchOffset + (self.motorSoundLoadPitchMax - self.sampleMotorLoad.pitchOffset) * Utils.clamp(self.motorSoundLoadFactor + self.motorSoundRunVolume, 0.0, 1.0);
+                        if math.abs(accInput) < 0.01 or Utils.sign(accInput) ~= self.movingDirection then
+                            self.motorSoundRunVolume = self.motorSoundRunVolume * 0.9;
+                            self.motorSoundLoadVolume = self.motorSoundLoadVolume * 0.9;
+                        end
                         SoundUtil.setSampleVolume(self.sampleMotorRun, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume));
-                        if Vehicle.debugRendering then
-                            renderText(0.3, 0.08, getCorrectTextSize(0.02), string.format("runVolume = %.2f", self.motorSoundRunVolume));
-                        end
                         SoundUtil.setSampleVolume(self.sampleMotorLoad, math.max(self.motorSoundLoadMinimalVolumeFactor, self.motorSoundLoadVolume * self.sampleMotorLoad.volume));
-                        if Vehicle.debugRendering then
-                            renderText(0.3, 0.06, getCorrectTextSize(0.02), string.format("loadVolume = %.2f", self.motorSoundLoadVolume));
-                        end
+                        SoundUtil.setSamplePitch(self.sampleMotorRun, self.motorSoundRunPitch);
+                        SoundUtil.setSamplePitch(self.sampleMotorLoad, self.motorSoundLoadPitch);
                     end
                 end
                 

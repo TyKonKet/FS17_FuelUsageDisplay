@@ -406,12 +406,12 @@ function BetterFuelUsage:debugDraw()
         self.debugDrawTexts = {
             string.format("Vehicle --> %s", self.configFileName),
             string.format("Vehicle Type --> %s", self.typeName),
-            string.format("Vehicle Power --> %s", self.motor.maxMotorPower),
-            string.format("Max Fuel Usage --> %s (:%s)", self.fuelUsage * 1000 * 60 * 60, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
-            string.format("Motor Rpm --> min:%s cur:%s max:%s factor:%s", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
-            string.format("Motor Load --> %s", self.actualLoadPercentage),
-            string.format("Final Motor Load --> %s", self.BetterFuelUsage.lastLoadFactor),
-            string.format("Fuel Usage --> %s", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
+            string.format("Vehicle Power --> %.0f", self.motor.maxMotorPower),
+            string.format("Max Fuel Usage --> %.0f (%.0f)", self.fuelUsage * 1000 * 60 * 60, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
+            string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
+            string.format("Motor Load --> %.2f", self.actualLoadPercentage),
+            string.format("Final Motor Load --> %.2f", self.BetterFuelUsage.lastLoadFactor),
+            string.format("Fuel Usage --> %.1f", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
         };
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
@@ -422,14 +422,14 @@ function BetterFuelUsage:debugDraw()
                 local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
                 local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
                 local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.lastLoadFactor);
-                table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%s, g:%s, b:%s, a:%s", i, r, g, b, a));
+                table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%.2f, g:%.2f, b:%.2f, a:%.2f", i, r, g, b, a));
             end
         end
         if self.motorSoundRunPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%s (%s) volume:%s (%s)", self.motorSoundRunPitch, math.min(self.motorSoundRunPitch, self.motorSoundRunPitchMax), self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor, self.motorSoundRunVolume * self.sampleMotorRun.volume)));
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundRunPitch, self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor,self.motorSoundRunVolume * self.sampleMotorRun.volume)));
         end
         if self.motorSoundLoadPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%s (%s) volume:%s (%s)", self.motorSoundLoadPitch, math.min(self.motorSoundLoadPitch, self.motorSoundLoadPitchMax), self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor, self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
+            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundLoadPitch, self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor,self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
         end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);

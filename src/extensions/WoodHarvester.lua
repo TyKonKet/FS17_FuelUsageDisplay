@@ -17,9 +17,9 @@ function WoodHarvester:getConsumedPtoTorque(superFunc)
     if self:getIsTurnedOn() then
         torque = torque + ((100 * self.cutMaxRadius) / (540 * math.pi / 30));
         if self.cutParticleSystemsActive then
-            torque = torque + ((400 * self.cutMaxRadius) / (1080 * math.pi / 30));
+            torque = torque + ((400 * self.cutMaxRadius) / (980 * math.pi / 30));
         elseif self.isAttachedSplitShapeMoving then
-            torque = torque + ((300 * self.cutMaxRadius) / (1080 * math.pi / 30));
+            torque = torque + ((300 * self.cutMaxRadius) / (980 * math.pi / 30));
         end
     end
     return torque;
@@ -33,7 +33,7 @@ function WoodHarvester:getPtoRpm(superFunc)
     if self:getIsTurnedOn() then
         ptoRpm = math.max(ptoRpm, 540);
         if self.cutParticleSystemsActive or self.isAttachedSplitShapeMoving then
-            ptoRpm = math.max(ptoRpm, 1080);
+            ptoRpm = math.max(ptoRpm, 980);
         end
     end
     return ptoRpm;

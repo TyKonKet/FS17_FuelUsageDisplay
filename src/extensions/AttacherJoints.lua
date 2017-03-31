@@ -16,7 +16,7 @@ function AttacherJoints:getConsumedPtoTorque(superFunc)
     end
     for _, j in pairs(self.attacherJoints) do
         if j.moveAlpha ~= nil and j.moveAlpha ~= 0 and j.moveAlpha ~= 1 then
-            torque = torque + (50 / (540 * math.pi / 30));
+            --torque = torque + (30 / (540 * math.pi / 30));
         end
     end
     return torque;

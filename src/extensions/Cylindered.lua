@@ -18,7 +18,7 @@ function Cylindered:getConsumedPtoTorque(superFunc)
             local move, _ = InputBinding.getInputAxis(tool.axisActionIndex);
             move = math.abs(move);
             if not InputBinding.isAxisZero(move) then
-                torque = torque + (move * 50 / (540 * math.pi / 30));
+                torque = torque + (move * 20 / (540 * math.pi / 30));
             end
         end
     end

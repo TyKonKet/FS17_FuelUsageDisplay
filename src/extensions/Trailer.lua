@@ -40,7 +40,7 @@ function Trailer:getConsumedPtoTorque(superFunc)
     end
     local power = self:getUnitCapacity(self.trailer.fillUnitIndex) / 200;
     if torque == 0 and (self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING) then
-        torque = torque + (20 + (80 *  self:getUnitFillLevel(self.trailer.fillUnitIndex) / self:getUnitCapacity(self.trailer.fillUnitIndex)) / (540 * math.pi / 30));
+        torque = torque + (10 + (power *  self:getUnitFillLevel(self.trailer.fillUnitIndex) / self:getUnitCapacity(self.trailer.fillUnitIndex)) / (540 * math.pi / 30));
     end
     return torque;
 end
