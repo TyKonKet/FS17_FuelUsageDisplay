@@ -153,20 +153,16 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    local rpmFactor = (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm());
-    rpmFactor = Utils.clamp(rpmFactor, 0, 1);
-    local smoothFactor = 150;
-    local loadFactor = (self.actualLoadPercentage + (self.BetterFuelUsage.lastLoadFactor * (65 * rpmFactor + 8))) / (65 * rpmFactor + 9);
-    loadFactor = Utils.clamp(loadFactor, 0, 1);
-    if loadFactor < 0.001 then
-        loadFactor = 0;
+    if self.BetterFuelUsage.lastLoadFactor < self.actualLoadPercentage then
+        self.BetterFuelUsage.lastLoadFactor = math.min(self.actualLoadPercentage, self.BetterFuelUsage.lastLoadFactor + dt / 3000);
+    elseif self.BetterFuelUsage.lastLoadFactor > self.actualLoadPercentage then
+        self.BetterFuelUsage.lastLoadFactor = math.max(self.actualLoadPercentage, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
     end
-    self.BetterFuelUsage.lastLoadFactor = loadFactor;
     local fuelUsageFactor = 1.25;
     if g_currentMission.missionInfo.fuelUsageLow then
         fuelUsageFactor = 0.75;
     end
-    local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * loadFactor;
+    local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * self.BetterFuelUsage.lastLoadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
     self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.05 * self.fuelUsage;
     if fuelUsed > 0 then
@@ -425,12 +421,12 @@ function BetterFuelUsage:debugDraw()
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%.2f, g:%.2f, b:%.2f, a:%.2f", i, r, g, b, a));
             end
         end
-        if self.motorSoundRunPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundRunPitch, self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor,self.motorSoundRunVolume * self.sampleMotorRun.volume)));
-        end
-        if self.motorSoundLoadPitch ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundLoadPitch, self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor,self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
-        end
+        --if self.motorSoundRunPitch ~= nil then
+        --    table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundRunPitch, self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor,self.motorSoundRunVolume * self.sampleMotorRun.volume)));
+        --end
+        --if self.motorSoundLoadPitch ~= nil then
+        --    table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundLoadPitch, self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor,self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
+        --end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
         end
