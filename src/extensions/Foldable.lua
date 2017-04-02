@@ -32,7 +32,7 @@ function Foldable:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.foldAnimTime > 0 and self.foldAnimTime < 1 and self.foldAnimTime ~= self.foldMiddleAnimTime then
-        torque = torque + (8 * self.animPartsCount / (870 * math.pi / 30));
+        torque = torque + (5 * self.animPartsCount / (540 * math.pi / 30));
     end
     return torque;
 end
@@ -43,7 +43,7 @@ function Foldable:getPtoRpm(superFunc)
         ptoRpm = superFunc(self);
     end
     if self.foldAnimTime > 0 and self.foldAnimTime < 1 and self.foldAnimTime ~= self.foldMiddleAnimTime then
-        ptoRpm = math.max(ptoRpm, 870);
+        ptoRpm = math.max(ptoRpm, 540);
     end
     return ptoRpm;
 end
