@@ -29,7 +29,7 @@ function Trailer:getPtoRpm(superFunc)
     end
     if self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING or (#self.tipAnimations < 2 and self.tipState == Trailer.TIPSTATE_OPEN) then
         local factor = self:getUnitFillLevel(self.trailer.fillUnitIndex) / self:getUnitCapacity(self.trailer.fillUnitIndex);
-        ptoRpm = math.max(ptoRpm, 430 + 330 * factor);
+        ptoRpm = math.max(ptoRpm, 430 + 550 * factor);
     end
     return ptoRpm;
 end

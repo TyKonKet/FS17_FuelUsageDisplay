@@ -21,13 +21,15 @@ function Cylindered:getConsumedPtoTorque(superFunc)
 end
 
 function Cylindered:postUpdate(dt)
-    self.movingToolsCount = 0;
-    for _, tool in pairs(self.movingTools) do
-        if tool.axisActionIndex ~= nil then
-            local move, _ = InputBinding.getInputAxis(tool.axisActionIndex);
-            move = math.abs(move);
-            if not InputBinding.isAxisZero(move) then
-                self.movingToolsCount = self.movingToolsCount + move;
+    if Cylindered.getIsEntered(self) then
+        self.movingToolsCount = 0;
+        for _, tool in pairs(self.movingTools) do
+            if tool.axisActionIndex ~= nil then
+                local move, _ = InputBinding.getInputAxis(tool.axisActionIndex);
+                move = math.abs(move);
+                if not InputBinding.isAxisZero(move) then
+                    self.movingToolsCount = self.movingToolsCount + move;
+                end
             end
         end
     end
@@ -58,3 +60,13 @@ function Cylindered:postWriteUpdateStream(streamId, connection, dirtyMask)
     end
 end
 Cylindered.writeUpdateStream = Utils.appendedFunction(Cylindered.writeUpdateStream, Cylindered.postWriteUpdateStream);
+
+function Cylindered.getIsEntered(v)
+        if v.isEntered then
+            return true;
+        end
+        if v.attacherVehicle ~= nil then
+            return Cylindered.getIsEntered(v.attacherVehicle);
+        end
+        return false;
+    end
