@@ -69,7 +69,6 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.lastLoadFactor = 0;
     self.BetterFuelUsage.helperFuelUsed = 0;
     self.BetterFuelUsage.fuelDisplayed = 0;
-    self.motorSoundLoadFactor = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
 end
@@ -107,11 +106,12 @@ end
 
 function BetterFuelUsage:postLoad(savegame)
     BetterFuelUsage.print("BetterFuelUsage:postLoad()");
+    self.BetterFuelUsage.maxMotorPower = self.motor.maxMotorPower;
     if self.fuelFillLitersPerSecond ~= nil then
         self.fuelFillLitersPerSecond = self.fuelFillLitersPerSecond / 2;
     end
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
-    self.fuelUsage = (self.motor.maxMotorPower / 2000) / (60 * 60 * 1000);
+    self.fuelUsage = (self.BetterFuelUsage.maxMotorPower / 2000) / (60 * 60 * 1000);
     if BetterFuelUsage.motorizedOverwrites[self.configFileName] ~= nil then
         self.fuelUsage = BetterFuelUsage.motorizedOverwrites[self.configFileName].fuelUsage / (60 * 60 * 1000);
     end
@@ -153,10 +153,17 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    if self.BetterFuelUsage.lastLoadFactor < self.actualLoadPercentage then
-        self.BetterFuelUsage.lastLoadFactor = math.min(self.actualLoadPercentage, self.BetterFuelUsage.lastLoadFactor + dt / 3000);
-    elseif self.BetterFuelUsage.lastLoadFactor > self.actualLoadPercentage then
-        self.BetterFuelUsage.lastLoadFactor = math.max(self.actualLoadPercentage, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
+    local targetFactor = 0;
+    if BetterFuelUsage.gearBox == nil then
+        targetFactor = self.actualLoadPercentage;
+    else
+        targetFactor = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
+    end
+    targetFactor = Utils.clamp(targetFactor, 0, 1);
+    if self.BetterFuelUsage.lastLoadFactor < targetFactor then
+        self.BetterFuelUsage.lastLoadFactor = math.min(targetFactor, self.BetterFuelUsage.lastLoadFactor + dt / 3000);
+    elseif self.BetterFuelUsage.lastLoadFactor > targetFactor then
+        self.BetterFuelUsage.lastLoadFactor = math.max(targetFactor, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
     end
     local fuelUsageFactor = 1.25;
     if g_currentMission.missionInfo.fuelUsageLow then
@@ -402,13 +409,18 @@ function BetterFuelUsage:debugDraw()
         self.debugDrawTexts = {
             string.format("Vehicle --> %s", self.configFileName),
             string.format("Vehicle Type --> %s", self.typeName),
-            string.format("Vehicle Power --> %.0f", self.motor.maxMotorPower),
+            string.format("Vehicle Power --> %s", self.BetterFuelUsage.maxMotorPower),
             string.format("Max Fuel Usage --> %.0f (%.0f)", self.fuelUsage * 1000 * 60 * 60, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
-            string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())),
             string.format("Motor Load --> %.2f", self.actualLoadPercentage),
             string.format("Final Motor Load --> %.2f", self.BetterFuelUsage.lastLoadFactor),
             string.format("Fuel Usage --> %.1f", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
         };
+        if BetterFuelUsage.gearBox ~= nil then
+            local rpmRateo = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
+            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.mrGbMS.IdleRpm, self:mrGbMGetCurrentRPM(), self.mrGbMS.RatedRpm, rpmRateo));
+        else
+            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())));
+        end
         if self.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
         end
@@ -421,12 +433,6 @@ function BetterFuelUsage:debugDraw()
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%.2f, g:%.2f, b:%.2f, a:%.2f", i, r, g, b, a));
             end
         end
-        --if self.motorSoundRunPitch ~= nil then
-        --    table.insert(self.debugDrawTexts, string.format("Motor Sound Run --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundRunPitch, self.motorSoundRunVolume, math.max(self.motorSoundRunMinimalVolumeFactor,self.motorSoundRunVolume * self.sampleMotorRun.volume)));
-        --end
-        --if self.motorSoundLoadPitch ~= nil then
-        --    table.insert(self.debugDrawTexts, string.format("Motor Sound Load --> pitch:%.2f volume:%.2f (%.2f)", self.motorSoundLoadPitch, self.motorSoundLoadVolume, math.max(self.motorSoundLoadMinimalVolumeFactor,self.motorSoundLoadVolume * self.sampleMotorLoad.volume)));
-        --end
         for i, v in ipairs(self.debugDrawTexts) do
             renderText(x, y - (l_space * i), size, v);
         end
