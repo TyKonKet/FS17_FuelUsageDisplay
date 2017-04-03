@@ -133,6 +133,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/Pipe.lua"/>
         <sourceFile filename="extensions/AttacherJoints.lua"/>
         <sourceFile filename="extensions/BaleWrapper.lua"/>
+        <sourceFile filename="extensions/BaleLoader.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
