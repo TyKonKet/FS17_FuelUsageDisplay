@@ -2,4 +2,5 @@
     <vehicle xml="data/vehicles/steerable/grimme/grimmeTectron415.xml" ptoRpm="540" neededPtoPower="180"/>
     <vehicle xml="data/vehicles/steerable/holmer/holmerTerraFelis2.xml" ptoRpm="540" neededPtoPower="150"/>
     <vehicle xml="data/vehicles/tools/jcb/jcbStumpCutter.xml" ptoRpm="540" neededPtoPower="15"/>
+    <vehicle xml="data/vehicles/steerable/siloking/siloKingSelfLineCompact1612.xml" ptoRpm="540" neededPtoPower="80"/>
 </powerConsumerOverwrites>

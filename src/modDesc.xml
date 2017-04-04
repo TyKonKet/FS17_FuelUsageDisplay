@@ -136,6 +136,8 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/BaleLoader.lua"/>
         <sourceFile filename="extensions/Plough.lua"/>
         <sourceFile filename="extensions/WorkArea.lua"/>
+        <sourceFile filename="extensions/MixerWagon.lua"/>
+        <sourceFile filename="extensions/EffectManager.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
