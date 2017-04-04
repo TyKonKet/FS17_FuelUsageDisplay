@@ -3,11 +3,12 @@
 --
 -- @author TyKonKet
 -- @date 03/04/2017
-function BaleLoader:postLoad(savegame)
+function BaleLoader:postPostLoad(savegame)
     BetterFuelUsage.print("BaleLoader extension loaded on " .. self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, BaleLoader.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, BaleLoader.getPtoRpm);
 end
+BaleLoader.postLoad = Utils.appendedFunction(BaleLoader.postLoad, BaleLoader.postPostLoad);
 
 function BaleLoader:getConsumedPtoTorque(superFunc)
     local torque = 0;
