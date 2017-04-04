@@ -4,23 +4,23 @@
 --@author TyKonKet
 --@date 29/03/2017
 function Foldable:postPostLoad(savegame)
-    self.animPartsCount = 0;
+    self.foldAnimPartsCount = 0;
     local countedParts = {};
     for _, foldingPart in pairs(self.foldingParts) do
         local anim = self.animations[foldingPart.animationName];
         for _, part in pairs(anim.parts) do
             if part.node ~= nil and not countedParts[part.node] then
-                self.animPartsCount = self.animPartsCount + 1;
+                self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
                 countedParts[part.node] = true;
             end
             if part.componentJointIndex ~= nil and not countedParts[part.node] then
-                self.animPartsCount = self.animPartsCount + 1;
+                self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
                 countedParts[part.componentJointIndex] = true;
             end
         end
     end
     countedParts = nil;
-    BetterFuelUsage.print("Foldable extension loaded on " .. self.typeName .. " animPartsCount " .. self.animPartsCount);
+    BetterFuelUsage.print("Foldable extension loaded on " .. self.typeName .. " foldAnimPartsCount " .. self.foldAnimPartsCount);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Foldable.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Foldable.getPtoRpm);
 end
@@ -32,7 +32,7 @@ function Foldable:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.foldAnimTime > 0 and self.foldAnimTime < 1 and self.foldAnimTime ~= self.foldMiddleAnimTime then
-        torque = torque + (5 * self.animPartsCount / (540 * math.pi / 30));
+        torque = torque + (5 * self.foldAnimPartsCount / (540 * math.pi / 30));
     end
     return torque;
 end
