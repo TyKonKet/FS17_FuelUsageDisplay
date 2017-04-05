@@ -170,8 +170,8 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
         fuelUsageFactor = 0.65;
     end
     local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * self.BetterFuelUsage.lastLoadFactor;
-    fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;
-    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.05 * self.fuelUsage;
+    fuelUsed = fuelUsed + fuelUsageFactor * 0.075 * self.fuelUsage * dt;
+    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.075 * self.fuelUsage;
     if fuelUsed > 0 then
         if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
             self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
@@ -245,7 +245,7 @@ function BetterFuelUsage:update(dt)
                 self.BetterFuelUsage.helperFuelUsed = 0;
             end
             if fuelFillLevelDiff >= 0 then
-                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 100 then
+                if self.BetterFuelUsage.fuelUsed == 0 or self.BetterFuelUsage.fuelUsedDisplayTime >= 200 then
                     self.BetterFuelUsage.fuelUsed = fuelFillLevelDiff / dt;
                     self.BetterFuelUsage.fuelUsedDisplayTime = 0;
                 else
