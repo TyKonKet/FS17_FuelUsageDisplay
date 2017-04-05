@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="37">
     <author>TyKonKet (Team FSI Modding)</author>
-    <version>3.6.1</version>
+    <version>3.6.1-rc1</version>
     <title>
         <en>Better Fuel Usage</en>
         <de>Realistischer Kraftstoffverbrauch</de>
@@ -16,13 +16,6 @@
 
 Changelog 3.6.1
 - Better realism ever had
-- Fuel usage based on vehicle power instead of fuel tank
-- Fixed max fuel usage and power of some vehicles
-- New and improved translations
-- Fixed flickering of fuel text
-- New HUD on vehicle panel
-- New "low fuel" warnings
-- Removed tedious texts
 ]]>
         </en>
         <it>
@@ -30,13 +23,6 @@ Changelog 3.6.1
 
 Changelog 3.6.1
 - Miglior realismo di sempre
-- Consumo di carburante basato sulla potenza del veicolo invece che sulla capacità del serbatoio
-- Nuove traduzioni e miglioramento di quelle esistenti
-- Risolto sfarfallio del consumo del carburante
-- Nuovi avvissi di basso livello del carburante
-- Migliorato il consumo di alcuni veicoli
-- Nuova HUD nel pannello dei vehicoli
-- Rimossi i testi fastidiosi
 ]]>
         </it>
         <de>
@@ -44,13 +30,6 @@ Changelog 3.6.1
 
 Changelog 3.6.1
 - Realistischer als jemals zuvor
-- Kraftstoffverbrauch auf Grundlage der Fahrzeugleistung anstelle des Kraftstofftanks
-- Maximaler Kraftstoffverbrauch und Leistung von einigen Fahrzeugen angepasst
-- Neue und verbesserte Übersetzungen
-- Flackernder Text behoben
-- Neues HUD auf dem Fahrzeugpanel
-- Neue Warnmeldung "low fuel"
-- Störende Texte wurden entfernt
 ]]>
         </de>
         <fr>
@@ -58,13 +37,6 @@ Changelog 3.6.1
 
 Changelog 3.6.1
 - Un meilleur réalisme
-- Utilisation de carburant en fonction de la puissance du véhicule au lieu du réservoir de carburant
-- Fixé la consommation et de la puissance maximale de certains véhicules
-- Amélioration des traductions
-- Correction du scintillement du texte du carburant
-- Nouvel ATH (HUD) sur panneau du véhicule
-- Nouveaux avertissements «Niveau de carburant bas»
-- Suppression de textes fastidieux
 ]]>
         </fr>
         <nl>
@@ -72,13 +44,6 @@ Changelog 3.6.1
 
 Changelog 3.6.1
 - Betere Realisme ooit
-- Brandstofverbruik op basis van vermogen in plaats van brandstoftank
-- max brandstofverbruik en vermogen van sommige voertuigen Aangepast!
-- Nieuwe en verbeterde vertalingen
-- Knipperen van brandstof tekst Aangepast! 
-- Nieuw display op voertuig paneel
-- Nieuw "Weinig brandstof" signaal
-- Vervelende teksten verwijderd
 ]]>
         </nl>
         <ru>
@@ -86,13 +51,6 @@ Changelog 3.6.1
             
 Changelog 3.6.1
 - Лучший реализм чем когда-либо был
-- Потребление топлива в зависимости от мощности техники вместо топливного бака
-- Исправлено максимальное потребление топлива и мощности на некоторой технике
-- Новые и исправленные переводы
-- Исправлено мерцание текста топлива
-- Новый HUD на панели техники
-- Новое предупреждение "низкий уровень топлива"
-- Удалены надоедливые тексты
 ]]>
         </ru>
         <pl>
@@ -100,13 +58,6 @@ Changelog 3.6.1
 
 Dziennik zmian dla wersji 3.6.1
 - Największy jak do tej pory realizm
-- Zużycie paliwa bazuje na mocy silnika zamiast na pojemności baku
-- Poprawa maksymalnego zużycia paliwa i mocy dla niektórych pojazdów
-- Nowe i poprawione tłumaczenia
-- Poprawa migotania tekstu
-- Nowy interfejs w panelu pojazdu
-- Nowe ostrzeżenia o niskim poziomie paliwa
-- Usunięte żmudne teksty
 ]]>
         </pl>
     </description>
