@@ -165,9 +165,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     elseif self.BetterFuelUsage.lastLoadFactor > targetFactor then
         self.BetterFuelUsage.lastLoadFactor = math.max(targetFactor, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
     end
-    local fuelUsageFactor = 1.25;
+    local fuelUsageFactor = 1.10;
     if g_currentMission.missionInfo.fuelUsageLow then
-        fuelUsageFactor = 0.75;
+        fuelUsageFactor = 0.65;
     end
     local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * self.BetterFuelUsage.lastLoadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.05 * self.fuelUsage * dt;

@@ -57,8 +57,8 @@ function PowerConsumer:postLoad()
             self.powerConsumer.ptoRpm = o.ptoRpm;
         end
     end
-    local m = 1.5;
-    local mp = 1.3;
+    local m = 1.75;
+    local mp = 1.25;
     --BetterFuelUsage.print(string.format("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m));
     self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
     --BetterFuelUsage.print(string.format("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m));
@@ -78,5 +78,5 @@ function PowerConsumer:getConsumedPtoTorque()
 end
 
 function PowerConsumer:getPtoPowerMultiplier()
-    return 0.8;
+    return 1;
 end

@@ -4,10 +4,18 @@
 -- @author TyKonKet
 -- @date 29/03/2017
 function Cylindered:postPostLoad(savegame)
-    BetterFuelUsage.print("Cylindered extension loaded on " .. self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Cylindered.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cylindered.getPtoRpm);
     self.movingToolsCount = 0;
+    BetterFuelUsage.print("Cylindered extension loaded on " .. self.typeName);
+    self.powerPerMovingTool = 17.5;
+    --self.powerPerMovingTool = 0.15;
+    --local motor = Utils.getMotor(self);
+    --if motor ~= nil and motor.maxMotorPower ~= nil then
+    --    self.powerPerMovingTool = self.powerPerMovingTool * motor.maxMotorPower;
+    --else
+    --    self.powerPerMovingTool = 20;
+    --end
 end
 Cylindered.postLoad = Utils.appendedFunction(Cylindered.postLoad, Cylindered.postPostLoad);
 
@@ -16,19 +24,26 @@ function Cylindered:getConsumedPtoTorque(superFunc)
     if superFunc ~= nil then
         torque = superFunc(self);
     end
-    torque = torque + (self.movingToolsCount * 20 / (540 * math.pi / 30));
+    torque = torque + (self.movingToolsCount * self.powerPerMovingTool / (540 * math.pi / 30));
     return torque;
 end
 
 function Cylindered:postUpdate(dt)
-    if Cylindered.getIsEntered(self) then
+    if Utils.getIsEntered(self) then
         self.movingToolsCount = 0;
         for _, tool in pairs(self.movingTools) do
             if tool.axisActionIndex ~= nil then
                 local move, _ = InputBinding.getInputAxis(tool.axisActionIndex);
                 move = math.abs(move);
+                tool.currentMove = 0;
                 if not InputBinding.isAxisZero(move) then
                     self.movingToolsCount = self.movingToolsCount + move;
+                    tool.currentMove = move;
+                end
+                if tool.currentMove ~= tool.lastMove then
+                    tool.lastMove = tool.currentMove;
+                    Cylindered.setDirty(self, tool);
+                    self:raiseDirtyFlags(self.cylinderedDirtyFlag);
                 end
             end
         end
@@ -48,7 +63,7 @@ function Cylindered:getPtoRpm(superFunc)
 end
 
 function Cylindered:postReadUpdateStream(streamId, timestamp, connection)
-     if not connection:getIsServer() then
+    if not connection:getIsServer() then
         self.movingToolsCount = streamReadFloat32(streamId);
     end
 end
@@ -60,13 +75,3 @@ function Cylindered:postWriteUpdateStream(streamId, connection, dirtyMask)
     end
 end
 Cylindered.writeUpdateStream = Utils.appendedFunction(Cylindered.writeUpdateStream, Cylindered.postWriteUpdateStream);
-
-function Cylindered.getIsEntered(v)
-        if v.isEntered then
-            return true;
-        end
-        if v.attacherVehicle ~= nil then
-            return Cylindered.getIsEntered(v.attacherVehicle);
-        end
-        return false;
-    end

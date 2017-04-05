@@ -140,6 +140,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/EffectManager.lua"/>
         <sourceFile filename="helpers/fadeEffect.lua"/>
         <sourceFile filename="helpers/dynamicText.lua"/>
+        <sourceFile filename="helpers/utils.lua"/>
         <sourceFile filename="events/setFuelUsageFunctionEvent.lua"/>
         <sourceFile filename="register.lua"/>
     </extraSourceFiles>
