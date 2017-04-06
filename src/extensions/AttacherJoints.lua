@@ -35,7 +35,7 @@ function AttacherJoints:getPtoRpm(superFunc)
         end
     end
     if movingJoints > 0 then
-        ptoRpm = math.max(ptoRpm, 320 + 110 * movingJoints);
+        ptoRpm = math.max(ptoRpm, 120 + 160 * movingJoints);
     end
     return ptoRpm;
 end
