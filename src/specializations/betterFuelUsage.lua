@@ -304,7 +304,9 @@ function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
 end
 
 function BetterFuelUsage:gbDraw()
-    self.mrGbMD.Fuel = self.BetterFuelUsage.fuelDisplayed;
+    if self.BetterFuelUsage ~= nil then
+        self.mrGbMD.Fuel = self.BetterFuelUsage.fuelDisplayed;
+    end
 end
 
 function BetterFuelUsage:draw()
