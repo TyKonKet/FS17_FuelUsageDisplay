@@ -156,6 +156,7 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     local targetFactor = 0;
     if BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff then
         targetFactor = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
+        targetFactor = (targetFactor + self.actualLoadPercentage) / 2;
     else
         targetFactor = self.actualLoadPercentage;
     end
