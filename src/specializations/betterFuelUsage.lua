@@ -255,10 +255,10 @@ end
 function BetterFuelUsage:updateTick(dt)
     if self.exhaustEffects ~= nil then
         for _, effect in pairs(self.exhaustEffects) do
-            local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-            local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-            local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-            local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.lastLoadFactor);
+            local r = Utils.lerp(1, -0.2, self.BetterFuelUsage.lastLoadFactor);
+            local g = Utils.lerp(1, -0.2, self.BetterFuelUsage.lastLoadFactor);
+            local b = Utils.lerp(1, -0.2, self.BetterFuelUsage.lastLoadFactor);
+            local a = Utils.lerp(0.5, 4, self.BetterFuelUsage.lastLoadFactor);
             setShaderParameter(effect.effectNode, "exhaustColor", r, g, b, a, false);
         end
     end
@@ -379,9 +379,9 @@ function BetterFuelUsage:drawLeftMeter(value)
         --table.insert(self.debugDrawTexts, string.format("if %s > %s", i * 2, value));
         local bColor = {overlay.r, overlay.g, overlay.b, overlay.a};
         if i * 2 > value then
-            if 1 - i / maxValue < 0.60 then
+            if 1 - i / maxValue < 0.55 then
                 overlay:setColor(0.0097, 0.8069, 0.0097, 1);
-            elseif 1 - i / maxValue < 0.85 then
+            elseif 1 - i / maxValue < 0.80 then
                 overlay:setColor(0.8069, 0.8069, 0.0097, 1);
             else
                 overlay:setColor(0.8069, 0.0097, 0.0097, 1);
