@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 28/03/2017
 function WoodCrusher:postLoad(savegame)
-    BetterFuelUsage.print("WoodCrusher extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("WoodCrusher extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, WoodCrusher.getPtoPowerMultiplier);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, WoodCrusher.getPtoRpm);
 end

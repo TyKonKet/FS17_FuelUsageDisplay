@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 04/04/2017
 function Plough:postPostLoad(savegame)
-    BetterFuelUsage.print("Plough extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Plough extension loaded on %s", self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Plough.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Plough.getPtoRpm);
 end

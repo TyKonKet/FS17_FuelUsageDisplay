@@ -20,7 +20,7 @@ function Foldable:postPostLoad(savegame)
         end
     end
     countedParts = nil;
-    BetterFuelUsage.print("Foldable extension loaded on " .. self.typeName .. " foldAnimPartsCount " .. self.foldAnimPartsCount);
+    BetterFuelUsage.print("Foldable extension loaded on %s foldAnimPartsCount %s", self.typeName, self.foldAnimPartsCount);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Foldable.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Foldable.getPtoRpm);
 end

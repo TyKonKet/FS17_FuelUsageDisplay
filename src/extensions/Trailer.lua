@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function Trailer:postLoad(savegame)
-    --BetterFuelUsage.print("Trailer extension loaded on " .. self.typeName);
+    --BetterFuelUsage.print("Trailer extension loaded on %s", self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Trailer.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Trailer.getPtoRpm);
 end

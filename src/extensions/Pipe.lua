@@ -4,7 +4,7 @@
 --@author TyKonKet
 --@date 29/03/2017
 function Pipe:postPostLoad(savegame)
-    BetterFuelUsage.print("Pipe extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Pipe extension loaded on %s", self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Pipe.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Pipe.getPtoRpm);
 end
@@ -37,7 +37,7 @@ function Pipe:getPtoRpm(superFunc)
             ptoRpm = math.max(ptoRpm, 530);
         else
             ptoRpm = math.max(ptoRpm, 980);
-        end   
+        end
     end
     return ptoRpm;
 end

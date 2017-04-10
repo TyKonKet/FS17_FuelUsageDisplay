@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 28/03/2017
 function TreeSaw:postLoad(savegame)
-    BetterFuelUsage.print("TreeSaw extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("TreeSaw extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, TreeSaw.getPtoPowerMultiplier);
 end
 

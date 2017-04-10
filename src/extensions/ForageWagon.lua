@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function ForageWagon:postLoad(savegame)
-    BetterFuelUsage.print("ForageWagon extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("ForageWagon extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, ForageWagon.getPtoPowerMultiplier);
 end
 

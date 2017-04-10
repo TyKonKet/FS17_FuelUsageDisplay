@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function Windrower:postLoad(savegame)
-    BetterFuelUsage.print("Windrower extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Windrower extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Windrower.getPtoPowerMultiplier);
 end
 

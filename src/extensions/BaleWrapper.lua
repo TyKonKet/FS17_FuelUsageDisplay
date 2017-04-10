@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 03/04/2017
 function BaleWrapper:postLoad(savegame)
-    BetterFuelUsage.print("BaleWrapper extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("BaleWrapper extension loaded on %s", self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, BaleWrapper.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, BaleWrapper.getPtoRpm);
 end

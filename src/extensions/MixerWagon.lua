@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 04/04/2017
 function MixerWagon:postLoad(savegame)
-    BetterFuelUsage.print("MixerWagon extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("MixerWagon extension loaded on %s", self.typeName);
     self.getDoConsumePtoPower = Utils.overwrittenFunction(self.getDoConsumePtoPower, MixerWagon.getDoConsumePtoPower);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, MixerWagon.getPtoPowerMultiplier);
 end

@@ -7,7 +7,7 @@ function Cylindered:postPostLoad(savegame)
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Cylindered.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cylindered.getPtoRpm);
     self.movingToolsCount = 0;
-    BetterFuelUsage.print("Cylindered extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Cylindered extension loaded on %s", self.typeName);
     self.powerPerMovingTool = 17.5;
     --self.powerPerMovingTool = 0.15;
     --local motor = Utils.getMotor(self);

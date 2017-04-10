@@ -11,14 +11,11 @@ BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
 BetterFuelUsageRH.debug = false;
 
-function BetterFuelUsageRH:print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
+function BetterFuelUsageRH:print(text, ...)
     if self.debug then
-        local args = {txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
-        for i, v in ipairs(args) do
-            if v then
-                print("[" .. self.name .. "] -> " .. tostring(v));
-            end
-        end
+        local start = string.format("[%s(%s)] -> ", self.name, getDate("%H:%M:%S"));
+        local ptext = string.format(text, ...);
+        print(string.format("%s%s", start, ptext));
     end
 end
 
@@ -29,11 +26,11 @@ function BetterFuelUsageRH:registerSpecialization()
         if vehicleType ~= nil then
             if specialization.prerequisitesPresent(vehicleType.specializations) and not self.specialization.blackList[vehicleType.name] then
                 table.insert(vehicleType.specializations, specialization);
-                self:print(self.specialization.title .. " added to " .. vehicleType.name);
+                self:print("%s added to %s", self.specialization.title, vehicleType.name);
             end
             if powerConsumer.prerequisitesPresent(vehicleType.specializations) and not SpecializationUtil.hasSpecialization(PowerConsumer, vehicleType.specializations) then
                 table.insert(vehicleType.specializations, powerConsumer);
-                self:print("PowerConsumer added to " .. vehicleType.name);
+                self:print("PowerConsumer added to %s", vehicleType.name);
             end
         end
     end
@@ -99,7 +96,7 @@ function BetterFuelUsageRH.PrintVehicleValue(self, ...)
             else
                 object = object[v];
                 if object == nil then
-                    self:print(v .. " = nil");
+                    self:print("%s = nil", v);
                     break;
                 end
             end

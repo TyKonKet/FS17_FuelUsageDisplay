@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function Cutter:postLoad(savegame)
-    BetterFuelUsage.print("Cutter extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Cutter extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Cutter.getPtoPowerMultiplier);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cutter.getPtoRpm);
 end

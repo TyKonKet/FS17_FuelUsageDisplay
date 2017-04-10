@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 28/03/2017
 function StumpCutter:postLoad(savegame)
-    BetterFuelUsage.print("StumpCutter extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("StumpCutter extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, StumpCutter.getPtoPowerMultiplier);
 end
 

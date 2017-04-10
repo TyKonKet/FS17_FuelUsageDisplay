@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function Cultivator:postLoad(savegame)
-    BetterFuelUsage.print("Cultivator extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Cultivator extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Cultivator.getPtoPowerMultiplier);
 end
 

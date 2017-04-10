@@ -23,7 +23,7 @@ function PowerConsumer.initSpecialization()
         PowerConsumer.powerConsumerOverwrites[xmlC].maxForce = maxForce;
         PowerConsumer.powerConsumerOverwrites[xmlC].neededPtoPower = neededPtoPower;
         PowerConsumer.powerConsumerOverwrites[xmlC].ptoRpm = ptoRpm;
-        BetterFuelUsage.print(("powerConsumerOverwrite -> xml:%s, forceFactor:%s, maxForce:%s, neededPtoPower:%s, ptoRpm:%s"):format(xmlC, forceFactor, maxForce, neededPtoPower, ptoRpm));
+        BetterFuelUsage.print("powerConsumerOverwrite -> xml:%s, forceFactor:%s, maxForce:%s, neededPtoPower:%s, ptoRpm:%s", xmlC, forceFactor, maxForce, neededPtoPower, ptoRpm);
         index = index + 1;
     end
 end
@@ -41,7 +41,7 @@ function PowerConsumer:preLoad(savegame)
 end
 
 function PowerConsumer:postLoad()
-    BetterFuelUsage.print("PowerConsumer extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("PowerConsumer extension loaded on %s", self.typeName);
     if PowerConsumer.powerConsumerOverwrites[self.configFileName] ~= nil then
         local o = PowerConsumer.powerConsumerOverwrites[self.configFileName];
         if o.forceFactor ~= nil then
@@ -57,13 +57,13 @@ function PowerConsumer:postLoad()
             self.powerConsumer.ptoRpm = o.ptoRpm;
         end
     end
-    local m = 1.75;
-    local mp = 1.25;
-    --BetterFuelUsage.print(string.format("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m));
+    local m = 1.8;
+    local mp = 1.3;
+    --BetterFuelUsage.print("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m);
     self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
-    --BetterFuelUsage.print(string.format("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m));
+    --BetterFuelUsage.print("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m);
     self.powerConsumer.forceFactor = self.powerConsumer.forceFactor * m;
-    --BetterFuelUsage.print(string.format("self.powerConsumer.neededPtoPower:%s -> %s", self.powerConsumer.neededPtoPower, self.powerConsumer.neededPtoPower * mp));
+    --BetterFuelUsage.print("self.powerConsumer.neededPtoPower:%s -> %s", self.powerConsumer.neededPtoPower, self.powerConsumer.neededPtoPower * mp);
     self.powerConsumer.neededPtoPower = self.powerConsumer.neededPtoPower * mp;
 end
 

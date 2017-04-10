@@ -10,6 +10,14 @@ BetterFuelUsage.dir = g_currentModDirectory;
 BetterFuelUsage.driveControl = nil;
 BetterFuelUsage.motorizedOverwrites = {};
 
+function BetterFuelUsage.print(text, ...)
+    if BetterFuelUsage.debug then
+        local start = string.format("[%s(%s)] -> ", BetterFuelUsage.name, getDate("%H:%M:%S"));
+        local ptext = string.format(text, ...);
+        print(string.format("%s%s", start, ptext));
+    end
+end
+
 function BetterFuelUsage.prerequisitesPresent(specializations)
     if SpecializationUtil.hasSpecialization(SpecializationUtil.getSpecialization("motorized"), specializations) then
         return true;
@@ -40,19 +48,8 @@ function BetterFuelUsage.initSpecialization()
         local fuelUsage = getXMLFloat(xml, string.format("%s#fuelUsage", query));
         BetterFuelUsage.motorizedOverwrites[xmlC] = {};
         BetterFuelUsage.motorizedOverwrites[xmlC].fuelUsage = fuelUsage;
-        BetterFuelUsage.print(("motorizedOverwrite -> xml:%s fuelUsage:%s"):format(xmlC, fuelUsage));
+        BetterFuelUsage.print("motorizedOverwrite -> xml:%s fuelUsage:%s", xmlC, fuelUsage);
         index = index + 1;
-    end
-end
-
-function BetterFuelUsage.print(txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9)
-    if BetterFuelUsage.debug then
-        local args = {txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9};
-        for i, v in ipairs(args) do
-            if v then
-                print("[" .. BetterFuelUsage.name .. "] -> " .. tostring(v));
-            end
-        end
     end
 end
 
@@ -74,7 +71,7 @@ function BetterFuelUsage:preLoad(savegame)
 end
 
 function BetterFuelUsage:load(savegame)
-    BetterFuelUsage.print(BetterFuelUsage.name .. " loaded on " .. self.typeName);
+    BetterFuelUsage.print("%s loaded on %s", BetterFuelUsage.name, self.typeName);
     self.setFuelUsageFunction = BetterFuelUsage.setFuelUsageFunction;
     local x = g_currentMission.vehicleHudBg.x + g_currentMission.vehicleHudBg.width * 0.518;
     local y = g_currentMission.vehicleHudBg.y + g_currentMission.vehicleHudBg.height * 0.798;
@@ -83,7 +80,7 @@ function BetterFuelUsage:load(savegame)
 end
 
 function BetterFuelUsage:dcLoad()
-    BetterFuelUsage.print("driveControl loaded on " .. self.typeName);
+    BetterFuelUsage.print("driveControl loaded on %s", self.typeName);
     local overlay4WD = BetterFuelUsage.driveControl.overlay4WD;
     local overlayDiffLockFront = BetterFuelUsage.driveControl.overlayDiffLockFront;
     local overlayDiffLockBack = BetterFuelUsage.driveControl.overlayDiffLockBack;
@@ -128,7 +125,7 @@ function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
 end
 
 function BetterFuelUsage:setFuelUsageFunction(default, noSend)
-    BetterFuelUsage.print(("BetterFuelUsage:setFuelUsageFunction(default:%s)"):format(default));
+    BetterFuelUsage.print("BetterFuelUsage:setFuelUsageFunction(default:%s)", default);
     if not self:getIsMotorStarted() then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
         if not noSend then
@@ -166,9 +163,9 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     elseif self.BetterFuelUsage.lastLoadFactor > targetFactor then
         self.BetterFuelUsage.lastLoadFactor = math.max(targetFactor, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
     end
-    local fuelUsageFactor = 1.10;
+    local fuelUsageFactor = 1;
     if g_currentMission.missionInfo.fuelUsageLow then
-        fuelUsageFactor = 0.65;
+        fuelUsageFactor = 0.7;
     end
     local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * self.BetterFuelUsage.lastLoadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.075 * self.fuelUsage * dt;
@@ -216,11 +213,6 @@ function BetterFuelUsage:setFuelFillLevel(fuelFillLevel)
 end
 
 function BetterFuelUsage:onEnter()
---if self.BetterFuelUsage.useDefaultFuelUsageFunction then
---    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
---else
---    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
---end
 end
 
 function BetterFuelUsage:startMotor()
@@ -312,12 +304,10 @@ end
 
 function BetterFuelUsage:draw()
     if self.isEntered then
-        if not self:getIsMotorStarted() then
-            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-            else
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-            end
+        if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+        else
+            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
         end
         --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
         BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.lastLoadFactor);

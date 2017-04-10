@@ -4,7 +4,7 @@
 -- @author TyKonKet
 -- @date 27/03/2017
 function Mower:postLoad(savegame)
-    BetterFuelUsage.print("Mower extension loaded on " .. self.typeName);
+    BetterFuelUsage.print("Mower extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Mower.getPtoPowerMultiplier);
 end
 
