@@ -93,13 +93,13 @@ Changelog 3.6.1
             <![CDATA[Zmienia zużycie paliwa przez pojazdy na bardziej realistyczne oraz wyświetla aktualne spalanie.
 
 Dziennik zmian dla wersji 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+- Rozwiązano problem z Holmer Terra Dos
+- Zwiększono moc wymaganą przez maszyny
+- Od teraz każda maszyna zużywa paliwo w oparciu o wykonaną pracę
+- Zsynchronizowano efekt wydechu ze spalaniem
+- Zsynchronizowano dźwięki pojazdu z obciążeniem silnika
+- Poprawiono płynność zmian zużycia paliwa
+- Poprawiono kompatybilność z modem Gearbox AddOn (Skrzynia biegów)
 ]]>
         </pl>
     </description>
