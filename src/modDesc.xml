@@ -80,13 +80,13 @@ Changelog 3.6.1
             <![CDATA[Повышает реалистичность потребления топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
             
 Changelog 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+- Исправлена ошибка с Holmer Terra Dos
+- Увеличена необходимая мощность для оборудования
+- Теперь каждое оборудование вызывает потребление топлива на основе выполняемой им работы
+- Синхронизирован эффект выхлопных газов с потреблением топлива
+- Синхронизирован звук техники с нагрузкой на двигатель
+- Улучшено сглаживание потребления топлива
+- Улучшено совместимость с Gearbox AddOn
 ]]>
         </ru>
         <pl>
