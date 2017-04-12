@@ -16,7 +16,7 @@ function Plough:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.rotationPart.turnAnimation ~= nil and self:getIsAnimationPlaying(self.rotationPart.turnAnimation) then
-        torque = torque + (Utils.getMotorPowerPercentage(self, 0.3, 50) / (540 * math.pi / 30));
+        torque = torque + (Utils.getMotorPowerPercentage(self, 0.3, 50, true) / (540 * math.pi / 30));
     end
     return torque;
 end

@@ -32,7 +32,7 @@ function Foldable:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if self.foldAnimTime > 0 and self.foldAnimTime < 1 and (self.foldMiddleAnimTime == nil or self.foldAnimTime < self.foldMiddleAnimTime - 0.02 or self.foldAnimTime > self.foldMiddleAnimTime + 0.02) then
-        torque = torque + (5 * self.foldAnimPartsCount / (540 * math.pi / 30));
+        torque = torque + (Utils.getMotorPowerPercentage(self, 0.04, 5) * self.foldAnimPartsCount / (540 * math.pi / 30));
     end
     return torque;
 end
