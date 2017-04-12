@@ -15,9 +15,11 @@ function AttacherJoints:getConsumedPtoTorque(superFunc)
     if superFunc ~= nil then
         torque = superFunc(self);
     end
-    for _, j in pairs(self.attacherJoints) do
-        if j.moveAlpha ~= nil and j.moveAlpha ~= j.lowerAlpha and j.moveAlpha ~= j.upperAlpha then
-            torque = torque + (30 / (540 * math.pi / 30));
+    if BetterFuelUsage.gearBox == nil or self.attacherVehicle == nil or self.attacherVehicle.mrGbMS == nil or not self.attacherVehicle.mrGbMS.IsOnOff then
+        for _, j in pairs(self.attacherJoints) do
+            if j.moveAlpha ~= nil and j.moveAlpha ~= j.lowerAlpha and j.moveAlpha ~= j.upperAlpha then
+                torque = torque + (30 / (540 * math.pi / 30));
+            end
         end
     end
     return torque;
@@ -28,14 +30,16 @@ function AttacherJoints:getPtoRpm(superFunc)
     if superFunc ~= nil then
         ptoRpm = superFunc(self);
     end
-    local movingJoints = 0;
-    for _, j in pairs(self.attacherJoints) do
-        if j.moveAlpha ~= nil and j.moveAlpha ~= j.lowerAlpha and j.moveAlpha ~= j.upperAlpha then
-            movingJoints = movingJoints + 1;
+    if BetterFuelUsage.gearBox == nil or self.attacherVehicle == nil or self.attacherVehicle.mrGbMS == nil or not self.attacherVehicle.mrGbMS.IsOnOff then
+        local movingJoints = 0;
+        for _, j in pairs(self.attacherJoints) do
+            if j.moveAlpha ~= nil and j.moveAlpha ~= j.lowerAlpha and j.moveAlpha ~= j.upperAlpha then
+                movingJoints = movingJoints + 1;
+            end
         end
-    end
-    if movingJoints > 0 then
-        ptoRpm = math.max(ptoRpm, 120 + 160 * movingJoints);
+        if movingJoints > 0 then
+            ptoRpm = math.max(ptoRpm, 120 + 160 * movingJoints);
+        end
     end
     return ptoRpm;
 end
