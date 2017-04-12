@@ -13,16 +13,10 @@ function Utils:getMotor()
     return nil;
 end
 
-function Utils:getMotorPowerPercentage(percentage, default, print)
+function Utils:getMotorPowerPercentage(percentage, default)
     local motor = Utils.getMotor(self, print);
     if motor ~= nil and motor.vehicle.BetterFuelUsage ~= nil then
-        if print then
-            BetterFuelUsage.print("return motorPower");
-        end
         return motor.vehicle.BetterFuelUsage.maxMotorPower * percentage / 1000;
-    end
-    if print then
-        BetterFuelUsage.print("return default");
     end
     return default;
 end

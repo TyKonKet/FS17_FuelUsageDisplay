@@ -8,14 +8,6 @@ function Cylindered:postPostLoad(savegame)
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cylindered.getPtoRpm);
     self.movingToolsCount = 0;
     BetterFuelUsage.print("Cylindered extension loaded on %s", self.typeName);
-    self.powerPerMovingTool = 20;
---self.powerPerMovingTool = 0.15;
---local motor = Utils.getMotor(self);
---if motor ~= nil and motor.maxMotorPower ~= nil then
---    self.powerPerMovingTool = self.powerPerMovingTool * motor.maxMotorPower;
---else
---    self.powerPerMovingTool = 20;
---end
 end
 Cylindered.postLoad = Utils.appendedFunction(Cylindered.postLoad, Cylindered.postPostLoad);
 
@@ -25,7 +17,7 @@ function Cylindered:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if not Utils.gearboxActive(self) then
-        torque = torque + (self.movingToolsCount * self.powerPerMovingTool / (540 * math.pi / 30));
+        torque = torque + (self.movingToolsCount *Utils.getMotorPowerPercentage(self, 0.2, 20) / (540 * math.pi / 30));
     end
     return torque;
 end
