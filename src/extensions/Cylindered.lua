@@ -9,13 +9,13 @@ function Cylindered:postPostLoad(savegame)
     self.movingToolsCount = 0;
     BetterFuelUsage.print("Cylindered extension loaded on %s", self.typeName);
     self.powerPerMovingTool = 17.5;
-    --self.powerPerMovingTool = 0.15;
-    --local motor = Utils.getMotor(self);
-    --if motor ~= nil and motor.maxMotorPower ~= nil then
-    --    self.powerPerMovingTool = self.powerPerMovingTool * motor.maxMotorPower;
-    --else
-    --    self.powerPerMovingTool = 20;
-    --end
+--self.powerPerMovingTool = 0.15;
+--local motor = Utils.getMotor(self);
+--if motor ~= nil and motor.maxMotorPower ~= nil then
+--    self.powerPerMovingTool = self.powerPerMovingTool * motor.maxMotorPower;
+--else
+--    self.powerPerMovingTool = 20;
+--end
 end
 Cylindered.postLoad = Utils.appendedFunction(Cylindered.postLoad, Cylindered.postPostLoad);
 
@@ -24,8 +24,23 @@ function Cylindered:getConsumedPtoTorque(superFunc)
     if superFunc ~= nil then
         torque = superFunc(self);
     end
-    torque = torque + (self.movingToolsCount * self.powerPerMovingTool / (540 * math.pi / 30));
+    if BetterFuelUsage.gearBox == nil or self.attacherVehicle == nil or self.attacherVehicle.mrGbMS == nil or not self.attacherVehicle.mrGbMS.IsOnOff then
+        torque = torque + (self.movingToolsCount * self.powerPerMovingTool / (540 * math.pi / 30));
+    end
     return torque;
+end
+
+function Cylindered:getPtoRpm(superFunc)
+    local ptoRpm = 0;
+    if superFunc ~= nil then
+        ptoRpm = superFunc(self);
+    end
+    if BetterFuelUsage.gearBox == nil or self.attacherVehicle == nil or self.attacherVehicle.mrGbMS == nil or not self.attacherVehicle.mrGbMS.IsOnOff then
+        if self.movingToolsCount > 0 then
+            ptoRpm = math.max(ptoRpm, 320 + 110 * self.movingToolsCount);
+        end
+    end
+    return ptoRpm;
 end
 
 function Cylindered:postUpdate(dt)
@@ -50,17 +65,6 @@ function Cylindered:postUpdate(dt)
     end
 end
 Cylindered.update = Utils.appendedFunction(Cylindered.update, Cylindered.postUpdate);
-
-function Cylindered:getPtoRpm(superFunc)
-    local ptoRpm = 0;
-    if superFunc ~= nil then
-        ptoRpm = superFunc(self);
-    end
-    if self.movingToolsCount > 0 then
-        ptoRpm = math.max(ptoRpm, 320 + 110 * self.movingToolsCount);
-    end
-    return ptoRpm;
-end
 
 function Cylindered:postReadUpdateStream(streamId, timestamp, connection)
     if not connection:getIsServer() then
