@@ -14,3 +14,8 @@ function WorkArea:getTypedNetworkAreasArea(areaType)
     end
     return area;
 end
+
+function WorkArea:getTypedNetworkAreasCount(areaType)
+    local typedWorkAreas = self:getTypedWorkAreas(areaType);
+    return #typedWorkAreas;
+end

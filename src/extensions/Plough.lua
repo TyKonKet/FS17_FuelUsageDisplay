@@ -4,9 +4,9 @@
 -- @author TyKonKet
 -- @date 04/04/2017
 function Plough:postPostLoad(savegame)
-    BetterFuelUsage.print("Plough extension loaded on %s", self.typeName);
     self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Plough.getConsumedPtoTorque);
     self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Plough.getPtoRpm);
+    BetterFuelUsage.print("Plough extension loaded on %s", self.typeName);
 end
 Plough.postLoad = Utils.appendedFunction(Plough.postLoad, Plough.postPostLoad);
 
@@ -15,12 +15,8 @@ function Plough:getConsumedPtoTorque(superFunc)
     if superFunc ~= nil then
         torque = superFunc(self);
     end
-    local power = 20;
-    if self.foldAnimPartsCount ~= nil and self.foldAnimPartsCount > 0 then
-        power = 7.5 * self.foldAnimPartsCount;
-    end
     if self.rotationPart.turnAnimation ~= nil and self:getIsAnimationPlaying(self.rotationPart.turnAnimation) then
-        torque = torque + (power / (540 * math.pi / 30));
+        torque = torque + (Utils.getMotorPowerPercentage(self, 0.3, 50) / (540 * math.pi / 30));
     end
     return torque;
 end
