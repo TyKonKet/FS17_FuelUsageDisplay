@@ -105,6 +105,8 @@ end
 function BetterFuelUsage:postLoad(savegame)
     BetterFuelUsage.print("BetterFuelUsage:postLoad()");
     self.BetterFuelUsage.maxMotorPower = self.motor.maxMotorPower;
+    self.motor.BetterFuelUsage = {};
+    self.motor.BetterFuelUsage.maxMotorPower = self.motor.maxMotorPower;
     if self.fuelFillLitersPerSecond ~= nil then
         self.fuelFillLitersPerSecond = self.fuelFillLitersPerSecond / 2;
     end
