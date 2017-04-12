@@ -68,6 +68,7 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.fuelDisplayed = 0;
     self.BetterFuelUsage.fuelFade = FadeEffect:new({position = {x = 0.483, y = 0.94}, size = 0.028, shadow = true, shadowPosition = {x = 0.0025, y = 0.0035}, statesTime = {0.85, 0.5, 0.45}});
     self.debugDrawTexts = {};
+    self.isSelectable = true
 end
 
 function BetterFuelUsage:load(savegame)
@@ -225,7 +226,7 @@ end
 
 function BetterFuelUsage:update(dt)
     if self.isEntered then
-        if InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
+        if self:getIsActiveForInput() and InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
             self:setFuelUsageFunction(not self.BetterFuelUsage.useDefaultFuelUsageFunction);
         end
         self.BetterFuelUsage.fuelFade:update(dt);
@@ -304,10 +305,12 @@ end
 
 function BetterFuelUsage:draw()
     if self.isEntered then
-        if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-        else
-            g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+        if self:getIsActiveForInput() then
+            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            else
+                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+            end
         end
         --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
         BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.lastLoadFactor);
