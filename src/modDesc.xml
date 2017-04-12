@@ -54,13 +54,13 @@ Changelog 3.6.1
             <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 
 Changelog 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+- Correction du problème avec Holmer Terra Dos
+- Augmentation de l'alimentation requise par les outils
+- Maintenant, chaque outil consomme du carburant en fonction de son travail
+- Effet d'échappement synchronisé avec consommation d'essence
+- Le son du véhicule synchronisé avec charge moteur
+- Amélioration de la fluidité de l'utilisation du carburant
+- Amélioration de la compatibilité avec Gearbox AddOn
 ]]>
         </fr>
         <nl>
