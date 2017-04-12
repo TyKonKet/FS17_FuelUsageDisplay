@@ -22,3 +22,15 @@ function Utils:getIsEntered()
     end
     return false;
 end
+
+function Utils:gearboxActive()
+    if BetterFuelUsage.gearBox ~= nil then
+        if self.mrGbMS ~= nil and self.mrGbMS.IsOnOff then
+            return true;
+        end
+        if self.attacherVehicle ~= nil then
+            return Utils.gearboxActive(self.attacherVehicle);
+        end
+    end
+    return false;
+end
