@@ -67,13 +67,13 @@ Changelog 3.6.1
             <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
 
 Changelog 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+- Probleem met de Holmer Terra Dos opgelost
+- Verhoogde kracht vereist door tools
+- Nu gebruikt elk gereedschap brandstof op basis van zijn werk
+- Uitlaat effect met brandstofgebruik gesynchroniseerd
+- Motor geluid met motor Kracht gesynchroniseerd
+- Verbeterde gelijkmatigheid van brandstofgebruik
+- Verbeterde samenwerken met Gearbox AddOn
 ]]>
         </nl>
         <ru>
