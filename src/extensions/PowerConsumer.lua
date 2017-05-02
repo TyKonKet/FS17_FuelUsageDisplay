@@ -57,8 +57,8 @@ function PowerConsumer:postLoad()
             self.powerConsumer.ptoRpm = o.ptoRpm;
         end
     end
-    local m = 1.8;
-    local mp = 1.3;
+    local m = 1.2;
+    local mp = 1.25;
     --BetterFuelUsage.print("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m);
     self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
     --BetterFuelUsage.print("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m);
