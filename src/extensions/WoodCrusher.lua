@@ -15,7 +15,7 @@ function WoodCrusher:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.crushingTime > 0 then
-        powerMultiplier = powerMultiplier + 1.7;
+        powerMultiplier = powerMultiplier + 1.8;
     end
     return powerMultiplier;
 end
