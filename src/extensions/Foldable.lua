@@ -8,15 +8,19 @@ function Foldable:postPostLoad(savegame)
     local countedParts = {};
     for _, foldingPart in pairs(self.foldingParts) do
         local anim = self.animations[foldingPart.animationName];
-        for _, part in pairs(anim.parts) do
-            if part.node ~= nil and not countedParts[part.node] then
-                self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
-                countedParts[part.node] = true;
+        if anim ~= nil then
+            for _, part in pairs(anim.parts) do
+                if part.node ~= nil and not countedParts[part.node] then
+                    self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
+                    countedParts[part.node] = true;
+                end
+                if part.componentJointIndex ~= nil and not countedParts[part.node] then
+                    self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
+                    countedParts[part.componentJointIndex] = true;
+                end
             end
-            if part.componentJointIndex ~= nil and not countedParts[part.node] then
-                self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
-                countedParts[part.componentJointIndex] = true;
-            end
+        else
+            self.foldAnimPartsCount = self.foldAnimPartsCount + 1;
         end
     end
     countedParts = nil;
