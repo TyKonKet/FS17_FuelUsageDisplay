@@ -15,10 +15,10 @@ function Cutter:getPtoPowerMultiplier(superFunc)
         powerMultiplier = superFunc(self);
     end
     if self.lastCutterAreaBiggerZero then
-        powerMultiplier = powerMultiplier + 0.35;
+        powerMultiplier = powerMultiplier + 0.3;
     end
     if self:getCombine().chopperPSenabled then
-        powerMultiplier = powerMultiplier + 0.3;
+        powerMultiplier = powerMultiplier + 0.15;
     end
     return powerMultiplier;
 end
