@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="37">
     <author>TyKonKet</author>
-    <version>3.6.1</version>
+    <version>3.6.2</version>
     <title>
         <en>Better Fuel Usage</en>
         <de>Realistischer Kraftstoffverbrauch</de>
@@ -14,92 +14,99 @@
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
 
-Changelog 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+Changelog 3.6.2
+- Fixed koeckerling Allrounder
+- Fixed underpower of some vehicles
+- Fixed error caused by low quality mods
+- Improved power required by wood crushers
+- Improved power required by tree planters
+- Improved power required by harvester's cutters
+- Improved power required by baler's pickup
+- Improved power required by forage wangon's pickup
 ]]>
         </en>
         <it>
             <![CDATA[Rende più realistico e mostra il consumo di carburante dei veicoli a motore.
 
-Changelog 3.6.1
-- Fixed issue with Holmer Terra Dos
-- Increased power required by tools
-- Now every tool consumes fuel based on his work
-- Synchronized exhaust effect with fuel consumption
-- Synchronized vehicle sound with motor load
-- Improved smoothness of fuel usage
-- Improved compatibility with Gearbox AddOn
+Changelog 3.6.2
+- Fixed koeckerling Allrounder
+- Fixed underpower of some vehicles
+- Fixed error caused by low quality mods
+- Improved power required by wood crushers
+- Improved power required by tree planters
+- Improved power required by harvester's cutters
+- Improved power required by baler's pickup
+- Improved power required by forage wangon's pickup
 ]]>
         </it>
         <de>
             <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 
-Changelog 3.6.1
-- Fehler mit dem Holmer Terra Dos behoben
-- Erhöhter Kraftbedarf der Werkzeuge
-- Jedes Werkzeug hat jetzt einen Kraftbedarf anhand seiner Funktion
-- Der Abgaseffekt passt sich dem Kraftstoffverbrauch an
-- Das Motorgeräusch passt sich der Motorlast an
-- Verbesserte Gleichmäßigkeit des Kraftstoffverbrauchs
-- Verbesserte Kompatibilität mit dem Gearbox AddOn
+Changelog 3.6.2
+- Fixed koeckerling Allrounder
+- Feste Unterkraft von einigen Fahrzeugen
+- Fehler behoben, der durch Modi mit niedriger Qualität verursacht wird
+- Verbesserte Kraft, die von Holzbrechern benötigt wird
+- Verbesserte Kraft, die von Baumpflanzern benötigt wird
+- Verbesserte Leistung durch Mähdrescher
+- Verbesserte Leistung, die vom Ballenpresse benötigt wird
+- Verbesserte Leistung, die von Futter Wangon Pickup benötigt wird
 ]]>
         </de>
         <fr>
             <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 
-Changelog 3.6.1
-- Correction du problème avec Holmer Terra Dos
-- Augmentation de l'alimentation requise par les outils
-- Maintenant, chaque outil consomme du carburant en fonction de son travail
-- Effet d'échappement synchronisé avec consommation d'essence
-- Le son du véhicule synchronisé avec charge moteur
-- Amélioration de la fluidité de l'utilisation du carburant
-- Amélioration de la compatibilité avec Gearbox AddOn
+Changelog 3.6.2
+- Correction de koeckerling Allrounder
+- Correction de la maîtrise de certains véhicules
+- Correction d'une erreur provoquée par des mods de faible qualité
+- Amélioration de la puissance requise par les concasseurs de bois
+- Amélioration de la puissance requise par les planteurs d'arbres
+- Amélioration de la puissance requise par les coupeurs d'arracheuse
+- Puissance améliorée requise par le ramassage de la presse à balles
+- Amélioration de la puissance requise par le ramassage de forage wangon
 ]]>
         </fr>
         <nl>
             <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
 
-Changelog 3.6.1
-- Probleem met de Holmer Terra Dos opgelost
-- Verhoogde kracht vereist door tools
-- Nu gebruikt elk gereedschap brandstof op basis van zijn werk
-- Uitlaat effect met brandstofgebruik gesynchroniseerd
-- Motor geluid met motor Kracht gesynchroniseerd
-- Verbeterde gelijkmatigheid van brandstofgebruik
-- Verbeterde samenwerken met Gearbox AddOn
+Changelog 3.6.2
+- Fixed koeckerling Allrounder
+- Fixed underpower of some vehicles
+- Fixed error caused by low quality mods
+- Improved power required by wood crushers
+- Improved power required by tree planters
+- Improved power required by harvester's cutters
+- Improved power required by baler's pickup
+- Improved power required by forage wangon's pickup
 ]]>
         </nl>
         <ru>
             <![CDATA[Повышает реалистичность потребления топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
             
-Changelog 3.6.1
-- Исправлена ошибка с Holmer Terra Dos
-- Увеличена необходимая мощность для оборудования
-- Теперь каждое оборудование вызывает потребление топлива на основе выполняемой им работы
-- Синхронизирован эффект выхлопных газов с потреблением топлива
-- Синхронизирован звук техники с нагрузкой на двигатель
-- Улучшено сглаживание потребления топлива
-- Улучшено совместимость с Gearbox AddOn
+Changelog 3.6.2
+- Fixed koeckerling Allrounder
+- Fixed underpower of some vehicles
+- Fixed error caused by low quality mods
+- Improved power required by wood crushers
+- Improved power required by tree planters
+- Improved power required by harvester's cutters
+- Improved power required by baler's pickup
+- Improved power required by forage wangon's pickup
 ]]>
         </ru>
         <pl>
             <![CDATA[Zmienia zużycie paliwa przez pojazdy na bardziej realistyczne oraz wyświetla aktualne spalanie.
 
-Dziennik zmian dla wersji 3.6.1
-- Rozwiązano problem z Holmer Terra Dos
-- Zwiększono moc wymaganą przez maszyny
-- Od teraz każda maszyna zużywa paliwo w oparciu o wykonaną pracę
-- Zsynchronizowano efekt wydechu ze spalaniem
-- Zsynchronizowano dźwięki pojazdu z obciążeniem silnika
-- Poprawiono płynność zmian zużycia paliwa
-- Poprawiono kompatybilność z modem Gearbox AddOn (Skrzynia biegów)
+Dziennik zmian dla wersji 3.6.2
+- Fixed koeckerling Allrounder
+- Fixed underpower of some vehicles
+- Fixed error caused by low quality mods
+- Improved power required by wood crushers
+- Improved power required by tree planters
+- Improved power required by harvester's cutters
+- Improved power required by baler's pickup
+- Improved power required by forage wangon's pickup
 ]]>
         </pl>
     </description>
@@ -115,6 +122,7 @@ Dziennik zmian dla wersji 3.6.1
         <sourceFile filename="extensions/Trailer.lua"/>
         <sourceFile filename="extensions/Baler.lua"/>
         <sourceFile filename="extensions/TreeSaw.lua"/>
+        <sourceFile filename="extensions/TreePlanter.lua"/>
         <sourceFile filename="extensions/StumpCutter.lua"/>
         <sourceFile filename="extensions/Tedder.lua"/>
         <sourceFile filename="extensions/Windrower.lua"/>
