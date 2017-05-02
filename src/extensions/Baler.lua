@@ -6,7 +6,7 @@
 function Baler:postPostLoad(savegame)
     BetterFuelUsage.print("Baler extension loaded on %s", self.typeName);
     self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Baler.getPtoPowerMultiplier);
-        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Baler.getConsumedPtoTorque);
+    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Baler.getConsumedPtoTorque);
 end
 Baler.postLoad = Utils.appendedFunction(Baler.postLoad, Baler.postPostLoad);
 
