@@ -4,7 +4,7 @@ Makes the fuel usage of motorized vehicles more realistic and displays the live 
   
 # TODO
 - [ ] Smoothness for ptoPower and ptoRpm
-- [ ] Maximum cap for PowerConsumer power used, to permid a minimum movement of vehicle
+- [ ] Maximum cap for PowerConsumer power used, to permit a minimum movement of vehicle
 - [ ] [AdBlue](https://en.wikipedia.org/wiki/Diesel_exhaust_fluid) simulation
   
 # Translations
