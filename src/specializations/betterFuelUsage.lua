@@ -402,30 +402,41 @@ function BetterFuelUsage:debugDraw()
         local y = 0.99;
         local size = 0.015;
         local l_space = getTextHeight(size, "#");
-        self.debugDrawTexts = {
-            string.format("Vehicle --> %s", self.configFileName),
-            string.format("Vehicle Type --> %s", self.typeName),
-            string.format("Vehicle Power --> %s", self.BetterFuelUsage.maxMotorPower),
-            string.format("Max Fuel Usage --> %.0f (%.0f)", self.fuelUsage * 1000 * 60 * 60, self.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
-            string.format("Motor Load --> %.2f", self.actualLoadPercentage),
-            string.format("Final Motor Load --> %.2f", self.BetterFuelUsage.lastLoadFactor),
-            string.format("Fuel Usage --> %.1f", self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
-        };
-        if BetterFuelUsage.gearBox ~= nil then
-            local rpmRateo = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
-            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.mrGbMS.IdleRpm, self:mrGbMGetCurrentRPM(), self.mrGbMS.RatedRpm, rpmRateo));
+        local dbgObj = self;
+        if self.selectedImplement ~= nil then
+            dbgObj = self.selectedImplement.object;
+        end
+        if dbgObj.BetterFuelUsage ~= nil then
+            self.debugDrawTexts = {
+                string.format("Vehicle --> %s", dbgObj.configFileName),
+                string.format("Vehicle Type --> %s", dbgObj.typeName),
+                string.format("Vehicle Power --> %s", dbgObj.BetterFuelUsage.maxMotorPower),
+                string.format("Max Fuel Usage --> %.0f (%.0f)", dbgObj.fuelUsage * 1000 * 60 * 60, dbgObj.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
+                string.format("Motor Load --> %.2f", dbgObj.actualLoadPercentage),
+                string.format("Final Motor Load --> %.2f", dbgObj.BetterFuelUsage.lastLoadFactor),
+                string.format("Fuel Usage --> %.1f", dbgObj.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
+            };
         else
-            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", self.motor:getMinRpm(), self.motor:getEqualizedMotorRpm(), self.motor:getMaxRpm(), (self.motor:getEqualizedMotorRpm() - self.motor:getMinRpm()) / (self.motor:getMaxRpm() - self.motor:getMinRpm())));
+            self.debugDrawTexts = {
+                string.format("Vehicle --> %s", dbgObj.configFileName),
+                string.format("Vehicle Type --> %s", dbgObj.typeName)
+            };
         end
-        if self.getIsTurnedOn ~= nil then
-            table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", self:getIsTurnedOn()));
+        if BetterFuelUsage.gearBox ~= nil then
+            local rpmRateo = (dbgObj:mrGbMGetCurrentRPM() - dbgObj.mrGbMS.IdleRpm) / (dbgObj.mrGbMS.RatedRpm - dbgObj.mrGbMS.IdleRpm);
+            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.mrGbMS.IdleRpm, dbgObj:mrGbMGetCurrentRPM(), dbgObj.mrGbMS.RatedRpm, rpmRateo));
+        elseif dbgObj.motor ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.motor:getMinRpm(), dbgObj.motor:getEqualizedMotorRpm(), dbgObj.motor:getMaxRpm(), (dbgObj.motor:getEqualizedMotorRpm() - dbgObj.motor:getMinRpm()) / (dbgObj.motor:getMaxRpm() - dbgObj.motor:getMinRpm())));
         end
-        if self.exhaustEffects ~= nil then
-            for i, effect in pairs(self.exhaustEffects) do
-                local r = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-                local g = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-                local b = Utils.lerp(1, -0.15, self.BetterFuelUsage.lastLoadFactor);
-                local a = Utils.lerp(0.5, 5, self.BetterFuelUsage.lastLoadFactor);
+        if dbgObj.getIsTurnedOn ~= nil then
+            table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", dbgObj:getIsTurnedOn()));
+        end
+        if dbgObj.exhaustEffects ~= nil then
+            for i, effect in pairs(dbgObj.exhaustEffects) do
+                local r = Utils.lerp(1, -0.15, dbgObj.BetterFuelUsage.lastLoadFactor);
+                local g = Utils.lerp(1, -0.15, dbgObj.BetterFuelUsage.lastLoadFactor);
+                local b = Utils.lerp(1, -0.15, dbgObj.BetterFuelUsage.lastLoadFactor);
+                local a = Utils.lerp(0.5, 5, dbgObj.BetterFuelUsage.lastLoadFactor);
                 table.insert(self.debugDrawTexts, string.format("Exhaust Effect [%s]--> r:%.2f, g:%.2f, b:%.2f, a:%.2f", i, r, g, b, a));
             end
         end
