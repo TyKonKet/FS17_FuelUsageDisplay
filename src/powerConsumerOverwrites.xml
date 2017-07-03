@@ -8,4 +8,6 @@
     <vehicle xml="JD915ripper11.xml" maxForce="48" forceFactor="0.5" />
     <vehicle xml="Jympa_SJ7-9.xml" maxForce="16" forceFactor="0.5" />
     <vehicle xml="JympaSJ11.xml" maxForce="30" forceFactor="0.5" />
+    <vehicle xml="data/vehicles/tools/horsch/horschTerrano5FM.xml" maxForce="17" forceFactor="0.5" />
+    <vehicle xml="data/vehicles/tools/horsch/horschTiger10LT.xml" maxForce="34" forceFactor="0.5" />
 </powerConsumerOverwrites>
