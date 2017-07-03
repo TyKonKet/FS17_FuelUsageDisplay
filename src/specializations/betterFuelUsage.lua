@@ -408,7 +408,7 @@ function BetterFuelUsage:debugDraw()
         end
         if dbgObj.BetterFuelUsage ~= nil then
             self.debugDrawTexts = {
-                string.format("Vehicle --> %s", dbgObj.configFileName),
+                string.format("Vehicle --> %s", Utils.clearXmlDirectory(dbgObj.configFileName)),
                 string.format("Vehicle Type --> %s", dbgObj.typeName),
                 string.format("Vehicle Power --> %s", dbgObj.BetterFuelUsage.maxMotorPower),
                 string.format("Max Fuel Usage --> %.0f (%.0f)", dbgObj.fuelUsage * 1000 * 60 * 60, dbgObj.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
@@ -418,7 +418,7 @@ function BetterFuelUsage:debugDraw()
             };
         else
             self.debugDrawTexts = {
-                string.format("Vehicle --> %s", dbgObj.configFileName),
+                string.format("Vehicle --> %s", Utils.clearXmlDirectory(dbgObj.configFileName)),
                 string.format("Vehicle Type --> %s", dbgObj.typeName)
             };
         end

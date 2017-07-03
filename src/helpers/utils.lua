@@ -42,3 +42,24 @@ function Utils:gearboxActive()
     end
     return false;
 end
+
+function Utils.clearXmlDirectory(filename)
+    local isMod = false;
+    local filenameLower = filename:lower();
+    local modsDirLen = g_modsDirectory:len();
+    local modsDirLower = g_modsDirectory:lower();
+    if filenameLower:sub(1, modsDirLen) == modsDirLower then
+        filename = filename:sub(modsDirLen + 1);
+        filename = filename:sub(filename:find("/") + 1);
+    else
+        for i = 1, table.getn(g_dlcsDirectories) do
+            local dlcsDir = g_dlcsDirectories[i].path:lower();
+            local dlcsDirLen = dlcsDir:len();
+            if filenameLower:sub(1, dlcsDirLen) == dlcsDir then
+                filename = filename:sub(dlcsDirLen + 1);
+                break;
+            end
+        end
+    end
+    return filename;
+end

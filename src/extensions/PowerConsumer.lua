@@ -42,8 +42,8 @@ end
 
 function PowerConsumer:postLoad()
     BetterFuelUsage.print("PowerConsumer extension loaded on %s", self.typeName);
-    if PowerConsumer.powerConsumerOverwrites[self.configFileName] ~= nil then
-        local o = PowerConsumer.powerConsumerOverwrites[self.configFileName];
+    if PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)] ~= nil then
+        local o = PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)];
         if o.forceFactor ~= nil then
             self.powerConsumer.forceFactor = o.forceFactor;
         end
@@ -57,8 +57,8 @@ function PowerConsumer:postLoad()
             self.powerConsumer.ptoRpm = o.ptoRpm;
         end
     end
-    local m = 1.5;
-    local mp = 1.2;
+    local m = 1.45;
+    local mp = 1.25;
     --BetterFuelUsage.print("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m);
     self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
     --BetterFuelUsage.print("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m);
