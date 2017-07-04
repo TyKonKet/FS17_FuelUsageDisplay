@@ -4,9 +4,11 @@
 --@author TyKonKet
 --@date 29/03/2017
 function Pipe:postPostLoad(savegame)
-    BetterFuelUsage.print("Pipe extension loaded on %s", self.typeName);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Pipe.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Pipe.getPtoRpm);
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("Pipe extension loaded on %s", self.typeName);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Pipe.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Pipe.getPtoRpm);
+    end
 end
 Pipe.postLoad = Utils.appendedFunction(Pipe.postLoad, Pipe.postPostLoad);
 

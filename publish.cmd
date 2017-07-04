@@ -36,7 +36,7 @@ IF EXIST "%mod_path_out%\%mod_name%.zip" (
 )
 PUSHD "%mod_path_src%"
 ECHO C:\Program Files\WinRAR\winrar A -r ..\out\%mod_name%.zip
-"C:\Program Files\WinRAR\winrar" A -r ..\out\%mod_name%.zip *.*
+"C:\Program Files\WinRAR\winrar" A -r -x.gitignore ..\out\%mod_name%.zip *.*
 POPD
 IF EXIST "%fs17_mod_path%\" (
     RMDIR /S /Q "%fs17_mod_path%\"

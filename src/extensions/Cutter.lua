@@ -3,11 +3,14 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function Cutter:postLoad(savegame)
-    BetterFuelUsage.print("Cutter extension loaded on %s", self.typeName);
-    self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Cutter.getPtoPowerMultiplier);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cutter.getPtoRpm);
+function Cutter:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("Cutter extension loaded on %s", self.typeName);
+        self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Cutter.getPtoPowerMultiplier);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Cutter.getPtoRpm);
+    end
 end
+Cutter.postLoad = Utils.appendedFunction(Cutter.postLoad, Cutter.postPostLoad);
 
 function Cutter:getPtoPowerMultiplier(superFunc)
     local powerMultiplier = 1;

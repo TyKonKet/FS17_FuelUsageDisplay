@@ -3,11 +3,14 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function Trailer:postLoad(savegame)
-    --BetterFuelUsage.print("Trailer extension loaded on %s", self.typeName);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Trailer.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Trailer.getPtoRpm);
+function Trailer:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        --BetterFuelUsage.print("Trailer extension loaded on %s", self.typeName);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Trailer.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Trailer.getPtoRpm);
+    end
 end
+Trailer.postLoad = Utils.appendedFunction(Trailer.postLoad, Trailer.postPostLoad);
 
 function Trailer:getConsumedPtoTorque(superFunc)
     local torque = 0;

@@ -3,11 +3,14 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function ForageWagon:postLoad(savegame)
-    BetterFuelUsage.print("ForageWagon extension loaded on %s", self.typeName);
-    self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, ForageWagon.getPtoPowerMultiplier);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, ForageWagon.getConsumedPtoTorque);
+function ForageWagon:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("ForageWagon extension loaded on %s", self.typeName);
+        self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, ForageWagon.getPtoPowerMultiplier);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, ForageWagon.getConsumedPtoTorque);
+    end
 end
+ForageWagon.postLoad = Utils.appendedFunction(ForageWagon.postLoad, ForageWagon.postPostLoad);
 
 function ForageWagon:getPtoPowerMultiplier(superFunc)
     local powerMultiplier = 1;

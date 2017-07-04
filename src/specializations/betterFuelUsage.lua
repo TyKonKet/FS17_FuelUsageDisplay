@@ -126,27 +126,29 @@ function BetterFuelUsage:getSaveAttributesAndNodes(nodeIdent)
 end
 
 function BetterFuelUsage:setFuelUsageFunction(default, noSend)
-    BetterFuelUsage.print("BetterFuelUsage:setFuelUsageFunction(default:%s)", default);
-    if not self:getIsMotorStarted() then
-        self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
-        if not noSend then
-            if default then
-                self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
-            else
-                self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+    BetterFuelUsage.print("BetterFuelUsage:setFuelUsageFunction(default:%s) isMR:%s", default, self.mrIsMrVehicle);
+    if not self.mrIsMrVehicle then
+        if not self:getIsMotorStarted() then
+            self.BetterFuelUsage.useDefaultFuelUsageFunction = default;
+            if not noSend then
+                if default then
+                    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_DEFAULT_TEXT_1"));
+                else
+                    self.BetterFuelUsage.fuelFade:play(g_i18n:getText("BFU_FUEL_USAGE_REALISTIC_TEXT_1"));
+                end
             end
-        end
-        if self.isServer or noSend then
-            if default then
-                self.updateFuelUsage = BetterFuelUsage.defaultUpdateFuelUsage;
+            if self.isServer or noSend then
+                if default then
+                    self.updateFuelUsage = BetterFuelUsage.defaultUpdateFuelUsage;
+                else
+                    self.updateFuelUsage = BetterFuelUsage.realisticUpdateFuelUsage;
+                end
             else
-                self.updateFuelUsage = BetterFuelUsage.realisticUpdateFuelUsage;
+                g_client:getServerConnection():sendEvent(SetFuelUsageFunctionEvent:new(default, self));
             end
         else
-            g_client:getServerConnection():sendEvent(SetFuelUsageFunctionEvent:new(default, self));
+            g_currentMission:showBlinkingWarning(g_i18n:getText("BFU_SET_FUEL_USAGE_ERROR_TEXT_1"), 2500);
         end
-    else
-        g_currentMission:showBlinkingWarning(g_i18n:getText("BFU_SET_FUEL_USAGE_ERROR_TEXT_1"), 2500);
     end
 end
 
@@ -226,12 +228,18 @@ end
 
 function BetterFuelUsage:update(dt)
     if self.isEntered then
-        if self:getIsActiveForInput() and InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
-            self:setFuelUsageFunction(not self.BetterFuelUsage.useDefaultFuelUsageFunction);
+        if not self.mrIsMrVehicle then
+            if self:getIsActiveForInput() and InputBinding.hasEvent(InputBinding.BFU_SET_FUEL_USAGE, true) then
+                self:setFuelUsageFunction(not self.BetterFuelUsage.useDefaultFuelUsageFunction);
+            end
         end
         self.BetterFuelUsage.fuelFade:update(dt);
     end
     if self.isServer then
+        if self.mrIsMrVehicle then
+            local currentLoadFactor = self.motor.mrLastEngineOutputTorque / self.motor.mrMaxTorque;
+            self.BetterFuelUsage.lastLoadFactor = Utils.lerp(self.BetterFuelUsage.lastLoadFactor, currentLoadFactor, dt / 500);
+        end
         if self:getIsMotorStarted() then
             local fuelFillLevelDiff = self.BetterFuelUsage.lastFillLevel - self.BetterFuelUsage.fuelFillLevel;
             if self.BetterFuelUsage.helperFuelUsed > 0 then
@@ -305,11 +313,13 @@ end
 
 function BetterFuelUsage:draw()
     if self.isEntered then
-        if self:getIsActiveForInput() then
-            if self.BetterFuelUsage.useDefaultFuelUsageFunction then
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
-            else
-                g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+        if not self.mrIsMrVehicle then
+            if self:getIsActiveForInput() then
+                if self.BetterFuelUsage.useDefaultFuelUsageFunction then
+                    g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_1"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+                else
+                    g_currentMission:addHelpButtonText(g_i18n:getText("BFU_SET_FUEL_USAGE_TEXT_2"), InputBinding.BFU_SET_FUEL_USAGE, nil, GS_PRIO_HIGH);
+                end
             end
         end
         --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
@@ -317,12 +327,14 @@ function BetterFuelUsage:draw()
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
         local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-        local hoursFactor = 0.25;
-        if self.operatingTime ~= nil then
-            local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
-            hoursFactor = (opTime / 300) * 0.25;
+        if not self.mrIsMrVehicle then
+            local hoursFactor = 0.25;
+            if self.operatingTime ~= nil then
+                local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
+                hoursFactor = (opTime / 300) * 0.25;
+            end
+            fuelUsage = fuelUsage * (0.5 + hoursFactor);
         end
-        fuelUsage = fuelUsage * (0.5 + hoursFactor);
         if self.fuelUsageHud ~= nil then
             VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
         end
@@ -414,12 +426,14 @@ function BetterFuelUsage:debugDraw()
                 string.format("Max Fuel Usage --> %.0f (%.0f)", dbgObj.fuelUsage * 1000 * 60 * 60, dbgObj.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
                 string.format("Motor Load --> %.2f", dbgObj.actualLoadPercentage),
                 string.format("Final Motor Load --> %.2f", dbgObj.BetterFuelUsage.lastLoadFactor),
-                string.format("Fuel Usage --> %.1f", dbgObj.BetterFuelUsage.fuelUsed * 1000 * 60 * 60)
+                string.format("Fuel Usage --> %.1f", dbgObj.BetterFuelUsage.fuelUsed * 1000 * 60 * 60),
+                string.format("Is MoreRealistic --> %s", dbgObj.mrIsMrVehicle)
             };
         else
             self.debugDrawTexts = {
                 string.format("Vehicle --> %s", Utils.clearXmlDirectory(dbgObj.configFileName)),
-                string.format("Vehicle Type --> %s", dbgObj.typeName)
+                string.format("Vehicle Type --> %s", dbgObj.typeName),
+                string.format("Is MoreRealistic --> %s", dbgObj.mrIsMrVehicle)
             };
         end
         if BetterFuelUsage.gearBox ~= nil then
@@ -427,6 +441,9 @@ function BetterFuelUsage:debugDraw()
             table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.mrGbMS.IdleRpm, dbgObj:mrGbMGetCurrentRPM(), dbgObj.mrGbMS.RatedRpm, rpmRateo));
         elseif dbgObj.motor ~= nil then
             table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.motor:getMinRpm(), dbgObj.motor:getEqualizedMotorRpm(), dbgObj.motor:getMaxRpm(), (dbgObj.motor:getEqualizedMotorRpm() - dbgObj.motor:getMinRpm()) / (dbgObj.motor:getMaxRpm() - dbgObj.motor:getMinRpm())));
+            if self.mrIsMrVehicle then
+                table.insert(self.debugDrawTexts, string.format("MR Motor Torque --> %s of %s (%s)", dbgObj.motor.mrLastEngineOutputTorque, dbgObj.motor.mrMaxTorque, dbgObj.motor.mrLastEngineOutputTorque / dbgObj.motor.mrMaxTorque));
+            end
         end
         if dbgObj.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", dbgObj:getIsTurnedOn()));

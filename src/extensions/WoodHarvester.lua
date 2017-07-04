@@ -3,11 +3,14 @@
 --
 -- @author TyKonKet
 -- @date 29/03/2017
-function WoodHarvester:postLoad(savegame)
-    BetterFuelUsage.print("WoodHarvester extension loaded on %s", self.typeName);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, WoodHarvester.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, WoodHarvester.getPtoRpm);
+function WoodHarvester:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("WoodHarvester extension loaded on %s", self.typeName);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, WoodHarvester.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, WoodHarvester.getPtoRpm);
+    end
 end
+WoodHarvester.postLoad = Utils.appendedFunction(WoodHarvester.postLoad, WoodHarvester.postPostLoad);
 
 function WoodHarvester:getConsumedPtoTorque(superFunc)
     local torque = 0;

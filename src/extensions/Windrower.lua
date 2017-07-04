@@ -3,10 +3,13 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function Windrower:postLoad(savegame)
-    BetterFuelUsage.print("Windrower extension loaded on %s", self.typeName);
-    self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Windrower.getPtoPowerMultiplier);
+function Windrower:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("Windrower extension loaded on %s", self.typeName);
+        self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Windrower.getPtoPowerMultiplier);
+    end
 end
+Windrower.postLoad = Utils.appendedFunction(Windrower.postLoad, Windrower.postPostLoad);
 
 function Windrower:getPtoPowerMultiplier(superFunc)
     local powerMultiplier = 1;

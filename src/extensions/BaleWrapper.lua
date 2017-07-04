@@ -3,11 +3,14 @@
 --
 -- @author TyKonKet
 -- @date 03/04/2017
-function BaleWrapper:postLoad(savegame)
-    BetterFuelUsage.print("BaleWrapper extension loaded on %s", self.typeName);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, BaleWrapper.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, BaleWrapper.getPtoRpm);
+function BaleWrapper:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("BaleWrapper extension loaded on %s", self.typeName);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, BaleWrapper.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, BaleWrapper.getPtoRpm);
+    end
 end
+BaleWrapper.postLoad = Utils.appendedFunction(BaleWrapper.postLoad, BaleWrapper.postPostLoad);
 
 function BaleWrapper:getConsumedPtoTorque(superFunc)
     local torque = 0;

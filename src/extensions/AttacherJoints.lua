@@ -4,9 +4,11 @@
 --@author TyKonKet
 --@date 30/03/2017
 function AttacherJoints:postPostLoad(savegame)
-    BetterFuelUsage.print("AttacherJoints extension loaded on %s", self.typeName);
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, AttacherJoints.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, AttacherJoints.getPtoRpm);
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("AttacherJoints extension loaded on %s", self.typeName);
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, AttacherJoints.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, AttacherJoints.getPtoRpm);
+    end
 end
 AttacherJoints.postLoad = Utils.appendedFunction(AttacherJoints.postLoad, AttacherJoints.postPostLoad);
 

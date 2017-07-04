@@ -4,9 +4,11 @@
 -- @author TyKonKet
 -- @date 04/04/2017
 function Plough:postPostLoad(savegame)
-    self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Plough.getConsumedPtoTorque);
-    self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Plough.getPtoRpm);
-    BetterFuelUsage.print("Plough extension loaded on %s", self.typeName);
+    if not self.mrIsMrVehicle then
+        self.getConsumedPtoTorque = Utils.overwrittenFunction(self.getConsumedPtoTorque, Plough.getConsumedPtoTorque);
+        self.getPtoRpm = Utils.overwrittenFunction(self.getPtoRpm, Plough.getPtoRpm);
+        BetterFuelUsage.print("Plough extension loaded on %s", self.typeName);
+    end
 end
 Plough.postLoad = Utils.appendedFunction(Plough.postLoad, Plough.postPostLoad);
 

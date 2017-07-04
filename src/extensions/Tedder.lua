@@ -3,10 +3,13 @@
 --
 -- @author TyKonKet
 -- @date 27/03/2017
-function Tedder:postLoad(savegame)
-    BetterFuelUsage.print("Tedder extension loaded on %s", self.typeName);
-    self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Tedder.getPtoPowerMultiplier);
+function Tedder:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("Tedder extension loaded on %s", self.typeName);
+        self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, Tedder.getPtoPowerMultiplier);
+    end
 end
+Tedder.postLoad = Utils.appendedFunction(Tedder.postLoad, Tedder.postPostLoad);
 
 function Tedder:getPtoPowerMultiplier(superFunc)
     local powerMultiplier = 1;

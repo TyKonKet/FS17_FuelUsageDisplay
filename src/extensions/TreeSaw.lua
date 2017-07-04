@@ -3,10 +3,13 @@
 --
 -- @author TyKonKet
 -- @date 28/03/2017
-function TreeSaw:postLoad(savegame)
-    BetterFuelUsage.print("TreeSaw extension loaded on %s", self.typeName);
-    self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, TreeSaw.getPtoPowerMultiplier);
+function TreeSaw:postPostLoad(savegame)
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("TreeSaw extension loaded on %s", self.typeName);
+        self.getPtoPowerMultiplier = Utils.overwrittenFunction(self.getPtoPowerMultiplier, TreeSaw.getPtoPowerMultiplier);
+    end
 end
+TreeSaw.postLoad = Utils.appendedFunction(TreeSaw.postLoad, TreeSaw.postPostLoad);
 
 function TreeSaw:getPtoPowerMultiplier(superFunc)
     local powerMultiplier = 1;

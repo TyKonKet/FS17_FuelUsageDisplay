@@ -41,41 +41,52 @@ function PowerConsumer:preLoad(savegame)
 end
 
 function PowerConsumer:postLoad()
-    BetterFuelUsage.print("PowerConsumer extension loaded on %s", self.typeName);
-    if PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)] ~= nil then
-        local o = PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)];
-        if o.forceFactor ~= nil then
-            self.powerConsumer.forceFactor = o.forceFactor;
+    if not self.mrIsMrVehicle then
+        BetterFuelUsage.print("PowerConsumer extension loaded on %s", self.typeName);
+        if PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)] ~= nil then
+            local o = PowerConsumer.powerConsumerOverwrites[Utils.clearXmlDirectory(self.configFileName)];
+            if o.forceFactor ~= nil then
+                self.powerConsumer.forceFactor = o.forceFactor;
+            end
+            if o.maxForce ~= nil then
+                self.powerConsumer.maxForce = o.maxForce;
+            end
+            if o.neededPtoPower ~= nil then
+                self.powerConsumer.neededPtoPower = o.neededPtoPower;
+            end
+            if o.ptoRpm ~= nil then
+                self.powerConsumer.ptoRpm = o.ptoRpm;
+            end
         end
-        if o.maxForce ~= nil then
-            self.powerConsumer.maxForce = o.maxForce;
-        end
-        if o.neededPtoPower ~= nil then
-            self.powerConsumer.neededPtoPower = o.neededPtoPower;
-        end
-        if o.ptoRpm ~= nil then
-            self.powerConsumer.ptoRpm = o.ptoRpm;
-        end
+        local m = 1.45;
+        local mp = 1.25;
+        --BetterFuelUsage.print("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m);
+        self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
+        --BetterFuelUsage.print("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m);
+        self.powerConsumer.forceFactor = self.powerConsumer.forceFactor * m;
+        --BetterFuelUsage.print("self.powerConsumer.neededPtoPower:%s -> %s", self.powerConsumer.neededPtoPower, self.powerConsumer.neededPtoPower * mp);
+        self.powerConsumer.neededPtoPower = self.powerConsumer.neededPtoPower * mp;
     end
-    local m = 1.45;
-    local mp = 1.25;
-    --BetterFuelUsage.print("self.powerConsumer.maxForce:%s -> %s", self.powerConsumer.maxForce, self.powerConsumer.maxForce * m);
-    self.powerConsumer.maxForce = self.powerConsumer.maxForce * m;
-    --BetterFuelUsage.print("self.powerConsumer.forceFactor:%s -> %s", self.powerConsumer.forceFactor, self.powerConsumer.forceFactor * m);
-    self.powerConsumer.forceFactor = self.powerConsumer.forceFactor * m;
-    --BetterFuelUsage.print("self.powerConsumer.neededPtoPower:%s -> %s", self.powerConsumer.neededPtoPower, self.powerConsumer.neededPtoPower * mp);
-    self.powerConsumer.neededPtoPower = self.powerConsumer.neededPtoPower * mp;
 end
 
-function PowerConsumer:getConsumedPtoTorque()
-    if self:getDoConsumePtoPower() then
-        local m = self:getPtoPowerMultiplier();
-        if self.powerConsumer.ptoRpm > 0.001 then
-            return self.powerConsumer.neededPtoPower / (self.powerConsumer.ptoRpm * math.pi / 30) * m;
+function PowerConsumer:bfuGetConsumedPtoTorque(superFunc)
+    if not self.mrIsMrVehicle then
+        if self:getDoConsumePtoPower() then
+            local m = self:getPtoPowerMultiplier();
+            if self.powerConsumer.ptoRpm > 0.001 then
+                return self.powerConsumer.neededPtoPower / (self.powerConsumer.ptoRpm * math.pi / 30) * m;
+            end
+        end
+        return 0;
+    else
+        if superFunc ~= nil then
+            return superFunc(self);
+        else
+            return 0;
         end
     end
-    return 0;
 end
+PowerConsumer.getConsumedPtoTorque = Utils.overwrittenFunction(PowerConsumer.getConsumedPtoTorque, PowerConsumer.bfuGetConsumedPtoTorque);
 
 function PowerConsumer:getPtoPowerMultiplier()
     return 1;
