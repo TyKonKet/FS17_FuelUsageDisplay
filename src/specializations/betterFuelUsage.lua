@@ -436,12 +436,12 @@ function BetterFuelUsage:debugDraw()
                 string.format("Is MoreRealistic --> %s", dbgObj.mrIsMrVehicle)
             };
         end
-        if BetterFuelUsage.gearBox ~= nil then
-            local rpmRateo = (dbgObj:mrGbMGetCurrentRPM() - dbgObj.mrGbMS.IdleRpm) / (dbgObj.mrGbMS.RatedRpm - dbgObj.mrGbMS.IdleRpm);
-            table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.mrGbMS.IdleRpm, dbgObj:mrGbMGetCurrentRPM(), dbgObj.mrGbMS.RatedRpm, rpmRateo));
+        if BetterFuelUsage.gearBox ~= nil and dbgObj.mrIsMrVehicle == nil then
+            --local rpmRateo = (dbgObj:mrGbMGetCurrentRPM() - dbgObj.mrGbMS.IdleRpm) / (dbgObj.mrGbMS.RatedRpm - dbgObj.mrGbMS.IdleRpm);
+            --table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.mrGbMS.IdleRpm, dbgObj:mrGbMGetCurrentRPM(), dbgObj.mrGbMS.RatedRpm, rpmRateo));
         elseif dbgObj.motor ~= nil then
             table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.motor:getMinRpm(), dbgObj.motor:getEqualizedMotorRpm(), dbgObj.motor:getMaxRpm(), (dbgObj.motor:getEqualizedMotorRpm() - dbgObj.motor:getMinRpm()) / (dbgObj.motor:getMaxRpm() - dbgObj.motor:getMinRpm())));
-            if self.mrIsMrVehicle then
+            if dbgObj.mrIsMrVehicle then
                 table.insert(self.debugDrawTexts, string.format("MR Motor Torque --> %s of %s (%s)", dbgObj.motor.mrLastEngineOutputTorque, dbgObj.motor.mrMaxTorque, dbgObj.motor.mrLastEngineOutputTorque / dbgObj.motor.mrMaxTorque));
             end
         end
