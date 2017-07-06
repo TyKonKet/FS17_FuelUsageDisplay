@@ -153,19 +153,6 @@ function BetterFuelUsage:setFuelUsageFunction(default, noSend)
 end
 
 function BetterFuelUsage:realisticUpdateFuelUsage(dt)
-    local targetFactor = 0;
-    if BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff then
-        targetFactor = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
-        targetFactor = (targetFactor + self.actualLoadPercentage) / 2;
-    else
-        targetFactor = self.actualLoadPercentage;
-    end
-    targetFactor = Utils.clamp(targetFactor, 0, 1);
-    if self.BetterFuelUsage.lastLoadFactor < targetFactor then
-        self.BetterFuelUsage.lastLoadFactor = math.min(targetFactor, self.BetterFuelUsage.lastLoadFactor + dt / 3000);
-    elseif self.BetterFuelUsage.lastLoadFactor > targetFactor then
-        self.BetterFuelUsage.lastLoadFactor = math.max(targetFactor, self.BetterFuelUsage.lastLoadFactor - dt / 3000);
-    end
     local fuelUsageFactor = 1;
     if g_currentMission.missionInfo.fuelUsageLow then
         fuelUsageFactor = 0.7;
@@ -236,10 +223,17 @@ function BetterFuelUsage:update(dt)
         self.BetterFuelUsage.fuelFade:update(dt);
     end
     if self.isServer then
-        if self.mrIsMrVehicle then
-            local currentLoadFactor = self.motor.mrLastEngineOutputTorque / self.motor.mrMaxTorque;
-            self.BetterFuelUsage.lastLoadFactor = Utils.lerp(self.BetterFuelUsage.lastLoadFactor, currentLoadFactor, dt / 500);
+        local targetFactor = 0;
+        if BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff then
+            targetFactor = (self:mrGbMGetCurrentRPM() - self.mrGbMS.IdleRpm) / (self.mrGbMS.RatedRpm - self.mrGbMS.IdleRpm);
+            targetFactor = (targetFactor + self.actualLoadPercentage) / 2;
+        elseif self.mrIsMrVehicle then
+            targetFactor = self.motor.mrLastEngineOutputTorque / self.motor.mrMaxTorque;
+        else
+            targetFactor = self.actualLoadPercentage;
         end
+        self.BetterFuelUsage.lastLoadFactor = Utils.clamp(Utils.lerp(self.BetterFuelUsage.lastLoadFactor, targetFactor, dt / 300) - 0.002, 0, 1);
+        
         if self:getIsMotorStarted() then
             local fuelFillLevelDiff = self.BetterFuelUsage.lastFillLevel - self.BetterFuelUsage.fuelFillLevel;
             if self.BetterFuelUsage.helperFuelUsed > 0 then
@@ -255,6 +249,14 @@ function BetterFuelUsage:update(dt)
                 end
             end
             self.BetterFuelUsage.lastFillLevel = self.BetterFuelUsage.fuelFillLevel;
+            if self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
+                if self.mrIsMrVehicle and self.mrDebugFuelConsumptionAVG ~= nil then
+                    self.BetterFuelUsage.fuelUsed = self.mrDebugFuelConsumptionAVG / (1000 * 60 * 60);
+                end
+                if BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff and self.mrGbMD ~= nil and self.mrGbMD.Fuel ~= nil then
+                    self.BetterFuelUsage.fuelUsed = self.mrGbMD.Fuel / (1000 * 60 * 60);
+                end
+            end
         else
             self.BetterFuelUsage.fuelUsed = 0;
         end
@@ -436,14 +438,8 @@ function BetterFuelUsage:debugDraw()
                 string.format("Is MoreRealistic --> %s", dbgObj.mrIsMrVehicle)
             };
         end
-        if BetterFuelUsage.gearBox ~= nil and dbgObj.mrIsMrVehicle == nil then
-            --local rpmRateo = (dbgObj:mrGbMGetCurrentRPM() - dbgObj.mrGbMS.IdleRpm) / (dbgObj.mrGbMS.RatedRpm - dbgObj.mrGbMS.IdleRpm);
-            --table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.mrGbMS.IdleRpm, dbgObj:mrGbMGetCurrentRPM(), dbgObj.mrGbMS.RatedRpm, rpmRateo));
-        elseif dbgObj.motor ~= nil then
+        if dbgObj.motor ~= nil then
             table.insert(self.debugDrawTexts, string.format("Motor Rpm --> min:%.0f cur:%.0f max:%.0f factor:%.2f", dbgObj.motor:getMinRpm(), dbgObj.motor:getEqualizedMotorRpm(), dbgObj.motor:getMaxRpm(), (dbgObj.motor:getEqualizedMotorRpm() - dbgObj.motor:getMinRpm()) / (dbgObj.motor:getMaxRpm() - dbgObj.motor:getMinRpm())));
-            if dbgObj.mrIsMrVehicle then
-                table.insert(self.debugDrawTexts, string.format("MR Motor Torque --> %s of %s (%s)", dbgObj.motor.mrLastEngineOutputTorque, dbgObj.motor.mrMaxTorque, dbgObj.motor.mrLastEngineOutputTorque / dbgObj.motor.mrMaxTorque));
-            end
         end
         if dbgObj.getIsTurnedOn ~= nil then
             table.insert(self.debugDrawTexts, string.format("Get is turned on --> %s", dbgObj:getIsTurnedOn()));
