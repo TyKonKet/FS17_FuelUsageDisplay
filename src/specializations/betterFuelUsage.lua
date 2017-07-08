@@ -60,7 +60,6 @@ function BetterFuelUsage:preLoad(savegame)
     self.BetterFuelUsage.useDefaultFuelUsageFunction = false;
     self.BetterFuelUsage.fuelUsed = 0;
     self.BetterFuelUsage.fuelUsedDisplayTime = 0;
-    self.BetterFuelUsage.maxFuelUsage = 1;
     self.BetterFuelUsage.fuelFillLevel = 0;
     self.BetterFuelUsage.lastFillLevel = 0;
     self.BetterFuelUsage.lastLoadFactor = 0;
@@ -159,7 +158,6 @@ function BetterFuelUsage:realisticUpdateFuelUsage(dt)
     end
     local fuelUsed = fuelUsageFactor * self.fuelUsage * dt * self.BetterFuelUsage.lastLoadFactor;
     fuelUsed = fuelUsed + fuelUsageFactor * 0.075 * self.fuelUsage * dt;
-    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage + fuelUsageFactor * 0.075 * self.fuelUsage;
     if fuelUsed > 0 then
         if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
             self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
@@ -181,7 +179,6 @@ function BetterFuelUsage:defaultUpdateFuelUsage(dt)
         fuelUsageFactor = 0.7;
     end
     local fuelUsed = fuelUsageFactor * rpmFactor * self.fuelUsage * dt;
-    self.BetterFuelUsage.maxFuelUsage = fuelUsageFactor * self.fuelUsage;
     if fuelUsed > 0 then
         if not self:getIsHired() or not g_currentMission.missionInfo.helperBuyFuel then
             self:setFuelFillLevel(self.fuelFillLevel - fuelUsed);
@@ -250,11 +247,11 @@ function BetterFuelUsage:update(dt)
             end
             self.BetterFuelUsage.lastFillLevel = self.BetterFuelUsage.fuelFillLevel;
             if self:getIsHired() and g_currentMission.missionInfo.helperBuyFuel then
-                if self.mrIsMrVehicle and self.mrDebugFuelConsumptionAVG ~= nil then
-                    self.BetterFuelUsage.fuelUsed = self.mrDebugFuelConsumptionAVG / (1000 * 60 * 60);
+                if self.mrIsMrVehicle and self.mrLastFuelRate ~= nil then
+                    self.BetterFuelUsage.fuelUsed = self.mrLastFuelRate / (100 * 60 * 60);
                 end
                 if BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff and self.mrGbMD ~= nil and self.mrGbMD.Fuel ~= nil then
-                    self.BetterFuelUsage.fuelUsed = self.mrGbMD.Fuel / (1000 * 60 * 60);
+                    self.BetterFuelUsage.fuelUsed = -1;
                 end
             end
         else
@@ -278,7 +275,6 @@ end
 function BetterFuelUsage:writeStream(streamId, connection)
     if not connection:getIsServer() then
         streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
-        streamWriteFloat32(streamId, self.BetterFuelUsage.maxFuelUsage);
         streamWriteFloat32(streamId, self.BetterFuelUsage.lastLoadFactor);
     end
 end
@@ -286,7 +282,6 @@ end
 function BetterFuelUsage:readStream(streamId, connection)
     if connection:getIsServer() then
         self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
-        self.BetterFuelUsage.maxFuelUsage = streamReadFloat32(streamId);
         self.BetterFuelUsage.lastLoadFactor = streamReadFloat32(streamId);
     end
 end
@@ -294,7 +289,6 @@ end
 function BetterFuelUsage:writeUpdateStream(streamId, connection, dirtyMask)
     if not connection:getIsServer() then
         streamWriteFloat32(streamId, self.BetterFuelUsage.fuelUsed);
-        streamWriteFloat32(streamId, self.BetterFuelUsage.maxFuelUsage);
         streamWriteFloat32(streamId, self.BetterFuelUsage.lastLoadFactor);
     end
 end
@@ -302,7 +296,6 @@ end
 function BetterFuelUsage:readUpdateStream(streamId, timestamp, connection)
     if connection:getIsServer() then
         self.BetterFuelUsage.fuelUsed = streamReadFloat32(streamId);
-        self.BetterFuelUsage.maxFuelUsage = streamReadFloat32(streamId);
         self.BetterFuelUsage.lastLoadFactor = streamReadFloat32(streamId);
     end
 end
@@ -324,31 +317,32 @@ function BetterFuelUsage:draw()
                 end
             end
         end
-        --BetterFuelUsage.drawRightMeter(self, self.BetterFuelUsage.fuelUsed / self.BetterFuelUsage.maxFuelUsage);
         BetterFuelUsage.drawLeftMeter(self, self.BetterFuelUsage.lastLoadFactor);
         BetterFuelUsage.debugDraw(self);
         self.BetterFuelUsage.fuelFade:draw();
-        local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-        if not self.mrIsMrVehicle then
-            local hoursFactor = 0.25;
-            if self.operatingTime ~= nil then
-                local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
-                hoursFactor = (opTime / 300) * 0.25;
+        if self.BetterFuelUsage.fuelUsed ~= -1 then
+            local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
+            if not self.mrIsMrVehicle then
+                local hoursFactor = 0.25;
+                if self.operatingTime ~= nil then
+                    local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
+                    hoursFactor = (opTime / 300) * 0.25;
+                end
+                fuelUsage = fuelUsage * (0.5 + hoursFactor);
             end
-            fuelUsage = fuelUsage * (0.5 + hoursFactor);
+            if self.fuelUsageHud ~= nil then
+                VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
+            end
+            self.BetterFuelUsage.fuelDisplayed = fuelUsage;
+            if fuelUsage < 10 then
+                fuelUsage = string.format("%.1f", fuelUsage);
+            else
+                fuelUsage = string.format("%.0f", fuelUsage);
+            end
+            self.fuelText:draw({text = fuelUsage});
+            local x, y = self.fuelText:getTextEnd();
+            self.lhText:draw({position = {x = x, y = y}});
         end
-        if self.fuelUsageHud ~= nil then
-            VehicleHudUtils.setHudValue(self, self.fuelUsageHud, fuelUsage);
-        end
-        self.BetterFuelUsage.fuelDisplayed = fuelUsage;
-        if fuelUsage < 10 then
-            fuelUsage = string.format("%.1f", fuelUsage);
-        else
-            fuelUsage = string.format("%.0f", fuelUsage);
-        end
-        self.fuelText:draw({text = fuelUsage});
-        local x, y = self.fuelText:getTextEnd();
-        self.lhText:draw({position = {x = x, y = y}});
     end
 end
 
@@ -425,7 +419,6 @@ function BetterFuelUsage:debugDraw()
                 string.format("Vehicle --> %s", Utils.clearXmlDirectory(dbgObj.configFileName)),
                 string.format("Vehicle Type --> %s", dbgObj.typeName),
                 string.format("Vehicle Power --> %s", dbgObj.BetterFuelUsage.maxMotorPower),
-                string.format("Max Fuel Usage --> %.0f (%.0f)", dbgObj.fuelUsage * 1000 * 60 * 60, dbgObj.BetterFuelUsage.maxFuelUsage * 1000 * 60 * 60),
                 string.format("Motor Load --> %.2f", dbgObj.actualLoadPercentage),
                 string.format("Final Motor Load --> %.2f", dbgObj.BetterFuelUsage.lastLoadFactor),
                 string.format("Fuel Usage --> %.1f", dbgObj.BetterFuelUsage.fuelUsed * 1000 * 60 * 60),
