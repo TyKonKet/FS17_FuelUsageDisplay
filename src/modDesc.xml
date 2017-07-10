@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="37">
     <author>TyKonKet</author>
-    <version>3.6.2</version>
+    <version>3.7.0</version>
     <title>
         <en>Better Fuel Usage</en>
         <de>Realistischer Kraftstoffverbrauch</de>
@@ -14,99 +14,85 @@
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
 
-Changelog 3.6.2
-- Fixed koeckerling Allrounder
-- Fixed underpower of some vehicles
-- Fixed error caused by low quality mods
-- Improved power required by wood crushers
-- Improved power required by tree planters
-- Improved power required by harvester's cutters
-- Improved power required by baler's pickup
-- Improved power required by forage wangon's pickup
+Changelog 3.7.0
+- Fixed JD915ripper bouncing
+- Fixed JympaSJ bouncing
+- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
+- Improved folding and lifting
+- Improved compatibility with GearBox
+- Compatibility with More Realistic
 ]]>
         </en>
         <it>
             <![CDATA[Rende più realistico e mostra il consumo di carburante dei veicoli a motore.
 
-Changelog 3.6.2
-- Fixed koeckerling Allrounder
-- Fixed underpower of some vehicles
-- Fixed error caused by low quality mods
-- Improved power required by wood crushers
-- Improved power required by tree planters
-- Improved power required by harvester's cutters
-- Improved power required by baler's pickup
-- Improved power required by forage wangon's pickup
+Changelog 3.7.0
+- Fixed JD915ripper bouncing
+- Fixed JympaSJ bouncing
+- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
+- Improved folding and lifting
+- Improved compatibility with GearBox
+- Compatibility with More Realistic
 ]]>
         </it>
         <de>
             <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 
-Changelog 3.6.2
-- Fixed koeckerling Allrounder
-- Feste Unterkraft von einigen Fahrzeugen
-- Fehler behoben, der durch Modi mit niedriger Qualität verursacht wird
-- Verbesserte Kraft, die von Holzbrechern benötigt wird
-- Verbesserte Kraft, die von Baumpflanzern benötigt wird
-- Verbesserte Leistung durch Mähdrescher
-- Verbesserte Leistung, die vom Ballenpresse benötigt wird
-- Verbesserte Leistung, die von Futter Wangon Pickup benötigt wird
+Changelog 3.7.0
+- Feste JD915ripper bouncing
+- Feste JympaSJ bouncing
+- Feste Reibung von Horsch Terrano5FM und Horsch Tiger10LT
+- Verbessertes Falten und Heben
+- Verbesserte Kompatibilität mit GearBox
+- Kompatibilität mit More Realistic
 ]]>
         </de>
         <fr>
             <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 
-Changelog 3.6.2
-- Correction de koeckerling Allrounder
-- Correction de la maîtrise de certains véhicules
-- Correction d'une erreur provoquée par des mods de faible qualité
-- Amélioration de la puissance requise par les concasseurs de bois
-- Amélioration de la puissance requise par les planteurs d'arbres
-- Amélioration de la puissance requise par les coupeurs d'arracheuse
-- Puissance améliorée requise par le ramassage de la presse à balles
-- Amélioration de la puissance requise par le ramassage de forage wangon
+Changelog 3.7.0
+- Correction de JD915ripper rebondissant
+- Correction de JympaSJ rebondissant
+- Correction de frottement du Horsch Terrano5FM et Horsch Tiger10LT
+- Pliage et levage améliorés
+- Meilleure compatibilité avec GearBox
+- Compatibilité avec More Realistic
 ]]>
         </fr>
         <nl>
             <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
 
-Changelog 3.6.2
-- Fixed koeckerling Allrounder
-- Fixed underpower of some vehicles
-- Fixed error caused by low quality mods
-- Improved power required by wood crushers
-- Improved power required by tree planters
-- Improved power required by harvester's cutters
-- Improved power required by baler's pickup
-- Improved power required by forage wangon's pickup
+Changelog 3.7.0
+- Fixed JD915ripper bouncing
+- Fixed JympaSJ bouncing
+- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
+- Improved folding and lifting
+- Improved compatibility with GearBox
+- Compatibility with More Realistic
 ]]>
         </nl>
         <ru>
             <![CDATA[Повышает реалистичность потребления топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
             
-Changelog 3.6.2
-- Fixed koeckerling Allrounder
-- Fixed underpower of some vehicles
-- Fixed error caused by low quality mods
-- Improved power required by wood crushers
-- Improved power required by tree planters
-- Improved power required by harvester's cutters
-- Improved power required by baler's pickup
-- Improved power required by forage wangon's pickup
+Changelog 3.7.0
+- Fixed JD915ripper bouncing
+- Fixed JympaSJ bouncing
+- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
+- Improved folding and lifting
+- Improved compatibility with GearBox
+- Compatibility with More Realistic
 ]]>
         </ru>
         <pl>
             <![CDATA[Zmienia zużycie paliwa przez pojazdy na bardziej realistyczne oraz wyświetla aktualne spalanie.
 
-Dziennik zmian dla wersji 3.6.2
-- Fixed koeckerling Allrounder
-- Fixed underpower of some vehicles
-- Fixed error caused by low quality mods
-- Improved power required by wood crushers
-- Improved power required by tree planters
-- Improved power required by harvester's cutters
-- Improved power required by baler's pickup
-- Improved power required by forage wangon's pickup
+Dziennik zmian dla wersji 3.7.0
+- Fixed JD915ripper bouncing
+- Fixed JympaSJ bouncing
+- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
+- Improved folding and lifting
+- Improved compatibility with GearBox
+- Compatibility with More Realistic
 ]]>
         </pl>
     </description>
