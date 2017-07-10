@@ -171,7 +171,7 @@ Dziennik zmian dla wersji 3.7.0
             <fr>Vous ne pouvez pas changer le mode de consommation du carburant lorsque le moteur est en marche</fr>
             <nl>Je kunt niet wisselen tussen de modus wanneer de motor loopt</nl>
             <ru>Невозможно изменить режим потребления топлива при работающем двигателе</ru>
-            <en>Nie można zmienić trybu zużycia paliwa w czasie pracy silnika</en>
+            <pl>Nie można zmienić trybu zużycia paliwa w czasie pracy silnika</pl>
         </text>
         <text name="BFU_FUEL_USAGE_REALISTIC_TEXT_1">
             <en>Realistic fuel usage on</en>
