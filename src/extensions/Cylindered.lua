@@ -19,7 +19,7 @@ function Cylindered:getConsumedPtoTorque(superFunc)
         torque = superFunc(self);
     end
     if not Utils.gearboxActive(self) then
-        torque = torque + (self.movingToolsCount * Utils.getMotorPowerPercentage(self, 0.2, 20) / (540 * math.pi / 30));
+        torque = torque + (self.movingToolsCount * Utils.getMotorPowerPercentage(self, 0.05, 5) / (540 * math.pi / 30));
     end
     return torque;
 end
