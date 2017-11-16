@@ -1,0 +1,24 @@
+{
+  "name": "fs17_fuelusagedisplay",
+  "version": "3.8.0",
+  "description": "You can pull vehicles with this tow bar.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TyKonKet/FS17_FuelUsageDisplay.git"
+  },
+  "author": "TyKonKet",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/TyKonKet/FS17_FuelUsageDisplay/issues"
+  },
+  "homepage": "https://github.com/TyKonKet/FS17_FuelUsageDisplay#readme",
+  "dependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-run": "^1.7.1",
+    "gulp-series": "^1.0.2",
+    "gulp-size": "^2.1.0",
+    "gulp-util": "^3.0.8",
+    "gulp-zip": "^3.2.0"
+  }
+}
