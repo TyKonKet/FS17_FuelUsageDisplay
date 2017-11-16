@@ -1,100 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="37">
+<modDesc descVersion="38">
     <author>TyKonKet</author>
-    <version>3.7.0</version>
+    <version>3.8.0.0</version>
     <title>
         <en>Better Fuel Usage</en>
-        <de>Realistischer Kraftstoffverbrauch</de>
-        <ru>Улучшеное потребление топлива</ru>
-        <fr>Consommation de carburant réaliste</fr>
-        <nl>Realistische Brandstofgebruik</nl>
-        <pl>Lepsze zużycie paliwa</pl>
+        <de>Better Fuel Usage</de>
+        <fr>Better Fuel Usage</fr>
     </title>
     <description>
         <en>
             <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
 
-Changelog 3.7.0
-- Fixed JD915ripper bouncing
-- Fixed JympaSJ bouncing
-- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
-- Improved folding and lifting
-- Improved compatibility with GearBox
-- Compatibility with More Realistic
+Changelog 3.8.0.0
+- 
 ]]>
         </en>
-        <it>
-            <![CDATA[Rende più realistico e mostra il consumo di carburante dei veicoli a motore.
-
-Changelog 3.7.0
-- Fixed JD915ripper bouncing
-- Fixed JympaSJ bouncing
-- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
-- Improved folding and lifting
-- Improved compatibility with GearBox
-- Compatibility with More Realistic
-]]>
-        </it>
         <de>
             <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 
-Changelog 3.7.0
-- Feste JD915ripper bouncing
-- Feste JympaSJ bouncing
-- Feste Reibung von Horsch Terrano5FM und Horsch Tiger10LT
-- Verbessertes Falten und Heben
-- Verbesserte Kompatibilität mit GearBox
-- Kompatibilität mit More Realistic
+Changelog 3.8.0.0
+- 
 ]]>
         </de>
         <fr>
             <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 
-Changelog 3.7.0
-- Correction de JD915ripper rebondissant
-- Correction de JympaSJ rebondissant
-- Correction de frottement du Horsch Terrano5FM et Horsch Tiger10LT
-- Pliage et levage améliorés
-- Meilleure compatibilité avec GearBox
-- Compatibilité avec More Realistic
+Changelog 3.8.0.0
+- 
 ]]>
         </fr>
-        <nl>
-            <![CDATA[Past het brandstofgebruik van voertuigen aan voor een meer complete ervaring en geeft het brandstofgebruik rechtstreeks weer.
-
-Changelog 3.7.0
-- Fixed JD915ripper bouncing
-- Fixed JympaSJ bouncing
-- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
-- Improved folding and lifting
-- Improved compatibility with GearBox
-- Compatibility with More Realistic
-]]>
-        </nl>
-        <ru>
-            <![CDATA[Повышает реалистичность потребления топлива на моторизованных транспортных средствах и отображает текущее потребление топлива.
-            
-Changelog 3.7.0
-- Fixed JD915ripper bouncing
-- Fixed JympaSJ bouncing
-- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
-- Improved folding and lifting
-- Improved compatibility with GearBox
-- Compatibility with More Realistic
-]]>
-        </ru>
-        <pl>
-            <![CDATA[Zmienia zużycie paliwa przez pojazdy na bardziej realistyczne oraz wyświetla aktualne spalanie.
-
-Dziennik zmian dla wersji 3.7.0
-- Fixed JD915ripper bouncing
-- Fixed JympaSJ bouncing
-- Fixed friction of Horsch Terrano5FM and Horsch Tiger10LT
-- Improved folding and lifting
-- Improved compatibility with GearBox
-- Compatibility with More Realistic
-]]>
-        </pl>
     </description>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
@@ -201,13 +135,4 @@ Dziennik zmian dla wersji 3.7.0
             <pl>l/h</pl>
         </text>
     </l10n>
-    <translatedBy>
-        <en>TyKonKet</en>
-        <it>TyKonKet</it>
-        <de>mieperDE</de>
-        <fr>NaeJ</fr>
-        <nl>Jantje van Speijk, FarmingvidsHD</nl>
-        <ru>Gonimy_Vetrom (Vasyl'ko)</ru>
-        <pl>Dzi4d3k</pl>
-    </translatedBy>
 </modDesc>
