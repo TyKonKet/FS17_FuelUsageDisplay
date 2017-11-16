@@ -17,12 +17,12 @@ function AttacherJoints:getConsumedPtoTorque(superFunc)
     if superFunc ~= nil then
         torque = superFunc(self);
     end
-    if not Utils.gearboxActive(self) then
-        local powerRequired = Utils.getMotorPowerPercentage(self, 0.15, 20);
+if not Utils.gearboxActive(self) then
+        local powerRequired = Utils.getMotorPowerPercentage(self, 0.1, 10);
         for _, j in pairs(self.attacherJoints) do
             if j.moveAlpha ~= nil and j.moveAlpha ~= j.lowerAlpha and j.moveAlpha ~= j.upperAlpha then
                 if j.moveDown then
-                    torque = torque + ((powerRequired / 2.5) / (540 * math.pi / 30));
+                    torque = torque + ((powerRequired / 2) / (540 * math.pi / 30));
                 else
                     torque = torque + (powerRequired / (540 * math.pi / 30));
                 end
