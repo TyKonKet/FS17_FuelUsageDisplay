@@ -21,6 +21,15 @@ function Utils:getMotorPowerPercentage(percentage, default)
     return default;
 end
 
+function Utils:getMaxMotorTorque(default)
+    default = default or math.huge;
+    local motor = Utils.getMotor(self);
+    if motor ~= nil then
+        return motor.maxMotorTorque;
+    end
+    return default;
+end
+
 function Utils:getIsEntered()
     if self.isEntered then
         return true;

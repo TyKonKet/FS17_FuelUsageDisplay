@@ -38,6 +38,8 @@ function PowerConsumer:preLoad(savegame)
     self.getIsTurnedOnAllowed = Utils.overwrittenFunction(self.getIsTurnedOnAllowed, PowerConsumer.getIsTurnedOnAllowed);
     self.getTurnedOnNotAllowedWarning = Utils.overwrittenFunction(self.getTurnedOnNotAllowedWarning, PowerConsumer.getTurnedOnNotAllowedWarning);
     self.getPtoPowerMultiplier = PowerConsumer.getPtoPowerMultiplier;
+    PowerConsumer.getTotalConsumedPtoTorque = Utils.overwrittenFunction(PowerConsumer.getTotalConsumedPtoTorque, PowerConsumer.bfuGetTotalConsumedPtoTorque);
+    PowerConsumer.getConsumedPtoTorque = Utils.overwrittenFunction(PowerConsumer.getConsumedPtoTorque, PowerConsumer.bfuGetConsumedPtoTorque);
 end
 
 function PowerConsumer:postLoad()
@@ -86,8 +88,16 @@ function PowerConsumer:bfuGetConsumedPtoTorque(superFunc)
         end
     end
 end
-PowerConsumer.getConsumedPtoTorque = Utils.overwrittenFunction(PowerConsumer.getConsumedPtoTorque, PowerConsumer.bfuGetConsumedPtoTorque);
 
 function PowerConsumer:getPtoPowerMultiplier()
     return 1;
+end
+
+function PowerConsumer.bfuGetTotalConsumedPtoTorque(self, superFunc, excludeVehicle)
+    local torque = 0;
+    if superFunc ~= nil then
+        torque = superFunc(self, excludeVehicle);
+    end
+    --torque = math.min(torque, Utils.getMaxMotorTorque(self) * 0.9);
+    return torque;
 end
