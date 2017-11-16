@@ -21,6 +21,7 @@ function Trailer:getConsumedPtoTorque(superFunc)
         local power = self:getUnitCapacity(self.trailer.fillUnitIndex) / 200;
         local factor = self:getUnitFillLevel(self.trailer.fillUnitIndex) / self:getUnitCapacity(self.trailer.fillUnitIndex);
         torque = torque + ((5 + (power * factor)) / (760 * math.pi / 30));
+    --    torque = torque + (self:getUnitCapacity(self.trailer.fillUnitIndex) / 500) / (760 * math.pi / 30));
     end
     return torque;
 end
@@ -32,7 +33,7 @@ function Trailer:getPtoRpm(superFunc)
     end
     if self.tipState == Trailer.TIPSTATE_OPENING or self.tipState == Trailer.TIPSTATE_CLOSING or (#self.tipAnimations < 2 and self.tipState == Trailer.TIPSTATE_OPEN) then
         local factor = self:getUnitFillLevel(self.trailer.fillUnitIndex) / self:getUnitCapacity(self.trailer.fillUnitIndex);
-        ptoRpm = math.max(ptoRpm, 430 + 550 * factor);
+        ptoRpm = math.max(ptoRpm, 540 + 440 * factor);
     end
     return ptoRpm;
 end

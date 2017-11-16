@@ -12,13 +12,14 @@
     "url": "https://github.com/TyKonKet/FS17_FuelUsageDisplay/issues"
   },
   "homepage": "https://github.com/TyKonKet/FS17_FuelUsageDisplay#readme",
-  "dependencies": {
+  "devDependencies": {
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-run": "^1.7.1",
     "gulp-series": "^1.0.2",
     "gulp-size": "^2.1.0",
     "gulp-util": "^3.0.8",
-    "gulp-zip": "^3.2.0"
+    "gulp-zip": "^3.2.0",
+    "gulp-replace": "^0.6.1"
   }
 }

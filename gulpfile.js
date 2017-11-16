@@ -6,6 +6,7 @@ var del = require("del");
 var size = require('gulp-size');
 var zip = require("gulp-zip");
 var run = require('gulp-run');
+var replace = require('gulp-replace');
 var execFile = require('child_process').execFile;
 
 var mod = JSON.parse(fs.readFileSync("mod.json"));
@@ -14,6 +15,22 @@ const zipName = `${mod.name}.zip`;
 const destination = parseAPath(mod.destination);
 const zipSources = mod.zipSources;
 const start = mod.start;
+const fsDocPath = parseAPath(mod.fsDocPath);
+const clearLog = mod.clearLog;
+
+gulp.task("clean:log", () => {
+  if (clearLog) {
+    return del(`${fsDocPath}log.txt`, { force: true });
+  }
+  return;
+});
+
+gulp.task("startMode", () => {
+  return gulp
+    .src(`${fsDocPath}game.xml`)
+    .pipe(replace(/<startMode>.<\/startMode>/g, "<startMode>1</startMode>"))
+    .pipe(gulp.dest(`${fsDocPath}`));
+});
 
 gulp.task("clean:out", () => {
   return del(`./out/${zipName}`);
@@ -36,7 +53,7 @@ gulp.task("build:dest", ["build:out", "clean:dest"], () => {
     .pipe(gulp.dest(destination));
 });
 
-gulp.task("build", ["build:dest"], () => {
+gulp.task("build", ["clean:log", "startMode", "build:dest"], () => {
   if (start.enabled) {
     return execFile(start.path, start.params);
   }
