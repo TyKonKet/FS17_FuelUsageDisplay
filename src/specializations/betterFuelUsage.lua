@@ -322,7 +322,7 @@ function BetterFuelUsage:draw()
         self.BetterFuelUsage.fuelFade:draw();
         if self.BetterFuelUsage.fuelUsed ~= -1 then
             local fuelUsage = self.BetterFuelUsage.fuelUsed * 1000 * 60 * 60;
-            if not self.mrIsMrVehicle then
+            if not self.mrIsMrVehicle and not (BetterFuelUsage.gearBox ~= nil and self.mrGbMS.IsOnOff) then
                 local hoursFactor = 0.25;
                 if self.operatingTime ~= nil then
                     local opTime = Utils.clamp(self.operatingTime / (1000 * 60 * 60), 0, 300);
