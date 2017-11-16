@@ -108,7 +108,7 @@ function BetterFuelUsage:postLoad(savegame)
         self.fuelFillLitersPerSecond = self.fuelFillLitersPerSecond / 2;
     end
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
-    self.fuelUsage = (self.BetterFuelUsage.maxMotorPower / 2000) / (60 * 60 * 1000);
+    self.fuelUsage = (self.BetterFuelUsage.maxMotorPower / 2500) / (60 * 60 * 1000);
     if BetterFuelUsage.motorizedOverwrites[self.configFileName] ~= nil then
         self.fuelUsage = BetterFuelUsage.motorizedOverwrites[self.configFileName].fuelUsage / (60 * 60 * 1000);
     end

@@ -41,13 +41,6 @@ function BetterFuelUsageRH:loadMap(name)
         addConsoleCommand("AAABFUToggleDebug", "", "FUToggleDebug", self);
         addConsoleCommand("AAAPrintVehicleValue", "", "PrintVehicleValue", self);
         addConsoleCommand("AAASetFuelFillLevel", "", "SetFuelFillLevel", self);
-        addConsoleCommand("gsExportStoreItems", "Exports storeItem data", "consoleCommandExportStoreItems", g_currentMission);
-        addConsoleCommand("gsStartBrandSale", "Starts a brand sale", "consoleStartBrandSale", g_currentMission);
-        addConsoleCommand("gsStartVehicleSale", "Starts a vehicle sale", "consoleStartVehicleSale", g_currentMission);
-        addConsoleCommand("gsStartGreatDemand", "Starts a great demand", "consoleStartGreatDemand", g_currentMission);
-        addConsoleCommand("gsUpdateTipCollisions", "Updates the collisions for tipping on the ground around the current camera", "consoleCommandUpdateTipCollisions", g_currentMission);
-        addConsoleCommand("gsTeleport", "Teleports to given field or x/z-position", "consoleCommandTeleport", g_currentMission);
-        addConsoleCommand("gsActivateCameraPath", "Activate camera path", "consoleActivateCameraPath", g_currentMission);
     end
     g_currentMission.speedMeterRadiusX = g_currentMission.speedMeterRadiusX * 1.05;
     g_currentMission.speedMeterRadiusY = g_currentMission.speedMeterRadiusY * 1.05;
