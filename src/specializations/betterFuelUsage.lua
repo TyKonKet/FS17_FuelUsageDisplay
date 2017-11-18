@@ -46,9 +46,13 @@ function BetterFuelUsage.initSpecialization()
         end
         local xmlC = getXMLString(xml, string.format("%s#xml", query));
         local fuelUsage = getXMLFloat(xml, string.format("%s#fuelUsage", query));
+        local minRpm = getXMLFloat(xml, string.format("%s#minRpm", query));
+        local maxRpm = getXMLFloat(xml, string.format("%s#maxRpm", query));
         BetterFuelUsage.motorizedOverwrites[xmlC] = {};
         BetterFuelUsage.motorizedOverwrites[xmlC].fuelUsage = fuelUsage;
-        BetterFuelUsage.print("motorizedOverwrite -> xml:%s fuelUsage:%s", xmlC, fuelUsage);
+        BetterFuelUsage.motorizedOverwrites[xmlC].minRpm = minRpm;
+        BetterFuelUsage.motorizedOverwrites[xmlC].maxRpm = maxRpm;
+        BetterFuelUsage.print("motorizedOverwrite -> xml:%s fuelUsage:%s minRpm:%s maxRpm:%s", xmlC, fuelUsage, minRpm, maxRpm);
         index = index + 1;
     end
 end
@@ -109,8 +113,15 @@ function BetterFuelUsage:postLoad(savegame)
     end
     self.BetterFuelUsage.backup.updateFuelUsage = self.updateFuelUsage;
     self.fuelUsage = (self.BetterFuelUsage.maxMotorPower / 2200) / (60 * 60 * 1000);
-    if BetterFuelUsage.motorizedOverwrites[self.configFileName] ~= nil then
-        self.fuelUsage = BetterFuelUsage.motorizedOverwrites[self.configFileName].fuelUsage / (60 * 60 * 1000);
+    local xmlName = Utils.clearXmlDirectory(self.configFileName);
+    if BetterFuelUsage.motorizedOverwrites[xmlName] ~= nil then
+        BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage = BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage or self.fuelUsage;
+        self.fuelUsage = BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage / (60 * 60 * 1000);
+        self.motor.minRpm = BetterFuelUsage.motorizedOverwrites[xmlName].minRpm or self.motor.minRpm;
+        self.motor.maxRpm = BetterFuelUsage.motorizedOverwrites[xmlName].maxRpm or self.motor.maxRpm;
+        BetterFuelUsage.print("%s -> fuelUsage:%s minRpm:%s maxRpm:%s", xmlName, self.fuelUsage, self.motor.minRpm, self.motor.maxRpm);
+    else
+        BetterFuelUsage.print("No overwrites for %s", xmlName);
     end
     if savegame ~= nil and not savegame.resetVehicles then
         self.BetterFuelUsage.useDefaultFuelUsageFunction = Utils.getNoNil(getXMLBool(savegame.xmlFile, savegame.key .. "#useDefaultFuelUsageFunction"), self.BetterFuelUsage.useDefaultFuelUsageFunction);

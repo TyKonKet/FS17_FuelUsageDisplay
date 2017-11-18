@@ -9,7 +9,7 @@ BetterFuelUsageRH.specialization = {};
 BetterFuelUsageRH.specialization.title = "BetterFuelUsage";
 BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
-BetterFuelUsageRH.debug = false;
+BetterFuelUsageRH.debug = true;
 
 function BetterFuelUsageRH:print(text, ...)
     if self.debug then
