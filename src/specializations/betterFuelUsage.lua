@@ -115,7 +115,7 @@ function BetterFuelUsage:postLoad(savegame)
     self.fuelUsage = (self.BetterFuelUsage.maxMotorPower / 2200) / (60 * 60 * 1000);
     local xmlName = Utils.clearXmlDirectory(self.configFileName);
     if BetterFuelUsage.motorizedOverwrites[xmlName] ~= nil then
-        BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage = BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage or self.fuelUsage;
+        BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage = BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage or self.fuelUsage * 60 * 60 * 1000;
         self.fuelUsage = BetterFuelUsage.motorizedOverwrites[xmlName].fuelUsage / (60 * 60 * 1000);
         self.motor.minRpm = BetterFuelUsage.motorizedOverwrites[xmlName].minRpm or self.motor.minRpm;
         self.motor.maxRpm = BetterFuelUsage.motorizedOverwrites[xmlName].maxRpm or self.motor.maxRpm;
