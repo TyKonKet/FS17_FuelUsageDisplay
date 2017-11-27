@@ -2,10 +2,6 @@ language: python
 sudo: false
 
 env:
-  - LUA="lua=5.1"
-  - LUA="lua=5.2"
-  - LUA="lua=5.3"
-  - LUA="luajit=2.0"
   - LUA="luajit=2.1"
 
 before_install:
@@ -16,15 +12,9 @@ before_install:
 install:
   - luarocks install luacheck
   - luarocks install busted
-  - luarocks install luacov
-  - luarocks install luacov-coveralls
 
 script:
-  - luacheck --no-unused-args --std max+busted *.lua spec
-  - busted --verbose --coverage
-
-after_success:
-  - luacov-coveralls --exclude $TRAVIS_BUILD_DIR/lua_install
+  - luacheck --std max+busted src
 
 branches:
   except:
