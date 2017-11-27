@@ -11,7 +11,6 @@ before_install:
 
 install:
   - luarocks install luacheck
-  - luarocks install busted
 
 script:
   - luacheck -g -u -r -a -s --ignore 6 --no-self --no-max-line-length --no-max-code-line-length src
