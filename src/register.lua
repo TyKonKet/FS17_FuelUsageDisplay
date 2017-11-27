@@ -11,7 +11,7 @@ BetterFuelUsageRH.specialization.name = "betterFuelUsage";
 BetterFuelUsageRH.specialization.blackList = {conveyorTrailerHireable = true, conveyorTrailerDrivable = true, loadingTrailerDrivable = true};
 BetterFuelUsageRH.debug = false;
 
-functio BetterFuelUsageRH:print(text, ...)
+function BetterFuelUsageRH:print(text, ...)
     if self.debug then
         local start = string.format("[%s(%s)] -> ", self.name, getDate("%H:%M:%S"));
         local ptext = string.format(text, ...);
