@@ -14,7 +14,7 @@ install:
   - luarocks install busted
 
 script:
-  - luacheck -g -u -r -a -s --no-self --no-max-code-line-length src
+  - luacheck -g -u -r -a -s --ignore 6 --no-self --no-max-line-length --no-max-code-line-length src
 
 branches:
   except:
