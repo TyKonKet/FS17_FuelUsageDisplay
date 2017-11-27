@@ -14,7 +14,7 @@ install:
   - luarocks install busted
 
 script:
-  - luacheck --no-unused-args --std max+busted src
+  - luacheck -g -u -r -a -s --no-self src
 
 branches:
   except:
