@@ -1,7 +1,6 @@
 # FS17_FuelUsageDisplay
+[![Build Status](https://travis-ci.org/TyKonKet/FS17_FuelUsageDisplay.svg?branch=master)](https://travis-ci.org/TyKonKet/FS17_FuelUsageDisplay)  
 Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.  
-  
-[![Build Status](https://travis-ci.org/TyKonKet/FS17_FuelUsageDisplay.svg?branch=master)](https://travis-ci.org/TyKonKet/FS17_FuelUsageDisplay)
   
 # TODO
 - [ ] [AdBlue](https://en.wikipedia.org/wiki/Diesel_exhaust_fluid) simulation
