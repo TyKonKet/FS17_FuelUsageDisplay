@@ -73,7 +73,7 @@ Cylindered.readUpdateStream = Utils.appendedFunction(Cylindered.readUpdateStream
 function Cylindered:postWriteUpdateStream(streamId, connection, dirtyMask)
     if not self.mrIsMrVehicle then
         if connection:getIsServer() then
-            streamWriteFloat32(streamId, self.movingToolsCount);
+            streamWriteFloat32(streamId, self.movingToolsCount or 0);
         end
     end
 end
