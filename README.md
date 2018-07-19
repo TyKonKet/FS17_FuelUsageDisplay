@@ -5,7 +5,7 @@ Makes the fuel usage of motorized vehicles more realistic and displays the live 
 # TODO
 - [ ] Fix the error in multiplayer with station crane
 - [ ] [AdBlue](https://en.wikipedia.org/wiki/Diesel_exhaust_fluid) simulation
-- [ ] ~~Maximum cap for the power used from PowerConsumer, to allow a minimum movement of vehicle~~
+- [ ] Fix Zunhammer ZunDisc jumping up and down while working
   
 # Translations
 If you want help with translations, you are welcome.  
