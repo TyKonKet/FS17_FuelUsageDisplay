@@ -4,6 +4,7 @@
     <vehicle xml="data/vehicles/tools/jcb/jcbStumpCutter.xml" ptoRpm="540" neededPtoPower="15"/>
     <vehicle xml="data/vehicles/steerable/siloking/siloKingSelfLineCompact1612.xml" ptoRpm="540" neededPtoPower="80"/>
     <vehicle xml="data/vehicles/tools/koeckerling/koeckerlingAllrounder.xml" maxForce="36" forceFactor="0.5" />
+    <vehicle xml="data/vehicles/tools/zunhammer/zunhammerZunidisc.xml" maxForce="25" forceFactor="0.5" />
     <vehicle xml="JD915ripper9.xml" maxForce="33" forceFactor="0.5" />
     <vehicle xml="JD915ripper11.xml" maxForce="48" forceFactor="0.5" />
     <vehicle xml="Jympa_SJ7-9.xml" maxForce="16" forceFactor="0.5" />
