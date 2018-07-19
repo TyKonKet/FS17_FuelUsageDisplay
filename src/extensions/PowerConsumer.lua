@@ -29,7 +29,7 @@ function PowerConsumer.initSpecialization()
 end
 
 function PowerConsumer:preLoad(savegame)
-    assert(self.getPowerMultiplier == nil, "PowerConsumer needs to be the first specialization which implements getPowerMultiplier");
+    --assert(self.getPowerMultiplier == nil, "PowerConsumer needs to be the first specialization which implements getPowerMultiplier");
     self.getConsumedPtoTorque = PowerConsumer.getConsumedPtoTorque;
     self.getPtoRpm = PowerConsumer.getPtoRpm;
     self.getDoConsumePtoPower = PowerConsumer.getDoConsumePtoPower;
