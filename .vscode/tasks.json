@@ -16,6 +16,11 @@
             "type": "gulp",
             "task": "release",
             "problemMatcher": []
+        },
+        {
+            "type": "gulp",
+            "task": "server:default",
+            "problemMatcher": []
         }
     ]
 }

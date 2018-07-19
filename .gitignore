@@ -1,5 +1,6 @@
 # Build system
 node_modules/
 mod.json
+.cookies
 
 package-lock.json

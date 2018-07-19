@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="38">
-    <author>TyKonKet</author>
-    <version>3.8.0.0</version>
+<modDesc descVersion="39">
+    <author>{package_author}</author>
+    <version>{package_version}</version>
     <title>
         <en>Better Fuel Usage</en>
         <de>Better Fuel Usage</de>
@@ -9,9 +9,10 @@
     </title>
     <description>
         <en>
-            <![CDATA[Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
+            <![CDATA[
+Makes the fuel usage of motorized vehicles more realistic and displays the live fuel consumption.
 
-Changelog 3.8.0.0
+Changelog {package_version}
 - Fixed overall fuel usage
 - Fixed differences with Gearbox Addon consumption
 - Fixed lifters load
@@ -19,12 +20,13 @@ Changelog 3.8.0.0
 - Fixed issues with trailers
 - Fixed issues with Claas Dominator 118SL
 - Tons of other small fixes and improvements
-]]>
+            ]]>
         </en>
         <de>
-            <![CDATA[Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
+            <![CDATA[
+Ändert den Kraftstoffverbrauch der Fahrzeuge auf ein realistisches Niveau und zeigt den Momentanverbrauch an.
 
-Changelog 3.8.0.0
+Changelog {package_version}
 - Gesamten Treibstoffverbrauch korrigiert
 - Unterschiede beim Gearbox Addon Verbrauch behoben
 - Fixierte Last der Last
@@ -32,12 +34,13 @@ Changelog 3.8.0.0
 - Probleme mit Trailern behoben
 - Probleme mit Claas Dominator 118SL behoben
 - Tonnen von anderen kleinen Korrekturen und Verbesserungen
-]]>
+            ]]>
         </de>
         <fr>
-            <![CDATA[Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
+            <![CDATA[
+Affiche la consommation de carburant des véhicules motorisés et change la consommation de façon plus réaliste.
 
-Changelog 3.8.0.0
+Changelog {package_version}
 - Consommation de carburant globale fixe
 - Correction des différences avec la consommation de Gearbox Addon
 - Charge de levage fixe
@@ -45,7 +48,7 @@ Changelog 3.8.0.0
 - Correction de problèmes avec les remorques
 - Correction de problèmes avec Claas Dominator 118SL
 - Des tonnes d'autres petites corrections et améliorations
-]]>
+            ]]>
         </fr>
     </description>
     <iconFilename>icon.dds</iconFilename>
